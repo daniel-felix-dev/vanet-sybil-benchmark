@@ -2,25 +2,25 @@
 MATHEMATICAL JUSTIFICATIONS FOR SCENARIO RECOMMENDATIONS
 ==============================================================================
 
-── 1. Summary statistics ──
-  TASER Bayesian Trust           F1_mean=0.9973  F1_std=0.0054  Prec_mean=1.0000  Rec_mean=0.9947  fit_time=0.87s  efficiency=1.5899
-  Random Forest                  F1_mean=0.9867  F1_std=0.0127  Prec_mean=0.9853  Rec_mean=0.9880  fit_time=0.57s  efficiency=2.1873
-  Random Forest + GWO            F1_mean=0.9842  F1_std=0.0137  Prec_mean=0.9760  Rec_mean=0.9927  fit_time=117.28s  efficiency=0.2062
-  LSTM                           F1_mean=0.7038  F1_std=0.4743  Prec_mean=0.6804  Rec_mean=0.7330  fit_time=10.00s  efficiency=0.2935
-  IQR Speed Threshold            F1_mean=0.4740  F1_std=0.3770  Prec_mean=0.3874  Rec_mean=1.0000  fit_time=0.05s  efficiency=9.2645
-  RSU Position Verification      F1_mean=0.0426  F1_std=0.0853  Prec_mean=0.0908  Rec_mean=0.0278  fit_time=11.26s  efficiency=0.0170
-  Dynamic k-Means                F1_mean=0.0000  F1_std=0.0000  Prec_mean=0.0000  Rec_mean=0.0000  fit_time=0.64s  efficiency=0.0000
+-- 1. Summary statistics --
+  TASER Bayesian Trust           F1_mean=0.9973  F1_std=0.0054  Prec=1.0000  Rec=0.9947  time=0.87s  eff=1.5899
+  Random Forest                  F1_mean=0.9867  F1_std=0.0127  Prec=0.9853  Rec=0.9880  time=0.57s  eff=2.1873
+  Random Forest + GWO            F1_mean=0.9842  F1_std=0.0137  Prec=0.9760  Rec=0.9927  time=117.28s  eff=0.2062
+  LSTM                           F1_mean=0.7038  F1_std=0.4743  Prec=0.6804  Rec=0.7330  time=10.00s  eff=0.2935
+  IQR Speed Threshold            F1_mean=0.4740  F1_std=0.3770  Prec=0.3874  Rec=1.0000  time=0.05s  eff=9.2645
+  RSU Position Verification      F1_mean=0.0426  F1_std=0.0853  Prec=0.0908  Rec=0.0278  time=11.26s  eff=0.0170
+  Dynamic k-Means                F1_mean=0.0000  F1_std=0.0000  Prec=0.0000  Rec=0.0000  time=0.64s  eff=0.0000
 
-── 2. Pareto frontier (F1 vs speed) ──
-  ✓ TASER Bayesian Trust
-  ✓ Random Forest
-  ✗ Random Forest + GWO
-  ✗ LSTM
-  ✓ IQR Speed Threshold
-  ✗ RSU Position Verification
-  ✗ Dynamic k-Means
+-- 2. Pareto frontier (F1 vs speed) --
+  YES TASER Bayesian Trust
+  YES Random Forest
+  NO  Random Forest + GWO
+  NO  LSTM
+  YES IQR Speed Threshold
+  NO  RSU Position Verification
+  NO  Dynamic k-Means
 
-── 3. Dominance matrix (row dominates column at all sybil rates) ──
+-- 3. Dominance matrix (1 = row dominates column at ALL sybil rates) --
                              TASER Bayesian Trust  Random Forest  Random Forest + GWO  LSTM  IQR Speed Threshold  RSU Position Verification  Dynamic k-Means
   TASER Bayesian Trust                          0              0                    0     1                    0                          1                1
   Random Forest                                 0              0                    0     0                    0                          1                1
@@ -30,7 +30,7 @@ MATHEMATICAL JUSTIFICATIONS FOR SCENARIO RECOMMENDATIONS
   RSU Position Verification                     0              0                    0     0                    0                          0                1
   Dynamic k-Means                               0              0                    0     0                    0                          0                0
 
-── 4. Utility scores per scenario ──
+-- 4. Utility scores per scenario --
 
   Scenario: Latency-critical (real-time)
     Random Forest                  utility=0.5549
@@ -50,7 +50,7 @@ MATHEMATICAL JUSTIFICATIONS FOR SCENARIO RECOMMENDATIONS
     RSU Position Verification      utility=0.0764
     Dynamic k-Means                utility=0.0000
 
-  Scenario: High Sybil rate (≥30%)
+  Scenario: High Sybil rate (>=30%)
     TASER Bayesian Trust           utility=0.9957
     Random Forest                  utility=0.9925
     Random Forest + GWO            utility=0.9814
@@ -77,7 +77,7 @@ MATHEMATICAL JUSTIFICATIONS FOR SCENARIO RECOMMENDATIONS
     RSU Position Verification      utility=-1.7414
     Random Forest + GWO            utility=-3.0459
 
-  Scenario: Low Sybil rate (≤10%)
+  Scenario: Low Sybil rate (<=10%)
     TASER Bayesian Trust           utility=1.0000
     Random Forest + GWO            utility=1.0000
     Random Forest                  utility=0.9682
@@ -86,7 +86,7 @@ MATHEMATICAL JUSTIFICATIONS FOR SCENARIO RECOMMENDATIONS
     RSU Position Verification      utility=0.0000
     Dynamic k-Means                utility=0.0000
 
-── 5. F1 per sybil rate (all detectors) ──
+-- 5. F1 per sybil rate --
   sybil_rate                     10      20      30      40
   detector                                                 
   Dynamic k-Means            0.0000  0.0000  0.0000  0.0000
@@ -97,7 +97,7 @@ MATHEMATICAL JUSTIFICATIONS FOR SCENARIO RECOMMENDATIONS
   Random Forest + GWO        1.0000  0.9715  0.9742  0.9912
   TASER Bayesian Trust       1.0000  1.0000  1.0000  0.9892
 
-── 6. Efficiency ratio F1_mean / ln(fit_time + 1) ──
+-- 6. Efficiency = F1_mean / ln(fit_time + 1) --
   IQR Speed Threshold            = 0.4740 / ln(0.05+1) = 9.2645
   Random Forest                  = 0.9867 / ln(0.57+1) = 2.1873
   TASER Bayesian Trust           = 0.9973 / ln(0.87+1) = 1.5899

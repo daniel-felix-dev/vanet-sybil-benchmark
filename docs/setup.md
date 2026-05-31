@@ -1,25 +1,26 @@
-# Environment Setup
+# Setting Up the Environment
 
-## Prerequisites
+## What you need
 
-| Software | Version | Purpose |
+| Software | Minimum version | What it does |
 |---|---|---|
-| Python | 3.9 + | Runtime for all scripts |
-| SUMO | 1.12.0 | Traffic simulation engine |
-| scikit-learn | ≥ 1.0 | IQR, RF, k-Means detectors |
-| TensorFlow | ≥ 2.11 | LSTM detector |
-| pandas / numpy / matplotlib | any | Data handling and figures |
-| joblib | any | Model persistence |
+| Python | 3.9 | Runs all scripts |
+| SUMO | 1.12.0 | Simulates vehicle traffic |
+| scikit-learn | 1.0 | IQR, Random Forest, k-Means detectors |
+| TensorFlow | 2.11 | LSTM detector |
+| pandas, numpy, matplotlib | any recent | Data handling and charts |
 
 ---
 
-## 1. Install SUMO
+## Installing SUMO
+
+SUMO is the traffic simulator that generates the vehicle movement data. You need it even if you only want to run the detectors, because the datasets were produced by it and you will need to reproduce them.
 
 ### Windows
-Download the Windows installer from [eclipse.dev/sumo](https://eclipse.dev/sumo/).  
-Default install path: `C:\Program Files (x86)\Eclipse\Sumo\`.
 
-Set the `SUMO_HOME` environment variable permanently:
+Download the installer from [eclipse.dev/sumo](https://eclipse.dev/sumo/) and run it. The default path is `C:\Program Files (x86)\Eclipse\Sumo`.
+
+After installing, tell your system where SUMO lives by setting an environment variable. Open PowerShell and run:
 
 ```powershell
 [System.Environment]::SetEnvironmentVariable(
@@ -29,67 +30,67 @@ Set the `SUMO_HOME` environment variable permanently:
 )
 ```
 
-Verify:
+Close and reopen your terminal, then confirm it worked:
+
 ```powershell
-$env:SUMO_HOME
-# Should print: C:\Program Files (x86)\Eclipse\Sumo
+echo $env:SUMO_HOME
+# Should print the path above
 ```
 
-### Linux / macOS
-```bash
-sudo apt-get install sumo sumo-tools   # Ubuntu/Debian
-# or
-brew install sumo                       # macOS
+### Linux
 
+```bash
+sudo apt-get install sumo sumo-tools
 export SUMO_HOME=/usr/share/sumo
+# Add that export to your ~/.bashrc to make it permanent
+```
+
+### macOS
+
+```bash
+brew install sumo
+export SUMO_HOME=$(brew --prefix sumo)/share/sumo
 ```
 
 ---
 
-## 2. Install Python dependencies
+## Installing Python libraries
 
 ```bash
 pip install scikit-learn tensorflow joblib pandas numpy matplotlib
 ```
 
-Verify the critical ones:
+Quick check that everything loaded:
 
 ```python
-import traci      # SUMO Python bindings (bundled with SUMO)
-import sklearn    # scikit-learn
-import tensorflow # TensorFlow / Keras
+import traci      # bundled with SUMO, no separate install
+import sklearn
+import tensorflow
+print("all good")
 ```
 
-> **Note — Windows + TensorFlow:** TensorFlow ≥ 2.11 does not support native Windows GPU. The LSTM detector runs on CPU, which is sufficient for this benchmark. Expected LSTM fit time: 8–13 s per scenario.
-
----
-
-## 3. Verify TraCI access
+If `traci` is not found, your Python cannot see the SUMO tools folder. Fix it:
 
 ```python
 import sys, os
 sys.path.insert(0, os.path.join(os.environ["SUMO_HOME"], "tools"))
-import traci
-print("TraCI OK —", traci.__file__)
+import traci  # should work now
 ```
 
 ---
 
-## 4. Clone the repository
+## A note on TensorFlow and GPUs
 
-```bash
-git clone https://github.com/daniel-felix-dev/vanet-sybil-benchmark.git
-cd vanet-sybil-benchmark
-```
+TensorFlow 2.11 and later does not support GPU acceleration on native Windows. The LSTM detector will run on CPU, which is slow enough that you will notice (expect 8 to 13 seconds per scenario) but not slow enough to block the benchmark. If you want GPU support on Windows, run everything inside WSL2.
 
 ---
 
-## Troubleshooting
+## Common errors and fixes
 
-| Error | Cause | Fix |
-|---|---|---|
-| `ModuleNotFoundError: traci` | SUMO tools not in `sys.path` | Check `SUMO_HOME` and add `$SUMO_HOME/tools` to `PYTHONPATH` |
-| `FatalTraCIError: connection closed by SUMO` | Route file has invalid edges | Re-run `generate_routes.py` after regenerating `network.net.xml` |
-| `ModuleNotFoundError: sklearn` | scikit-learn not installed | `pip install scikit-learn` |
-| `KMeans n_jobs error` | sklearn ≥ 1.x removed `n_jobs` from KMeans | Already patched in `kmeans_detector.py` |
-| LSTM produces `acc=0.0` | Too few Sybil samples at low rate | Expected at 10% — see [analysis/detector_profiles.md](../analysis/detector_profiles.md#lstm) |
+**`traci` not found:** SUMO_HOME is not set or Python cannot reach the tools folder. Add `SUMO_HOME/tools` to your PYTHONPATH.
+
+**`FatalTraCIError: connection closed by SUMO`:** The route file contains an invalid edge. Re-run `generate_routes.py` to rebuild the routes from the current network.
+
+**`ModuleNotFoundError: sklearn`:** Run `pip install scikit-learn`.
+
+**LSTM outputs F1 = 0.000 at 10% Sybil rate:** This is expected behavior, not a bug. With only 5-6% positive samples, the network cannot learn the Sybil pattern in 20 epochs. See [analysis/detector_profiles.md](../analysis/detector_profiles.md) for the full explanation.

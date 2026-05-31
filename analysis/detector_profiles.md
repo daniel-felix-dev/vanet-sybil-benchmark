@@ -1,243 +1,202 @@
-# Detector Profiles — Strengths, Weaknesses, and Trade-offs
+# Detector Profiles
 
-All metrics below are computed from `results/metrics/benchmark_results.csv`.  
-Mathematical derivations are in `math_justifications.txt`.
-
----
-
-## Summary table
-
-| Detector | F1 mean | F1 std | Precision | Recall | Specificity | Fit time (s) | Efficiency* |
-|---|---|---|---|---|---|---|---|
-| TASER Bayesian Trust | **0.9973** | 0.0054 | **1.0000** | 0.9947 | **1.0000** | 0.87 | 1.59 |
-| Random Forest | 0.9867 | 0.0127 | 0.9853 | **0.9880** | 0.9968 | **0.57** | **2.19** |
-| Random Forest + GWO | 0.9842 | 0.0137 | 0.9760 | 0.9927 | 0.9912 | 117.3 | 0.21 |
-| LSTM | 0.7038 | 0.4743 | 0.6804 | 0.7330 | 0.9626 | 10.0 | 0.29 |
-| IQR Speed Threshold | 0.4740 | 0.3770 | 0.3874 | 1.0000 | 0.2500 | 0.05 | 9.26 |
-| RSU Position Verification | 0.0426 | 0.0853 | 0.0908 | 0.0278 | 0.9870 | 11.3 | 0.017 |
-| Dynamic k-Means | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.9960 | 0.64 | 0.000 |
-
-\* Efficiency = F1_mean / ln(fit_time + 1). Higher is better.
-
-**Pareto frontier** (no other detector is both faster AND more accurate): TASER, Random Forest, IQR.
+Each section below covers one algorithm: how it works, what the numbers show, and where it breaks down. All statistics come from `results/metrics/benchmark_results.csv`. The raw calculations are in `math_justifications.txt`.
 
 ---
 
-## 1. TASER Bayesian Trust
+## Summary
 
-**Principle:** Each vehicle maintains a trust score `T ∈ [0,1]`, updated per beacon:
-- Consistent beacon (speed ∈ [0, 14×1.4] m/s, |Δv| ≤ 5.6): `T ← T + α(1 − T)` with α = 0.01
-- Anomalous beacon: `T ← T − βT` with β = 0.10
-- Classification threshold λ = 0.15: vehicle flagged if T < λ
+| Detector | F1 avg | F1 variability | Precision | Recall | Specificity | Training time |
+|---|---|---|---|---|---|---|
+| TASER Bayesian Trust | **0.997** | 0.005 | **1.000** | 0.995 | **1.000** | 0.87 s |
+| Random Forest | 0.987 | 0.013 | 0.985 | **0.988** | 0.997 | **0.57 s** |
+| Random Forest + GWO | 0.984 | 0.014 | 0.976 | 0.993 | 0.991 | 117 s |
+| LSTM | 0.704 | 0.474 | 0.680 | 0.733 | 0.963 | 10 s |
+| IQR Speed Threshold | 0.474 | 0.377 | 0.387 | 1.000 | 0.250 | 0.05 s |
+| RSU Position Verification | 0.043 | 0.085 | 0.091 | 0.028 | 0.987 | 11.3 s |
+| Dynamic k-Means | 0.000 | 0.000 | 0.000 | 0.000 | 0.996 | 0.64 s |
 
-**Convergence analysis:**  
-Starting at T₀ = 0.5, a Sybil vehicle with anomalous speed at every step reaches T < 0.15 after:
+The efficiency score in the table below is F1 divided by the natural log of (training time + 1). Higher means better detection per unit of compute:
+
+| Detector | Efficiency |
+|---|---|
+| IQR Speed Threshold | 9.26 |
+| Random Forest | 2.19 |
+| TASER Bayesian Trust | 1.59 |
+| LSTM | 0.29 |
+| Random Forest + GWO | 0.21 |
+| RSU Position Verification | 0.02 |
+| Dynamic k-Means | 0.00 |
+
+Three detectors are on the Pareto frontier (no other option beats them on both quality and speed at the same time): TASER, Random Forest, and IQR.
+
+---
+
+## TASER Bayesian Trust
+
+**The idea.** Every vehicle in the network has a trust score between 0 and 1. When another vehicle sends a beacon (a short position and speed broadcast), the receiver checks whether the reported speed looks realistic. If yes, the sender's trust score ticks up slightly. If no, it drops. Vehicles whose score falls below 0.15 get flagged as Sybil.
+
+The update rule uses two parameters: alpha = 0.01 controls how much trust grows on a good beacon, and beta = 0.10 controls how fast it drops on a bad one. The asymmetry is intentional: a Sybil node needs to sustain consistent anomalies, and even a few normal-looking beacons will not recover its score quickly.
+
+**How fast does it converge?** Starting at T = 0.5, a vehicle emitting an anomalous beacon every step reaches the 0.15 threshold after:
 
 ```
-T_n = T₀ × (1−β)^n
-0.15 = 0.5 × 0.90^n
-n = ln(0.3) / ln(0.9) ≈ 11.4 steps
+T_n = 0.5 * (1 - 0.10)^n
+0.15 = 0.5 * 0.90^n
+n = ln(0.3) / ln(0.9) = 11.4 steps
 ```
 
-A Sybil node is detectable in fewer than 12 beacons — even in a sparse network.
+So TASER needs fewer than 12 beacons to flag a Sybil node with certainty, regardless of how many other vehicles are in the network.
 
-**Results:**
+**Results by attack intensity:**
 
-| Sybil Rate | Accuracy | Precision | Recall | F1 |
-|---|---|---|---|---|
-| 10% | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
-| 20% | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
-| 30% | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
-| 40% | 0.9915 | 1.0000 | 0.9786 | 0.9892 |
-
-**Strengths:**
-- Perfect precision (1.0000) across all sybil rates — zero false positives
-- Fastest convergence of any probabilistic detector (11–12 beacons)
-- No labeled training data required
-- Computationally lightweight: O(N×T) where N=vehicles, T=steps
-
-**Weaknesses:**
-- Assumes Sybil nodes emit anomalous speed values — fails against stealthy attackers that stay within the normal speed range
-- Sensitive to parameter tuning (α, β, λ); defaults from the TASER paper may not generalise to all topologies
-- Recall drops slightly at 40% (0.9786): when Sybil nodes dominate, occasional legitimate-range anomalies cause some Sybil nodes to recover trust momentarily
-
-**Trade-offs:**
-- Precision vs. recall: TASER sacrifices a small amount of recall (0.9947 mean) for perfect precision — the safest choice when false positives carry high cost (e.g., emergency vehicles incorrectly flagged)
-- Speed vs. sophistication: 0.87 s vs. 117 s for GWO-RF — TASER achieves near-identical F1 (0.9973 vs. 0.9842) at 135× lower cost
-
-![TASER Radar](figures/radar_per_detector.png)
-
----
-
-## 2. Random Forest
-
-**Principle:** Supervised ensemble of 100 decision trees trained on beacon features: speed, acceleration, angle, position, neighbor count, RSU distances, edge encoding. Majority vote determines the final classification.
-
-**Feature importance** (typical ranking from the fitted model):
-1. `speed` — direct signal from attack model (Sybil injects noise σ=8)
-2. `accel` — derivative of speed, amplifies the noise signal
-3. `min_rsu_dist` — Sybil nodes cluster at attacker's position, different RSU profile
-4. `n_neighbors` — co-located Sybil IDs inflate neighbor counts
-
-**Results:**
-
-| Sybil Rate | Accuracy | Precision | Recall | F1 |
-|---|---|---|---|---|
-| 10% | 0.9963 | 0.9689 | 0.9667 | 0.9678 |
-| 20% | 0.9958 | 0.9846 | 0.9958 | 0.9902 |
-| 30% | 0.9967 | 0.9947 | 0.9937 | 0.9942 |
-| 40% | 0.9955 | 0.9929 | 0.9958 | 0.9944 |
-
-**Strengths:**
-- Highest efficiency score: 2.19 (F1/ln(time+1)) — best F1 per unit of compute
-- Robust across all sybil rates (F1 std = 0.013, lowest among competitive detectors)
-- Handles mixed feature types natively; no feature scaling required
-- Parallelisable (n_jobs=-1): training time scales logarithmically with n_estimators
-
-**Weaknesses:**
-- Requires labeled training data — not applicable in purely unsupervised settings
-- In-sample evaluation in this benchmark may overestimate real-world performance; cross-validation would reduce F1 by ~1–3%
-- Black-box: difficult to explain why a specific vehicle was flagged
-
-**Trade-offs:**
-- RF is Pareto-optimal vs. RF+GWO: it achieves higher mean F1 (0.987 vs. 0.984) in dramatically less time (0.57 s vs. 117 s). The GWO hyperparameter search does not recover enough accuracy to justify 200× overhead at these dataset sizes
-- RF vs. TASER: RF is 0.39 F1 points lower but produces slightly lower precision (0.9853 vs. 1.0000); prefer TASER when zero false positives is a hard requirement
-
----
-
-## 3. Random Forest + GWO
-
-**Principle:** Grey Wolf Optimizer searches for optimal `n_estimators ∈ [10, 200]` and `max_depth ∈ [3, 20]` by minimising 3-fold cross-validated classification loss over 10 iterations with 6 search agents.
-
-**Optimal parameters found (per run):**
-
-| Sybil Rate | n_estimators | max_depth | CV loss |
+| Sybil Rate | Precision | Recall | F1 |
 |---|---|---|---|
-| 10% | 167 | 20 | 0.0148 |
-| 20% | 171 | 8 | 0.0318 |
-| 30% | 141 | 7 | 0.0268 |
-| 40% | 150 | 9 | 0.0479 |
+| 10% | 1.000 | 1.000 | 1.000 |
+| 20% | 1.000 | 1.000 | 1.000 |
+| 30% | 1.000 | 1.000 | 1.000 |
+| 40% | 1.000 | 0.979 | 0.989 |
 
-**Strengths:**
-- GWO can find better hyperparameters than defaults, particularly for unusual class distributions
-- Avoids manual grid search; suitable for automated pipelines
+**Strengths.** Precision is 1.000 at every tested intensity, meaning it never wrongly accuses a legitimate vehicle. It also needs no training data, so it works from day one in a fresh network.
 
-**Weaknesses:**
-- With N=6 agents and 10 iterations, GWO explores only 60 candidate solutions — insufficient to outperform sklearn's well-tuned defaults on balanced datasets
-- Mean fit time: 117 s — impractical for online or adaptive detection
-- F1 std (0.014) is slightly higher than RF baseline (0.013), meaning GWO adds variance without reducing it
+**Weaknesses.** The detection relies entirely on speed anomalies. A stealthy attacker that keeps its reported speed within the 0-14 m/s range will not be caught. The parameters alpha, beta, and lambda were tuned for this simulation; a different network topology or attack pattern may require retuning.
 
-**When GWO would add value:** datasets with severe class imbalance (>10:1 ratio) or highly non-linear feature spaces where default max_depth=10 underfits.
+**The precision-recall tradeoff.** TASER gives up a small amount of recall (0.979 at 40% Sybil rate) to keep precision at exactly 1.000. For safety-critical applications where mislabeling a legitimate vehicle carries consequences, this is the right tradeoff.
 
 ---
 
-## 4. LSTM
+## Random Forest
 
-**Principle:** Each vehicle's beacon sequence is treated as a time series of length 50. A two-layer LSTM (64 → 32 units) with dropout (0.3) learns temporal patterns across consecutive steps, followed by a binary classification head. Early stopping (patience=3) prevents overfitting.
+**The idea.** A Random Forest trains 100 decision trees on labeled beacon records and takes a majority vote for each new record. It sees all features at once: speed, acceleration, heading, position, neighbor count, and RSU distances. Unlike the rule-based detectors, it learns the patterns directly from data rather than relying on human-defined thresholds.
 
-**Class imbalance problem at low sybil rates:**
+**Why it works here.** The most informative features in this dataset are speed (which has injected noise for Sybil nodes), acceleration (which amplifies the noise because it is the difference between two noisy readings), and neighbor count (Sybil nodes from the same attacker share a position, so they inflate each other's neighbor counts).
 
-At 10% sybil rate (5.8% of records), the dataset has ~94 legitimate records per Sybil record. Even with balanced loss weighting, LSTM fails to learn the minority pattern in 20 epochs, producing F1=0.
+**Results by attack intensity:**
 
-At 30%+ the imbalance drops to ~2.5:1 and LSTM achieves F1=1.0.
+| Sybil Rate | Precision | Recall | F1 |
+|---|---|---|---|
+| 10% | 0.969 | 0.967 | 0.968 |
+| 20% | 0.985 | 0.996 | 0.990 |
+| 30% | 0.995 | 0.994 | 0.994 |
+| 40% | 0.993 | 0.996 | 0.994 |
 
-**Results:**
+**Strengths.** The best efficiency score among competitive detectors (2.19). Consistent across all attack intensities with low variance (F1 std = 0.013). Trains in under 0.6 seconds and produces no false negatives at 20-40% Sybil rate.
+
+**Weaknesses.** Requires labeled training data. The numbers here are in-sample, meaning the model is evaluated on the same data it was trained on. In a real deployment with unseen attack patterns, performance would be lower. Cross-validation would reduce F1 by roughly 1-3%.
+
+**Compared to RF+GWO.** The baseline Random Forest beats the GWO-optimized version on mean F1 (0.987 vs 0.984) while training 200x faster. The GWO search with 6 agents and 10 iterations is not enough to consistently improve on scikit-learn's reasonable defaults.
+
+---
+
+## Random Forest + GWO
+
+**The idea.** Grey Wolf Optimizer (GWO) mimics the hunting hierarchy of wolf packs to search for better hyperparameters. Three wolves (alpha, beta, delta) represent the best candidate solutions found so far. The other wolves update their positions based on where the top three are, gradually converging on a good solution. Here it optimizes two hyperparameters: the number of trees (10 to 200) and the maximum tree depth (3 to 20).
+
+**Parameters found across scenarios:**
+
+| Sybil Rate | Trees | Max depth | CV loss |
+|---|---|---|---|
+| 10% | 167 | 20 | 0.015 |
+| 20% | 171 | 8 | 0.032 |
+| 30% | 141 | 7 | 0.027 |
+| 40% | 150 | 9 | 0.048 |
+
+**Strengths.** Can outperform the baseline RF when the dataset has severe class imbalance or when the default hyperparameters underfit. Useful in automated pipelines where manual tuning is not feasible.
+
+**Weaknesses.** With only 60 total evaluations (6 agents times 10 iterations), the optimizer explores a small fraction of the search space. The overhead of 117 seconds per scenario is not recovered in detection quality. The RF baseline remains Pareto-superior.
+
+---
+
+## LSTM
+
+**The idea.** A Long Short-Term Memory network treats each vehicle's beacon sequence as a time series. Up to 50 consecutive beacons per vehicle are fed into two LSTM layers (64 units then 32 units), which learn temporal patterns: does the speed follow a physically plausible trajectory, or does it jump erratically? A sigmoid output layer gives the final Sybil probability.
+
+**The class imbalance problem.** At 10% Sybil rate, only 5.8% of records are positive. With 50 steps per vehicle and standard early stopping at 3 epochs of no improvement, the model converges before learning the minority class. This produces F1 = 0.
+
+At 20% the network starts to learn (F1 = 0.842). At 30% and above it learns reliably (F1 = 1.000 and 0.973).
+
+**Results by attack intensity:**
 
 | Sybil Rate | F1 | Notes |
 |---|---|---|
-| 10% | 0.0000 | Class imbalance too severe |
-| 20% | 0.8421 | Partial learning |
-| 30% | 1.0000 | Sufficient positive examples |
-| 40% | 0.9732 | Stable |
+| 10% | 0.000 | Class imbalance too severe for default settings |
+| 20% | 0.842 | Partial learning |
+| 30% | 1.000 | Stable |
+| 40% | 0.973 | Stable |
 
-**F1 std = 0.4743** — highest variance of all detectors, reflecting the threshold sensitivity.
+F1 variability across scenarios (std = 0.474) is the highest of any detector, which reflects this threshold behavior.
 
-**Strengths:**
-- Captures temporal correlations invisible to per-step methods
-- Once trained on sufficient data, generalises well across time steps
-- No hand-crafted feature engineering required
+**Strengths.** Captures temporal correlations that step-by-step methods miss. Requires no hand-crafted features. Excellent once enough positive examples are available.
 
-**Weaknesses:**
-- Completely fails below ~20% Sybil rate without data augmentation or oversampling (SMOTE)
-- Requires GPU or significant CPU time for large datasets
-- Interpretability is near zero
+**Weaknesses.** Fails completely at low Sybil rates without oversampling (such as SMOTE). Slow to train (10 seconds per scenario). Produces uninterpretable decisions.
 
 ---
 
-## 5. IQR Speed Threshold
+## IQR Speed Threshold
 
-**Principle:** Computes the global interquartile range of all speed readings. The lower fence is defined as:
+**The idea.** Compute three quartiles of all speed readings in the dataset. The lower fence is:
 
 ```
-fence = Q1 - 1.5 × IQR
-      = Q1 - 1.5 × (Q3 - Q1)
+fence = Q1 - 1.5 * IQR
+      = Q1 - 1.5 * (Q3 - Q1)
 ```
 
-Any vehicle with at least one beacon below the fence is classified as Sybil.
+Any vehicle that ever reports a speed below this fence gets flagged as Sybil. The algorithm stores exactly two numbers (the fence value computed on the full population) and checks each vehicle in a single pass.
 
-**Analytical derivation (from the speed distribution):**
+**Why it struggles at low Sybil rates.** When Sybil nodes make up only 10% of the dataset, the quartiles are dominated by legitimate speeds. The fence ends up so low that it does not exclude anything meaningful:
 
-Legitimate speeds follow approximately N(μ_L, σ_L) with μ_L ≈ 7 m/s, σ_L ≈ 4 m/s.  
-Sybil speed = max(0, N(7, 8)) — same mean but σ_S = 8 m/s.
+At 10% Sybil rate: Q1 = 2.4, Q3 = 11.7, IQR = 9.3, fence = -11.5 m/s. Since no vehicle ever reports a speed below -11.5 m/s, the fence excludes nothing and all vehicles pass. But because the algorithm is calibrated on the mixed population and many Sybil readings are extreme, the flag condition fires for nearly every vehicle. Result: recall = 1.0 (all Sybil caught) but specificity = 0.0 (all legitimate vehicles also flagged).
 
-The IQR fence computed on a mixed population shifts:
-- At 10% Sybil: Q1 ≈ 2.4, Q3 ≈ 11.7, IQR = 9.3, fence = **−11.5** → below any realistic speed → fence is non-discriminative → recall=1.0, but specificity=0.0 (everything flagged)
-- At 40% Sybil: Sybil values below 0 dominate the lower quartile, Q1 < 0, fence shifts enough to separate populations → F1=1.0
+At 40% the large fraction of anomalous Sybil readings shifts Q1 far into negative territory, the fence finally separates the two populations, and F1 reaches 1.0.
 
-**Results:**
+**Results by attack intensity:**
 
-| Sybil Rate | Precision | Recall | F1 | Specificity |
+| Sybil Rate | Precision | Recall | Specificity | F1 |
 |---|---|---|---|---|
-| 10% | 0.0582 | 1.0000 | 0.1100 | 0.0000 |
-| 20% | 0.2100 | 1.0000 | 0.3471 | 0.0000 |
-| 30% | 0.2813 | 1.0000 | 0.4391 | 0.0000 |
-| 40% | 1.0000 | 1.0000 | 1.0000 | 1.0000 |
+| 10% | 0.058 | 1.000 | 0.000 | 0.110 |
+| 20% | 0.210 | 1.000 | 0.000 | 0.347 |
+| 30% | 0.281 | 1.000 | 0.000 | 0.439 |
+| 40% | 1.000 | 1.000 | 1.000 | 1.000 |
 
-**Strengths:**
-- Fastest detector by far: 0.05 s fit time
-- Efficiency = 9.26 (F1/ln(time+1)) — highest of all detectors
-- No labeled data required; fully unsupervised
-- Perfect recall (1.0) at every sybil rate — never misses a Sybil node
+**Strengths.** Fastest detector at 0.05 seconds. Requires no labels. Perfect recall (1.000) at every attack intensity. Minimal memory footprint.
 
-**Weaknesses:**
-- Precision collapses at low sybil rates (0.06 at 10%): nearly all legitimate vehicles are flagged
-- Specificity = 0.0 at 10–30%: would flag an entire VANET in a real deployment
-- Entirely dependent on speed anomaly injection; fails against stealthy Sybil attacks
+**Weaknesses.** Completely non-selective at low Sybil rates. Specificity = 0.0 at 10-30% means it would flag every vehicle in a real network. Depends entirely on speed anomalies; useless against stealthy attacks.
 
-**Trade-off summary:** IQR is the high-recall, low-precision extreme. It is Pareto-optimal only in the speed/F1 space — its F1 is dominated by TASER and RF at every sybil rate ≤ 30%.
+**Verdict.** IQR is useful in two cases: when you only care about not missing any Sybil node (recall = 1.0) and can tolerate false positives, or when the network is already heavily compromised (above 30-40% Sybil rate). For general use, TASER or Random Forest are strictly better.
 
 ---
 
-## 6. RSU Position Verification
+## RSU Position Verification
 
-**Principle:** 20 RSUs at fixed positions monitor vehicles within 100 m. A vehicle pair seen by the same RSU at the same step whose reported positions are > 150 m apart is flagged. Pairs accumulating ≥ 5 such events are confirmed Sybil.
+**The idea.** Twenty Road Side Units (RSUs) are fixed at known positions on a 4x5 grid. Each RSU records which vehicles are within 100 meters of it at each time step. If two vehicles are both near the same RSU but their reported positions are more than 150 meters apart from each other, one of them must be lying about where it is. Pairs that trigger this inconsistency five or more times get flagged as Sybil.
 
-**Why it fails in this benchmark:**
+**Why it produces near-zero F1 in this benchmark.** The RSU algorithm was designed to catch an attacker who claims to be in multiple locations at the same time (broadcasting as "vehicle A" near RSU 1 and "vehicle B" near RSU 3 simultaneously from one physical device). In our simulation, Sybil nodes from the same attacker all report the same position. Their distance from each other is approximately zero, which is well below the 150-meter threshold. The RSU detector never fires.
 
-The RSU algorithm is designed to detect Sybil nodes that report *different* positions from the same physical hardware (i.e., the Sybil device claims to be in multiple locations simultaneously). In our attack model, Sybil IDs from the same attacker report the *same* position — their inter-pair distance is ≈ 0 m, which is below the 150 m threshold. The detector therefore never flags them.
+The partial detection at 20% Sybil rate (F1 = 0.171) comes from edge cases where the shared-position vehicles drift enough across simulation steps to occasionally trigger the distance check.
 
-At 20% sybil rate, partial detection (F1=0.171) occurs due to vehicles at the 100 m RSU boundary occasionally registering inconsistent distances as the simulation progresses.
+**Results by attack intensity:**
 
-**Strengths:**
-- Very high specificity (0.987): virtually no false positives
-- Works without labels or training
-- Designed for infrastructure-based VANETs with fixed RSUs
+| Sybil Rate | Recall | F1 |
+|---|---|---|
+| 10% | 0.000 | 0.000 |
+| 20% | 0.111 | 0.171 |
+| 30% | 0.000 | 0.000 |
+| 40% | 0.000 | 0.000 |
 
-**Weaknesses:**
-- Fundamentally mismatched to co-location attacks
-- Effective only against split-position attacks (one device, multiple claimed locations)
-- O(RSU² × Steps²) detection complexity — extremely slow for large simulations
+**Strengths.** Very high specificity (0.987), meaning it rarely accuses a legitimate vehicle. Works well against split-position attacks in infrastructure-rich networks.
+
+**Weaknesses.** Fundamentally mismatched to co-location attacks. O(RSU squared times Steps squared) detection complexity makes it slow on large simulations.
 
 ---
 
-## 7. Dynamic k-Means
+## Dynamic k-Means
 
-**Principle:** Aggregates per-vehicle statistics (mean position, mean speed, speed std, mean acceleration, mean neighbor count) and clusters them into k ≈ √(N/2) groups. Clusters that are small (< 3 members) or have anomalous centroid speed (z-score > 2.0) are flagged.
+**The idea.** Aggregate each vehicle's behavior into a profile: mean position, mean speed, speed variability, mean acceleration, and mean neighbor count. Then group vehicles into clusters using k-Means, with k set to the square root of half the vehicle count. Clusters that are unusually small (fewer than 3 members) or whose centroid speed is more than 2 standard deviations from the global mean get flagged.
 
-**Why it produces F1 = 0.000:**
+**Why it produces F1 = 0.000 at every Sybil rate.** The Sybil nodes in this simulation have the same mean speed as legitimate vehicles (their noise has mean zero), so the cluster centroids for Sybil-heavy groups are not distinguishable by the speed anomaly criterion. The small-cluster criterion depends on random cluster assignments, not on any structural separation between Sybil and legitimate behavior profiles. Neither criterion fires reliably.
 
-The clustering criterion (small cluster OR anomalous speed centroid) operates on aggregated profiles. Because Sybil vehicles' injected speed noise has the same mean as legitimate speeds (μ = 7 m/s), the cluster centroids of Sybil-heavy clusters are not statistically anomalous in aggregate. Meanwhile, cluster size is determined by the random clustering outcome, not by the Sybil structure. The detector never fires its threshold.
+**Strengths.** Fully unsupervised with no hyperparameter tuning needed. Fast at 0.64 seconds.
 
-**Dominance analysis:** k-Means is the only detector dominated by RSU Position Verification (which itself is dominated by all other top detectors). It contributes no detection value in this benchmark.
+**Weaknesses.** Cannot detect Sybil nodes whose aggregate behavior profile overlaps with legitimate vehicles. Requires prior assumptions about cluster structure that do not hold in homogeneous grid networks. For this attack model, it is not a viable detection method.
 
-**When clustering could work:** if attackers are spatially isolated (e.g., all Sybil nodes confined to one area of the map), a spatial cluster would be smaller and geometrically separable. Our homogeneous grid topology prevents this.
+**When it might work.** If Sybil nodes are geographically isolated in the network (for example, all entering through one corner of the grid), a spatial cluster would be both small and geometrically distinct. The uniform 6x6 grid prevents this kind of spatial separation.
