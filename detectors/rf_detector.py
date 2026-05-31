@@ -1,5 +1,5 @@
 """
-Detector 4 — Random Forest baseline (port of 126160042-crypto/sybil-attack-detection-vanet)
+Detector 4: Random Forest baseline (port of 126160042-crypto/sybil-attack-detection-vanet)
 
 Supervised ML: trains a RandomForestClassifier on labelled beacon features.
 Uses 80/20 stratified train/test split internally for evaluation.

@@ -1,11 +1,11 @@
 """
-Detector 7 — Dynamic k-means Clustering (port of Gideon-Adele/Dynamic-k-means-Clustering)
+Detector 7: Dynamic k-means Clustering (port of Gideon-Adele/Dynamic-k-means-Clustering)
 
 Clusters vehicles by their mean (x, y, speed) profile.
 Clusters that are small (fewer than MIN_CLUSTER_SIZE legitimate-looking nodes)
 and whose centroid speed is anomalous are flagged as Sybil.
 
-Unsupervised — no labels used in fit().
+Unsupervised: no labels used in fit().
 """
 import numpy as np
 import pandas as pd

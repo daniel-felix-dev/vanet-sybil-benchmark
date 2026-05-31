@@ -92,7 +92,7 @@ Positive slope = improves under heavier attack. Negative = degrades.
 
 ![Regression](figures/proofs_regression.png)
 
-## Test 6: Analytical proof — why IQR fails at low sybil rates
+## Test 6: Analytical proof - why IQR fails at low sybil rates
 
 The IQR lower fence is Q1 - 1.5 * IQR, computed on the mixed population of
 legitimate and Sybil speed readings. We derive the fence empirically from the
@@ -113,7 +113,7 @@ the two populations because enough anomalous readings have shifted Q1 downward.
 
 ![IQR fence](figures/proofs_iqr_fence.png)
 
-## Test 7: Analytical proof — TASER convergence bound
+## Test 7: Analytical proof - TASER convergence bound
 
 TASER update rules:
 
@@ -187,7 +187,7 @@ so RF Pareto-dominates RF+GWO without ambiguity.
 
 ![Pareto frontier](figures/proofs_pareto.png)
 
-## Test 10: LSTM failure at 10% — class imbalance analysis
+## Test 10: LSTM failure at 10% - class imbalance analysis
 
 LSTM produces F1 = 0.000 at 10% Sybil rate. The root cause is class imbalance.
 

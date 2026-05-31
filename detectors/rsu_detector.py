@@ -1,5 +1,5 @@
 """
-Detector 2 — RSU Position Verification (port of karthik-047/Detecting-Sybil-Attacks-in-VANETs)
+Detector 2: RSU Position Verification (port of karthik-047/Detecting-Sybil-Attacks-in-VANETs)
 
 20 RSUs at fixed positions. A vehicle pair seen by the same RSU (within 100m)
 at the same time step where both have positions that are more than DIST_THRESH

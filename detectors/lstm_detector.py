@@ -1,5 +1,5 @@
 """
-Detector 6 — LSTM (port of SaiKumar-1608 dual-layer framework, lstm.ipynb)
+Detector 6: LSTM (port of SaiKumar-1608 dual-layer framework, lstm.ipynb)
 
 Treats each vehicle's beacon sequence as a time series.
 Per-vehicle feature sequences are padded/truncated to SEQ_LEN steps.

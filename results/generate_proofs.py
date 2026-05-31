@@ -298,7 +298,7 @@ h("![Regression](figures/proofs_regression.png)")
 # ─────────────────────────────────────────────────────────────────────────────
 # TEST 6 – Analytical proof: IQR fence failure
 # ─────────────────────────────────────────────────────────────────────────────
-section("Test 6: Analytical proof — why IQR fails at low sybil rates")
+section("Test 6: Analytical proof - why IQR fails at low sybil rates")
 
 h("The IQR lower fence is Q1 - 1.5 * IQR, computed on the mixed population of")
 h("legitimate and Sybil speed readings. We derive the fence empirically from the")
@@ -366,7 +366,7 @@ h("![IQR fence](figures/proofs_iqr_fence.png)")
 # ─────────────────────────────────────────────────────────────────────────────
 # TEST 7 – Analytical proof: TASER convergence
 # ─────────────────────────────────────────────────────────────────────────────
-section("Test 7: Analytical proof — TASER convergence bound")
+section("Test 7: Analytical proof - TASER convergence bound")
 
 alpha, beta, lam, T0 = 0.01, 0.10, 0.15, 0.5
 
@@ -555,7 +555,7 @@ h("![Pareto frontier](figures/proofs_pareto.png)")
 # ─────────────────────────────────────────────────────────────────────────────
 # TEST 10 – LSTM failure: class imbalance analysis
 # ─────────────────────────────────────────────────────────────────────────────
-section("Test 10: LSTM failure at 10% — class imbalance analysis")
+section("Test 10: LSTM failure at 10% - class imbalance analysis")
 
 h("LSTM produces F1 = 0.000 at 10% Sybil rate. The root cause is class imbalance.")
 h()

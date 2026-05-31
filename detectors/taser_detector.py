@@ -1,5 +1,5 @@
 """
-Detector 3 — TASER Bayesian Trust Score (port of morton-t/VANET-Simulations)
+Detector 3: TASER Bayesian Trust Score (port of morton-t/VANET-Simulations)
 
 Each vehicle v maintains a trust score T_v updated per beacon:
   - If beacon consistent (speed in [min_ok, max_ok] and position plausible):
@@ -22,7 +22,7 @@ ALPHA     = 0.01   # trust increment on consistent beacon
 BETA      = 0.10   # trust decrement on anomalous beacon
 DELTA     = 0.40   # speed deviation threshold fraction
 LAMBDA    = 0.15   # trust threshold below which = Sybil
-SPEED_MAX = 13.89  # m/s — expected max speed (same as vType maxSpeed)
+SPEED_MAX = 13.89  # m/s, expected max speed (same as vType maxSpeed)
 SPEED_MIN = 0.0
 
 

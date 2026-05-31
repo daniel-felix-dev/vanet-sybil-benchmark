@@ -97,7 +97,7 @@ def make_figures(results: list[dict]):
                 linewidth=2, markersize=7, label=det)
     ax.set_xlabel("Sybil Rate (%)")
     ax.set_ylabel("F1-Score")
-    ax.set_title("Sybil Detection Benchmark — F1-Score vs Sybil Rate\n(SUMO 6x6 grid, 80 legit vehicles)")
+    ax.set_title("Sybil Detection Benchmark - F1-Score vs Sybil Rate\n(SUMO 6x6 grid, 80 legit vehicles)")
     ax.set_ylim(0, 1.05)
     ax.legend(fontsize=9, framealpha=0.85)
     fig.tight_layout()
@@ -113,7 +113,7 @@ def make_figures(results: list[dict]):
                 linewidth=2, markersize=7, label=det)
     ax.set_xlabel("Sybil Rate (%)")
     ax.set_ylabel("Accuracy")
-    ax.set_title("Sybil Detection Benchmark — Accuracy vs Sybil Rate")
+    ax.set_title("Sybil Detection Benchmark - Accuracy vs Sybil Rate")
     ax.set_ylim(0, 1.05)
     ax.legend(fontsize=9, framealpha=0.85)
     fig.tight_layout()
@@ -121,7 +121,7 @@ def make_figures(results: list[dict]):
     plt.close()
     print("Saved benchmark_accuracy.png")
 
-    # ── Fig 3: Grouped bar — all metrics at 20% sybil rate ────────────────────
+    # ── Fig 3: Grouped bar - all metrics at 20% sybil rate ────────────────────
     df20 = df[df["sybil_rate"] == 20].set_index("detector")
     x = np.arange(len(detectors))
     w = 0.15
@@ -132,7 +132,7 @@ def make_figures(results: list[dict]):
     ax.set_xticks(x + w*2)
     ax.set_xticklabels(detectors, rotation=15, ha="right", fontsize=9)
     ax.set_ylabel("Score")
-    ax.set_title("All Metrics at 20% Sybil Rate — Detector Comparison")
+    ax.set_title("All Metrics at 20% Sybil Rate - Detector Comparison")
     ax.set_ylim(0, 1.15)
     ax.legend(framealpha=0.85)
     fig.tight_layout()
@@ -153,7 +153,7 @@ def make_figures(results: list[dict]):
                         fontsize=7, ha="left", va="bottom")
     ax.set_xlabel("Precision")
     ax.set_ylabel("Recall")
-    ax.set_title("Precision vs Recall — All Detectors & Sybil Rates")
+    ax.set_title("Precision vs Recall - All Detectors & Sybil Rates")
     ax.set_xlim(-0.05, 1.1); ax.set_ylim(-0.05, 1.1)
     ax.legend(fontsize=8, framealpha=0.85)
     fig.tight_layout()
@@ -165,7 +165,7 @@ def make_figures(results: list[dict]):
 def print_summary(results: list[dict]):
     df = pd.DataFrame(results)
     print("\n" + "="*80)
-    print("BENCHMARK SUMMARY — Mean metrics across all sybil rates")
+    print("BENCHMARK SUMMARY - Mean metrics across all sybil rates")
     print("="*80)
     summary = df.groupby("detector")[METRICS].mean().round(4)
     print(summary.to_string())

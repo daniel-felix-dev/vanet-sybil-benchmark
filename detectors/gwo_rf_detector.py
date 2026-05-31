@@ -1,5 +1,5 @@
 """
-Detector 5 — Random Forest + Grey Wolf Optimizer (port of 126160042-crypto, gwo_rf_model.py)
+Detector 5: Random Forest + Grey Wolf Optimizer (port of 126160042-crypto, gwo_rf_model.py)
 
 GWO searches for optimal (n_estimators, max_depth) to minimise 1-accuracy.
 Search space: n_estimators in [10, 200], max_depth in [3, 20].

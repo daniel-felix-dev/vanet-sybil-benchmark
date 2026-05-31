@@ -1,5 +1,5 @@
 """
-Detector 1 — IQR Speed Threshold (port of MohammedSuratwala/SybilDetection)
+Detector 1: IQR Speed Threshold (port of MohammedSuratwala/SybilDetection)
 
 Each vehicle accumulates speed readings. Readings below Q1 - 1.5*IQR
 are flagged as anomalous. A vehicle is classified Sybil if any reading

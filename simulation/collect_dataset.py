@@ -20,7 +20,7 @@ SIM_DIR   = os.path.dirname(__file__)
 OUT_DIR   = os.path.join(SIM_DIR, "..", "results", "datasets")
 os.makedirs(OUT_DIR, exist_ok=True)
 
-COMM_RANGE  = 150.0   # metres — neighbour detection range
+COMM_RANGE  = 150.0   # metres, neighbour detection range
 N_RSU       = 20
 GRID_SIZE   = 1200.0  # 6 cells × 200 m
 SYBIL_SPEED_NOISE = 8.0   # m/s std dev of random speed noise injected for Sybil nodes
@@ -140,7 +140,7 @@ def run_scenario(rate):
             prev_speed[vid] = speed
 
         if step % 100 == 0:
-            print(f"  step {step}/500 — {len(veh_ids)} vehicles active")
+            print(f"  step {step}/500 | {len(veh_ids)} vehicles active")
 
     traci.close()
 
