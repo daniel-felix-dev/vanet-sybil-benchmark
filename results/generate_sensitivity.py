@@ -32,8 +32,11 @@ from detectors.taser_detector import TASERDetector
 from detectors.rsu_detector   import RSUDetector
 from detectors.iqr_detector   import IQRDetector
 
-RATES = [10, 20, 30, 40]
-COLORS_RATE = {10: "#2196F3", 20: "#4CAF50", 30: "#FF9800", 40: "#F44336"}
+RATES = [5, 10, 15, 20, 25, 30, 35, 40]
+COLORS_RATE = {
+    5:  "#1565C0", 10: "#2196F3", 15: "#64B5F6", 20: "#4CAF50",
+    25: "#81C784", 30: "#FF9800", 35: "#F44336", 40: "#B71C1C",
+}
 
 plt.rcParams.update({
     "font.size": 12, "axes.spines.top": False,
@@ -46,8 +49,8 @@ def load(rate):
 
 lines = ["# Hyperparameter Sensitivity Analysis", "",
          "Each plot shows how F1-Score changes as one hyperparameter varies,",
-         "holding all others at their default values. The four lines represent",
-         "the eight sybil rates tested.", ""]
+         "holding all others at their default values. The eight lines represent",
+         "all eight sybil rates (5% to 40%).", ""]
 
 # ---- TASER: sweep lambda -----------------------------------------------
 section = "TASER: Detection threshold (lambda)"

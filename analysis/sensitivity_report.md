@@ -1,8 +1,8 @@
 # Hyperparameter Sensitivity Analysis
 
 Each plot shows how F1-Score changes as one hyperparameter varies,
-holding all others at their default values. The four lines represent
-the eight sybil rates tested.
+holding all others at their default values. The eight lines represent
+all eight sybil rates (5% to 40%).
 
 ## TASER: Detection threshold (lambda)
 
@@ -10,9 +10,13 @@ the eight sybil rates tested.
 
 | Rate | F1 at lambda=0.05 | F1 at lambda=0.15 (default) | F1 at lambda=0.30 | Max delta |
 |---|---|---|---|---|
+| 5% | 0.7539 | 1.0000 | 1.0000 | 0.2461 |
 | 10% | 0.5522 | 1.0000 | 1.0000 | 0.4478 |
+| 15% | 0.8168 | 1.0000 | 1.0000 | 0.1832 |
 | 20% | 0.7225 | 1.0000 | 1.0000 | 0.2775 |
+| 25% | 0.5316 | 1.0000 | 1.0000 | 0.4684 |
 | 30% | 0.6618 | 1.0000 | 1.0000 | 0.3382 |
+| 35% | 0.6807 | 1.0000 | 1.0000 | 0.3193 |
 | 40% | 0.6966 | 0.9892 | 1.0000 | 0.3034 |
 
 **Why lambda=0.05 produces lower F1 than lambda=0.15 (counterintuitive result):**
