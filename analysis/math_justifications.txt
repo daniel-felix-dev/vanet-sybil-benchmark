@@ -1,0 +1,107 @@
+==============================================================================
+MATHEMATICAL JUSTIFICATIONS FOR SCENARIO RECOMMENDATIONS
+==============================================================================
+
+── 1. Summary statistics ──
+  TASER Bayesian Trust           F1_mean=0.9973  F1_std=0.0054  Prec_mean=1.0000  Rec_mean=0.9947  fit_time=0.87s  efficiency=1.5899
+  Random Forest                  F1_mean=0.9867  F1_std=0.0127  Prec_mean=0.9853  Rec_mean=0.9880  fit_time=0.57s  efficiency=2.1873
+  Random Forest + GWO            F1_mean=0.9842  F1_std=0.0137  Prec_mean=0.9760  Rec_mean=0.9927  fit_time=117.28s  efficiency=0.2062
+  LSTM                           F1_mean=0.7038  F1_std=0.4743  Prec_mean=0.6804  Rec_mean=0.7330  fit_time=10.00s  efficiency=0.2935
+  IQR Speed Threshold            F1_mean=0.4740  F1_std=0.3770  Prec_mean=0.3874  Rec_mean=1.0000  fit_time=0.05s  efficiency=9.2645
+  RSU Position Verification      F1_mean=0.0426  F1_std=0.0853  Prec_mean=0.0908  Rec_mean=0.0278  fit_time=11.26s  efficiency=0.0170
+  Dynamic k-Means                F1_mean=0.0000  F1_std=0.0000  Prec_mean=0.0000  Rec_mean=0.0000  fit_time=0.64s  efficiency=0.0000
+
+── 2. Pareto frontier (F1 vs speed) ──
+  ✓ TASER Bayesian Trust
+  ✓ Random Forest
+  ✗ Random Forest + GWO
+  ✗ LSTM
+  ✓ IQR Speed Threshold
+  ✗ RSU Position Verification
+  ✗ Dynamic k-Means
+
+── 3. Dominance matrix (row dominates column at all sybil rates) ──
+                             TASER Bayesian Trust  Random Forest  Random Forest + GWO  LSTM  IQR Speed Threshold  RSU Position Verification  Dynamic k-Means
+  TASER Bayesian Trust                          0              0                    0     1                    0                          1                1
+  Random Forest                                 0              0                    0     0                    0                          1                1
+  Random Forest + GWO                           0              0                    0     0                    0                          1                1
+  LSTM                                          0              0                    0     0                    0                          1                1
+  IQR Speed Threshold                           0              0                    0     0                    0                          1                1
+  RSU Position Verification                     0              0                    0     0                    0                          0                1
+  Dynamic k-Means                               0              0                    0     0                    0                          0                0
+
+── 4. Utility scores per scenario ──
+
+  Scenario: Latency-critical (real-time)
+    Random Forest                  utility=0.5549
+    TASER Bayesian Trust           utility=0.5107
+    IQR Speed Threshold            utility=0.2905
+    Dynamic k-Means                utility=-0.1493
+    LSTM                           utility=-0.2338
+    RSU Position Verification      utility=-0.7075
+    Random Forest + GWO            utility=-0.7454
+
+  Scenario: Zero false-positives (safety)
+    TASER Bayesian Trust           utility=0.9992
+    Random Forest                  utility=0.9857
+    Random Forest + GWO            utility=0.9785
+    LSTM                           utility=0.6874
+    IQR Speed Threshold            utility=0.4134
+    RSU Position Verification      utility=0.0764
+    Dynamic k-Means                utility=0.0000
+
+  Scenario: High Sybil rate (≥30%)
+    TASER Bayesian Trust           utility=0.9957
+    Random Forest                  utility=0.9925
+    Random Forest + GWO            utility=0.9814
+    LSTM                           utility=0.9254
+    IQR Speed Threshold            utility=0.6531
+    RSU Position Verification      utility=0.0182
+    Dynamic k-Means                utility=0.0000
+
+  Scenario: No labels available (unsupervised)
+    TASER Bayesian Trust           utility=0.9973
+    Random Forest                  utility=0.9924
+    Random Forest + GWO            utility=0.9920
+    LSTM                           utility=0.8478
+    IQR Speed Threshold            utility=0.6250
+    RSU Position Verification      utility=0.5074
+    Dynamic k-Means                utility=0.4980
+
+  Scenario: Resource-constrained (embedded)
+    IQR Speed Threshold            utility=0.1064
+    Random Forest                  utility=-0.0198
+    TASER Bayesian Trust           utility=-0.1399
+    Dynamic k-Means                utility=-0.3484
+    LSTM                           utility=-1.4677
+    RSU Position Verification      utility=-1.7414
+    Random Forest + GWO            utility=-3.0459
+
+  Scenario: Low Sybil rate (≤10%)
+    TASER Bayesian Trust           utility=1.0000
+    Random Forest + GWO            utility=1.0000
+    Random Forest                  utility=0.9682
+    IQR Speed Threshold            utility=0.0893
+    LSTM                           utility=0.0000
+    RSU Position Verification      utility=0.0000
+    Dynamic k-Means                utility=0.0000
+
+── 5. F1 per sybil rate (all detectors) ──
+  sybil_rate                     10      20      30      40
+  detector                                                 
+  Dynamic k-Means            0.0000  0.0000  0.0000  0.0000
+  IQR Speed Threshold        0.1100  0.3471  0.4391  1.0000
+  LSTM                       0.0000  0.8421  1.0000  0.9732
+  RSU Position Verification  0.0000  0.1705  0.0000  0.0000
+  Random Forest              0.9678  0.9902  0.9942  0.9944
+  Random Forest + GWO        1.0000  0.9715  0.9742  0.9912
+  TASER Bayesian Trust       1.0000  1.0000  1.0000  0.9892
+
+── 6. Efficiency ratio F1_mean / ln(fit_time + 1) ──
+  IQR Speed Threshold            = 0.4740 / ln(0.05+1) = 9.2645
+  Random Forest                  = 0.9867 / ln(0.57+1) = 2.1873
+  TASER Bayesian Trust           = 0.9973 / ln(0.87+1) = 1.5899
+  LSTM                           = 0.7038 / ln(10.00+1) = 0.2935
+  Random Forest + GWO            = 0.9842 / ln(117.28+1) = 0.2062
+  RSU Position Verification      = 0.0426 / ln(11.26+1) = 0.0170
+  Dynamic k-Means                = 0.0000 / ln(0.64+1) = 0.0000
