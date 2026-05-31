@@ -15,6 +15,20 @@ the four sybil rates tested.
 | 30% | 0.6618 | 1.0000 | 1.0000 | 0.3382 |
 | 40% | 0.6966 | 0.9892 | 1.0000 | 0.3034 |
 
+**Why lambda=0.05 produces lower F1 than lambda=0.15 (counterintuitive result):**
+
+A lower lambda means the trust score must drop further before a vehicle is
+flagged. Because the trust update is cumulative, a Sybil node that sends even
+a few beacons with speed inside the normal range will temporarily push its
+trust score above 0.05, escaping detection. At lambda=0.15 the trust score
+of a consistently anomalous node (dropping by 10% each step) reaches the
+threshold in ceil(ln(0.3)/ln(0.9)) = 12 steps, which is fast enough to catch
+all Sybil nodes before the simulation ends. At lambda=0.05 that threshold
+requires ceil(ln(0.1)/ln(0.9)) = 22 steps, but if the Sybil node sends even
+two legitimate-speed beacons in a row, the score recovers enough to stay
+above 0.05, and the node escapes the flag. This explains why F1 drops at
+very low lambda values rather than rising.
+
 A small delta means the detector is robust to threshold choice.
 A large delta means careful tuning is required for deployment.
 
