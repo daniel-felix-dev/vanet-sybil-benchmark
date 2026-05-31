@@ -66,3 +66,13 @@ class TASERDetector(BaseDetector):
 
     def predict(self, df: pd.DataFrame) -> np.ndarray:
         return (df["vehicle_id"].isin(self._sybil_ids)).astype(int).values
+
+    def predict_proba(self, df: pd.DataFrame) -> np.ndarray:
+        """
+        Return inverted trust score as Sybil probability.
+        Score = 1 - T, so low-trust vehicles get high Sybil probability.
+        Enables ROC curve generation by sweeping the classification threshold.
+        """
+        return df["vehicle_id"].map(
+            lambda v: 1.0 - self._trust.get(v, 0.5)
+        ).values

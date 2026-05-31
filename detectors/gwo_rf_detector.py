@@ -3,6 +3,12 @@ Detector 5: Random Forest + Grey Wolf Optimizer (port of 126160042-crypto, gwo_r
 
 GWO searches for optimal (n_estimators, max_depth) to minimise 1-accuracy.
 Search space: n_estimators in [10, 200], max_depth in [3, 20].
+
+The CV inside GWO uses row-level splits (standard cross_val_score) to guide
+the optimiser. Final evaluation is done via the inherited evaluate() which
+calls predict() on the full dataset using the best model trained on all data.
+For out-of-sample GWO evaluation, use the RFDetector.cv_evaluate() instead,
+which performs proper vehicle-level splitting.
 """
 import numpy as np
 import pandas as pd

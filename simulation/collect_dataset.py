@@ -31,7 +31,7 @@ RSU_POSITIONS = [
     for r in range(5) for c in range(4)
 ]
 
-RATES = [10, 20, 30, 40]
+RATES = [5, 10, 15, 20, 25, 30, 35, 40]
 
 FIELDNAMES = [
     "step", "vehicle_id",
@@ -52,12 +52,12 @@ def rsu_distances(x, y):
     return min(dists), sum(dists)/len(dists)
 
 
-def run_scenario(rate):
+def run_scenario(rate, seed=42, out_path=None):
     import random
-    rng = random.Random(42 + rate)
+    rng = random.Random(seed + rate)
 
     cfg = os.path.join(SIM_DIR, f"scenario_sybil{rate}.sumocfg")
-    out = os.path.join(OUT_DIR, f"dataset_sybil{rate}.csv")
+    out = out_path or os.path.join(OUT_DIR, f"dataset_sybil{rate}.csv")
 
     cmd = [SUMO_BIN, "-c", cfg, "--no-step-log", "--no-warnings"]
     traci.start(cmd)
@@ -156,10 +156,17 @@ def run_scenario(rate):
 
 
 if __name__ == "__main__":
-    rates = [int(a) for a in sys.argv[1:]] if len(sys.argv) > 1 else RATES
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("rates", nargs="*", type=int)
+    parser.add_argument("--seed", type=int, default=42)
+    parser.add_argument("--out",  type=str, default=None,
+                        help="Output path override (single rate only)")
+    args = parser.parse_args()
+    rates = args.rates if args.rates else RATES
     t0 = time.time()
     for rate in rates:
         print(f"\n{'='*50}")
-        print(f"Running scenario sybil{rate}%...")
-        run_scenario(rate)
+        print(f"Running scenario sybil{rate}% seed={args.seed}...")
+        run_scenario(rate, seed=args.seed, out_path=args.out if len(rates)==1 else None)
     print(f"\nAll done in {time.time()-t0:.1f}s")

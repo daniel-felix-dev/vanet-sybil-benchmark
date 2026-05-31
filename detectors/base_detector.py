@@ -1,7 +1,7 @@
 """Base class for all detectors."""
 from abc import ABC, abstractmethod
-import pandas as pd
 import numpy as np
+import pandas as pd
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 
 
@@ -10,11 +10,19 @@ class BaseDetector(ABC):
 
     @abstractmethod
     def fit(self, df: pd.DataFrame):
-        """Train / calibrate on the full dataset (unsupervised detectors can skip)."""
+        """Train / calibrate on the dataset."""
 
     @abstractmethod
     def predict(self, df: pd.DataFrame) -> np.ndarray:
-        """Return binary array: 1=Sybil, 0=Legit, indexed like df."""
+        """Return binary array: 1=Sybil, 0=Legit, same length as df."""
+
+    def predict_proba(self, df: pd.DataFrame) -> np.ndarray:
+        """
+        Return Sybil probability per row in [0, 1].
+        Default: returns predict() cast to float (hard 0/1 probabilities).
+        Override in detectors that produce soft scores for proper ROC curves.
+        """
+        return self.predict(df).astype(float)
 
     def evaluate(self, df: pd.DataFrame) -> dict:
         y_true = df["is_sybil"].values

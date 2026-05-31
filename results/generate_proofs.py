@@ -37,7 +37,7 @@ FIG_DIR = os.path.join(ANA_DIR, "figures")
 os.makedirs(FIG_DIR, exist_ok=True)
 
 df  = pd.read_csv(DATA)
-RATES = sorted(df["sybil_rate"].unique())
+RATES = sorted(df["sybil_rate"].unique())   # now 8 rates: 5,10,15,20,25,30,35,40
 DETS  = [
     "TASER Bayesian Trust",
     "Random Forest",

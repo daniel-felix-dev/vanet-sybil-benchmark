@@ -22,7 +22,7 @@ os.makedirs(FIG_DIR, exist_ok=True)
 sys.path.insert(0, BASE)
 from detectors import ALL_DETECTORS
 
-RATES   = [10, 20, 30, 40]
+RATES   = [5, 10, 15, 20, 25, 30, 35, 40]
 METRICS = ["accuracy", "precision", "recall", "f1", "specificity"]
 COLORS  = ["#2196F3","#4CAF50","#F44336","#FF9800","#9C27B0","#00BCD4","#795548"]
 
@@ -57,14 +57,28 @@ def run_benchmark() -> list[dict]:
             t0 = time.time()
             try:
                 det.fit(df)
-                metrics = det.evaluate(df)
+                # RF uses 5-fold CV by vehicle_id (out-of-sample)
+                if hasattr(det, "cv_evaluate"):
+                    cv = det.cv_evaluate(df, k=5)
+                    metrics = {
+                        "detector": det.name,
+                        **{m: round(cv[m]["mean"], 4) for m in METRICS},
+                        "f1_std": round(cv["f1"]["std"], 4),
+                    }
+                    oos_note = f" [5-fold CV OOS] f1_std={metrics['f1_std']:.3f}"
+                else:
+                    # LSTM already sets test_metrics_ with vehicle-level split
+                    metrics = det.evaluate(df)
+                    oos_note = " [80/20 OOS]" if hasattr(det, "test_metrics_") and det.test_metrics_ else ""
+
                 elapsed = round(time.time() - t0, 2)
                 metrics["sybil_rate"] = rate
                 metrics["fit_time_s"] = elapsed
                 results.append(metrics)
                 print(f"acc={metrics['accuracy']:.3f} f1={metrics['f1']:.3f} "
-                      f"({elapsed}s)")
+                      f"({elapsed}s){oos_note}")
             except Exception as e:
+                import traceback; traceback.print_exc()
                 print(f"ERROR: {e}")
                 results.append({
                     "detector": det.name, "sybil_rate": rate,
@@ -76,11 +90,13 @@ def run_benchmark() -> list[dict]:
 
 def save_results(results: list[dict]):
     path = os.path.join(MET_DIR, "benchmark_results.csv")
-    fieldnames = ["detector", "sybil_rate"] + METRICS + ["fit_time_s"]
+    fieldnames = ["detector", "sybil_rate"] + METRICS + ["f1_std", "fit_time_s"]
+    # Ensure every row has all fields (fill missing with empty string)
+    clean = [{f: row.get(f, "") for f in fieldnames} for row in results]
     with open(path, "w", newline="") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
-        writer.writerows(results)
+        writer.writerows(clean)
     print(f"\nResults saved -> {path}")
     return path
 

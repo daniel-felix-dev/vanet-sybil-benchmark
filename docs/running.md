@@ -23,17 +23,22 @@ benchmark.py           (runs all 7 detectors, saves metrics and charts)
 generate_analysis.py   (produces 8 detailed analysis charts)
 ```
 
-Total time for the full run: about 12 minutes on a typical laptop. Most of that is the GWO optimizer running inside the RF+GWO detector.
+Total time for the full run: about 60 minutes on a typical laptop with 8 sybil rates. The GWO optimizer accounts for most of that (~80 seconds per rate). Skipping RF+GWO reduces total time to around 8 minutes.
+
+Random Forest uses 5-fold cross-validation split by vehicle_id (out-of-sample). LSTM uses an 80/20 vehicle-level split. Neither is evaluated on the data it trained on.
 
 ---
 
 ## Running everything
 
 ```bash
-python simulation/generate_routes.py
-python simulation/collect_dataset.py
-python benchmark.py
-python results/generate_analysis.py
+python simulation/generate_routes.py         # 8 rates: 5,10,15,20,25,30,35,40
+python simulation/collect_dataset.py         # ~35 s total
+python benchmark.py                          # ~60 min (all detectors, 8 rates)
+python results/generate_analysis.py          # analysis figures
+python results/generate_roc.py               # ROC curves and AUC table
+python results/generate_sensitivity.py       # hyperparameter sensitivity
+python results/generate_proofs.py            # statistical proofs
 ```
 
 ---

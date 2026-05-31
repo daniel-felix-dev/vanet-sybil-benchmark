@@ -15,7 +15,7 @@ NET_FILE  = os.path.join(SIM_DIR, "network.net.xml")
 
 N_LEGIT      = 80
 N_ATTACKERS  = 5
-SYBIL_RATES  = [10, 20, 30, 40]
+SYBIL_RATES  = [5, 10, 15, 20, 25, 30, 35, 40]
 SIM_END      = 500
 SEED         = 42
 
@@ -42,8 +42,8 @@ def build_route_from_edge(net, start_edge_id, rng, length=4):
     return route
 
 
-def generate_for_rate(rate_pct):
-    rng = random.Random(SEED + rate_pct)
+def generate_for_rate(rate_pct, seed=SEED):
+    rng = random.Random(seed + rate_pct)
     net = sumolib.net.readNet(NET_FILE)
     all_edges = [e for e in net.getEdges() if not e.getID().startswith(":")]
 
@@ -62,7 +62,7 @@ def generate_for_rate(rate_pct):
         "-b", "0", "-e", str(SIM_END),
         "--prefix", "legit_",
         "--period", str(max(1, SIM_END // N_LEGIT)),
-        "--seed", str(SEED),
+        "--seed", str(seed),
         "--min-distance", "200",
     ])
 
@@ -158,8 +158,14 @@ def generate_for_rate(rate_pct):
 
 
 if __name__ == "__main__":
-    rates = [int(a) for a in sys.argv[1:]] if len(sys.argv) > 1 else SYBIL_RATES
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("rates", nargs="*", type=int, help="Sybil rates to generate")
+    parser.add_argument("--seed", type=int, default=SEED, help="Random seed")
+    args = parser.parse_args()
+    rates = args.rates if args.rates else SYBIL_RATES
     for r in rates:
-        print(f"Generating routes sybil{r}%...")
-        generate_for_rate(r)
+        print(f"Generating routes sybil{r}% seed={args.seed}...")
+        generate_for_rate(r, seed=args.seed)
+    print("Done.")
     print("Done.")

@@ -25,7 +25,7 @@ ANA_DIR = os.path.join(BASE, "analysis")
 os.makedirs(ANA_FIG, exist_ok=True)
 
 df = pd.read_csv(DATA)
-RATES     = sorted(df["sybil_rate"].unique())
+RATES     = sorted(df["sybil_rate"].unique())   # now 8 rates: 5,10,15,20,25,30,35,40
 DETECTORS = [
     "TASER Bayesian Trust",
     "Random Forest",

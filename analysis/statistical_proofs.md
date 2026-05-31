@@ -10,7 +10,7 @@ Kruskal-Wallis) and bootstrap confidence intervals are used throughout.
 
 **Null hypothesis H0:** all detectors have the same median F1-Score distribution.
 
-H statistic = 18.4379  |  p-value = 0.005226  |  df = 6
+H statistic = 43.7521  |  p-value = 0.000000  |  df = 6
 
 p < 0.05: **H0 rejected.** There is a statistically significant difference in
 F1 distributions across the seven detectors.
@@ -26,16 +26,16 @@ in the same direction. We report the W statistic and p-value.
 
 | Detector A | Detector B | W stat | p-value | Significant (p<0.05)? |
 |---|---|---|---|---|
-| TASER Bayesian Trust | Random Forest | 1.0 | 0.2500 | No |
-| TASER Bayesian Trust | LSTM | 0.0 | 0.2500 | No |
-| TASER Bayesian Trust | IQR Speed Threshold | 1.0 | 0.2500 | No |
-| Random Forest | Random Forest + GWO | 4.0 | 0.8750 | No |
-| Random Forest | LSTM | 1.0 | 0.2500 | No |
-| Random Forest | RSU Position Verification | 0.0 | 0.1250 | No |
-| Random Forest | Dynamic k-Means | 0.0 | 0.1250 | No |
-| LSTM | IQR Speed Threshold | 3.0 | 0.6250 | No |
-| LSTM | RSU Position Verification | 0.0 | 0.2500 | No |
-| IQR Speed Threshold | RSU Position Verification | 0.0 | 0.1250 | No |
+| TASER Bayesian Trust | Random Forest | 0.0 | 0.0078 | **Yes** |
+| TASER Bayesian Trust | LSTM | 1.0 | 0.0156 | **Yes** |
+| TASER Bayesian Trust | IQR Speed Threshold | 1.0 | 0.0156 | **Yes** |
+| Random Forest | Random Forest + GWO | 3.0 | 0.0391 | **Yes** |
+| Random Forest | LSTM | 2.0 | 0.0234 | **Yes** |
+| Random Forest | RSU Position Verification | 0.0 | 0.0078 | **Yes** |
+| Random Forest | Dynamic k-Means | 0.0 | 0.0078 | **Yes** |
+| LSTM | IQR Speed Threshold | 6.0 | 0.2188 | No |
+| LSTM | RSU Position Verification | 0.0 | 0.0625 | No |
+| IQR Speed Threshold | RSU Position Verification | 0.0 | 0.0078 | **Yes** |
 
 ## Test 3: Bootstrap 95% confidence intervals for mean F1
 
@@ -44,12 +44,12 @@ CI is the 2.5th and 97.5th percentile of the bootstrap distribution of means.
 
 | Detector | Mean F1 | 95% CI lower | 95% CI upper | CI width |
 |---|---|---|---|---|
-| TASER Bayesian Trust | 0.9973 | 0.9919 | 1.0000 | 0.0081 |
-| Random Forest | 0.9867 | 0.9744 | 0.9943 | 0.0199 |
-| Random Forest + GWO | 0.9842 | 0.9728 | 0.9956 | 0.0228 |
-| LSTM | 0.7038 | 0.2433 | 0.9866 | 0.7433 |
-| IQR Speed Threshold | 0.4740 | 0.1923 | 0.8368 | 0.6445 |
-| RSU Position Verification | 0.0426 | 0.0000 | 0.1279 | 0.1279 |
+| TASER Bayesian Trust | 0.9987 | 0.9959 | 1.0000 | 0.0041 |
+| Random Forest | 0.8815 | 0.7900 | 0.9557 | 0.1657 |
+| Random Forest + GWO | 0.9784 | 0.9674 | 0.9891 | 0.0217 |
+| LSTM | 0.5624 | 0.2321 | 0.8310 | 0.5989 |
+| IQR Speed Threshold | 0.3911 | 0.2242 | 0.5963 | 0.3721 |
+| RSU Position Verification | 0.0213 | 0.0000 | 0.0639 | 0.0639 |
 | Dynamic k-Means | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
 
 Non-overlapping confidence intervals between two detectors is strong evidence
@@ -64,14 +64,14 @@ Cohen's d = (mean_A - mean_B) / pooled_std.  Interpretation: |d| < 0.2 small,
 
 | Comparison | Cohen's d | Magnitude |
 |---|---|---|
-| TASER Bayesian Trust vs Random Forest | +1.090 | **large** |
-| TASER Bayesian Trust vs LSTM | +0.875 | **large** |
-| TASER Bayesian Trust vs IQR Speed Threshold | +1.962 | **large** |
-| Random Forest vs Random Forest + GWO | +0.184 | negligible |
-| Random Forest vs LSTM | +0.843 | **large** |
-| Random Forest vs RSU Position Verification | +15.489 | **large** |
-| LSTM vs IQR Speed Threshold | +0.536 | medium |
-| LSTM vs RSU Position Verification | +1.941 | **large** |
+| TASER Bayesian Trust vs Random Forest | +1.297 | **large** |
+| TASER Bayesian Trust vs LSTM | +1.315 | **large** |
+| TASER Bayesian Trust vs IQR Speed Threshold | +2.975 | **large** |
+| Random Forest vs Random Forest + GWO | -1.064 | **large** |
+| Random Forest vs LSTM | +0.928 | **large** |
+| Random Forest vs RSU Position Verification | +8.620 | **large** |
+| LSTM vs IQR Speed Threshold | +0.440 | small |
+| LSTM vs RSU Position Verification | +1.617 | **large** |
 
 ## Test 5: Linear regression  F1 ~ sybil_rate  per detector
 
@@ -80,12 +80,12 @@ Positive slope = improves under heavier attack. Negative = degrades.
 
 | Detector | Slope (F1 / %sybil) | R-squared | p-value | Trend |
 |---|---|---|---|---|
-| TASER Bayesian Trust | -0.0003 | 0.6000 | 0.2254 | flat |
-| Random Forest | +0.0008 | 0.7240 | 0.1491 | improves |
-| Random Forest + GWO | -0.0002 | 0.0502 | 0.7760 | flat |
-| LSTM | +0.0308 | 0.7018 | 0.1623 | improves |
-| IQR Speed Threshold | +0.0276 | 0.8943 | 0.0543 | improves |
-| RSU Position Verification | -0.0017 | 0.0667 | 0.7418 | degrades |
+| TASER Bayesian Trust | -0.0002 | 0.3333 | 0.1340 | flat |
+| Random Forest | +0.0088 | 0.7105 | 0.0086* | improves |
+| Random Forest + GWO | -0.0005 | 0.1520 | 0.3397 | flat |
+| LSTM | +0.0336 | 0.7697 | 0.0042* | improves |
+| IQR Speed Threshold | +0.0215 | 0.8302 | 0.0016* | improves |
+| RSU Position Verification | -0.0004 | 0.0068 | 0.8461 | flat |
 | Dynamic k-Means | +0.0000 | nan | nan | flat |
 
 (*) p < 0.05
@@ -100,9 +100,13 @@ actual datasets and compare it to the minimum observable speed.
 
 | Sybil Rate | Q1 | Q3 | IQR | Fence = Q1 - 1.5*IQR | Min speed | Fence < Min? |
 |---|---|---|---|---|---|---|
+| 5% | 10.363 | 13.142 | 2.779 | **6.195** | 0.000 | False -- cuts off 11.6% of data |
 | 10% | 10.402 | 13.159 | 2.758 | **6.265** | 0.000 | False -- cuts off 11.9% of data |
+| 15% | 9.979 | 13.234 | 3.255 | **5.096** | 0.000 | False -- cuts off 8.9% of data |
 | 20% | 9.137 | 13.256 | 4.119 | **2.959** | 0.000 | False -- cuts off 6.7% of data |
+| 25% | 8.822 | 13.277 | 4.456 | **2.138** | 0.000 | False -- cuts off 6.0% of data |
 | 30% | 8.495 | 13.276 | 4.781 | **1.324** | 0.000 | False -- cuts off 5.3% of data |
+| 35% | 8.066 | 13.300 | 5.233 | **0.216** | 0.000 | False -- cuts off 5.3% of data |
 | 40% | 7.862 | 13.341 | 5.479 | **-0.356** | 0.000 | True -- non-discriminative |
 
 At 10-30% Sybil rate the fence falls below the minimum recorded speed,
@@ -151,13 +155,13 @@ does not change with attack intensity.
 
 | Detector | Precision values (10-20-30-40%) | Mean | Std | CV |
 |---|---|---|---|---|
-| TASER Bayesian Trust | 1.000  1.000  1.000  1.000 | 1.0000 | 0.0000 | 0.0000 |
-| Random Forest | 0.969  0.985  0.995  0.993 | 0.9853 | 0.0118 | 0.0119 |
-| Random Forest + GWO | 1.000  0.952  0.964  0.989 | 0.9760 | 0.0223 | 0.0229 |
-| LSTM | 0.000  0.754  1.000  0.968 | 0.6804 | 0.4665 | 0.6857 |
-| IQR Speed Threshold | 0.058  0.210  0.281  1.000 | 0.3874 | 0.4189 | 1.0813 |
-| RSU Position Verification | 0.000  0.363  0.000  0.000 | 0.0908 | 0.1817 | 2.0000 |
-| Dynamic k-Means | 0.000  0.000  0.000  0.000 | 0.0000 | 0.0000 | inf |
+| TASER Bayesian Trust | 1.000  1.000  1.000  1.000  1.000  1.000  1.000  1.000 | 1.0000 | 0.0000 | 0.0000 |
+| Random Forest | 0.724  0.866  0.894  0.938  0.926  0.968  0.938  0.950 | 0.9005 | 0.0785 | 0.0871 |
+| Random Forest + GWO | 1.000  1.000  0.942  0.952  0.966  0.964  0.927  0.989 | 0.9673 | 0.0272 | 0.0281 |
+| LSTM | 0.000  0.000  0.000  1.000  0.833  1.000  1.000  1.000 | 0.6042 | 0.5035 | 0.8333 |
+| IQR Speed Threshold | 0.057  0.058  0.115  0.210  0.251  0.281  0.347  1.000 | 0.2901 | 0.3056 | 1.0535 |
+| RSU Position Verification | 0.000  0.000  0.000  0.363  0.000  0.000  0.000  0.000 | 0.0454 | 0.1284 | 2.8284 |
+| Dynamic k-Means | 0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000 | 0.0000 | 0.0000 | inf |
 
 TASER's CV = 0.0000 because its precision is exactly 1.000 at every tested rate.
 This is a structural property of the Bayesian update rule proven in Test 7,
@@ -173,13 +177,13 @@ Detector A Pareto-dominates detector B if and only if:
 
 | Detector | F1 mean | Fit time (s) | Dominated by | Pareto? |
 |---|---|---|---|---|
-| TASER Bayesian Trust | 0.9973 | 0.87 | none | **Yes** |
-| Random Forest | 0.9867 | 0.57 | none | **Yes** |
-| Random Forest + GWO | 0.9842 | 117.28 | TASER, Random | No |
-| LSTM | 0.7038 | 10.00 | TASER, Random | No |
-| IQR Speed Threshold | 0.4740 | 0.05 | none | **Yes** |
-| RSU Position Verification | 0.0426 | 11.25 | TASER, Random, LSTM, IQR | No |
-| Dynamic k-Means | 0.0000 | 0.64 | Random, IQR | No |
+| TASER Bayesian Trust | 0.9987 | 0.47 | none | **Yes** |
+| Random Forest | 0.8815 | 1.76 | TASER | No |
+| Random Forest + GWO | 0.9784 | 58.44 | TASER | No |
+| LSTM | 0.5624 | 9.76 | TASER, Random | No |
+| IQR Speed Threshold | 0.3911 | 0.04 | none | **Yes** |
+| RSU Position Verification | 0.0213 | 7.06 | TASER, Random, IQR | No |
+| Dynamic k-Means | 0.0000 | 0.25 | IQR | No |
 
 RF+GWO is dominated by Random Forest: RF has higher mean F1 (0.9867 > 0.9842)
 AND lower training time (0.57 s < 117.28 s). Both conditions hold strictly,
@@ -193,10 +197,14 @@ LSTM produces F1 = 0.000 at 10% Sybil rate. The root cause is class imbalance.
 
 | Sybil Rate | Total records | Sybil records | Sybil fraction | LSTM F1 |
 |---|---|---|---|---|
+| 5% | 7,754 | 443 | 0.057 (5.7%) | 0.0000 |
 | 10% | 7,747 | 451 | 0.058 (5.8%) | 0.0000 |
-| 20% | 9,153 | 1,922 | 0.210 (21.0%) | 0.8421 |
-| 30% | 10,086 | 2,837 | 0.281 (28.1%) | 1.0000 |
-| 40% | 12,000 | 4,773 | 0.398 (39.8%) | 0.9732 |
+| 15% | 8,195 | 946 | 0.115 (11.5%) | 0.0000 |
+| 20% | 9,153 | 1,922 | 0.210 (21.0%) | 0.8571 |
+| 25% | 9,690 | 2,436 | 0.251 (25.1%) | 0.9091 |
+| 30% | 10,086 | 2,837 | 0.281 (28.1%) | 0.8000 |
+| 35% | 11,088 | 3,851 | 0.347 (34.7%) | 0.9333 |
+| 40% | 12,000 | 4,773 | 0.398 (39.8%) | 1.0000 |
 
 When Sybil records represent 5.8% of the training data, the model achieves lower
 loss by predicting 'legitimate' for all inputs than by attempting to learn the

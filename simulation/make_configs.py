@@ -2,7 +2,7 @@
 import os
 
 SUMO_DIR = os.path.dirname(__file__)
-RATES = [10, 20, 30, 40]
+RATES = [5, 10, 15, 20, 25, 30, 35, 40]
 
 TEMPLATE = """<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
