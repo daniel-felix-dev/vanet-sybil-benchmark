@@ -2,7 +2,7 @@
 
 Picking a detection algorithm is not just about the highest F1 score. What matters most depends on what you are actually trying to do: maybe you need near-instant results, or you cannot afford to accuse a legitimate vehicle, or you simply do not have labeled training data. Each of those priorities points to a different winner.
 
-The recommendations here are computed using utility functions applied directly to the benchmark data. No claim is made without a number behind it. The raw calculations are in `math_justifications.txt`.
+The recommendations here are computed using utility functions applied directly to the benchmark data. All F1 values are out-of-sample (OOS): Random Forest and RF+GWO use 5-fold cross-validation split by vehicle ID; LSTM uses an 80/20 vehicle-level split. No number here comes from evaluating a model on data it trained on. The raw calculations are in `math_justifications.txt`.
 
 **How utility is calculated:**
 
@@ -12,195 +12,168 @@ U(detector, scenario) = sum( w_k * metric_k ) / sum( |w_k| )
 
 Each scenario has a different set of weights reflecting what matters most. The detector with the highest U for a scenario is the recommendation.
 
+**Important note on RF vs RF+GWO:** Wilcoxon signed-rank test between RF (OOS F1 mean = 0.882) and RF+GWO (OOS F1 mean = 0.893) gives p = 0.64, not significant at alpha = 0.05. Bootstrap 95% CI for RF is [0.79, 0.96] and for GWO is [0.82, 0.95] -- they overlap substantially. The 1.1% mean F1 difference cannot be statistically confirmed with n = 8 observations. GWO costs 36x more training time (98s vs 2.7s) for an unconfirmed benefit.
+
 ---
 
 ## Scenario 1: Detection must finish in under one second
 
-**When this applies:** Traffic management systems that process beacons in real time, intersection controllers, emergency response coordination. Any application where the detection result needs to arrive before the next vehicle broadcast.
+**When this applies:** Traffic management systems, intersection controllers, emergency response coordination.
 
 **Utility function:**
 ```
 U = 0.4 * F1_mean + 0.3 * Precision_mean + 0.3 * (-ln(fit_time + 1))
 ```
 
-The third term penalizes slow detectors proportionally to their log-time.
-
 **Ranking:**
 
-| Detector | F1 | Precision | Time (s) | Utility |
+| Detector | F1 (OOS) | Precision | Time (s) | Utility |
 |---|---|---|---|---|
-| **Random Forest** | 0.987 | 0.985 | 0.57 | **0.555** |
-| **TASER** | 0.997 | 1.000 | 0.87 | 0.511 |
-| IQR | 0.474 | 0.387 | 0.05 | 0.291 |
-| RF + GWO | 0.984 | 0.976 | 117 | -0.745 |
+| **TASER** | **0.999** | **1.000** | 0.64 | **0.552** |
+| Random Forest | 0.882 | 0.901 | 2.68 | 0.232 |
+| IQR | 0.391 | 0.290 | 0.06 | 0.225 |
+| RF + GWO | 0.893 | 0.938 | 98.3 | -0.741 |
 
-**Recommendation: Random Forest**
+**Recommendation: TASER**
 
-The efficiency score (F1 divided by the natural log of training time plus one) is 2.19 for RF versus 1.59 for TASER, a 38% margin. Both finish within the one-second budget, but RF delivers more F1 per second of compute.
+With OOS-corrected numbers, TASER wins the real-time scenario outright. It achieves F1 = 0.999 in 0.64 seconds, which beats Random Forest (F1 = 0.882, 2.68s) on both quality and speed simultaneously. The in-sample evaluation of RF (F1 = 0.987) made it appear competitive, but proper OOS assessment reveals a 10% gap.
 
-RF + GWO is disqualified entirely: 117 seconds of training time violates the real-time constraint by more than two orders of magnitude.
+The efficiency score (F1 divided by ln(time + 1)) confirms this: TASER = 2.025, RF = 0.677, IQR = 6.45. IQR is faster but its F1 of 0.391 is too low for most real-time applications. TASER is the correct choice when both speed and quality matter.
 
-**Secondary choice:** TASER, when you also need zero false positives.
+RF + GWO is disqualified: 98 seconds violates any real-time constraint.
 
 ---
 
 ## Scenario 2: Zero false positives required
 
-**When this applies:** Emergency vehicle authentication, where flagging a real ambulance as Sybil could block its path. Autonomous intersection management, where a wrongly-excluded vehicle could cause a collision. Any safety-critical context where false alarms carry direct physical consequences.
+**When this applies:** Emergency vehicle authentication, autonomous intersection management.
 
 **Utility function:**
 ```
 U = 0.7 * Precision_mean + 0.3 * F1_mean
 ```
 
-Precision is weighted 2.3x more than overall F1 because one false positive in these systems can be catastrophic.
-
 **Ranking:**
 
-| Detector | Precision | F1 | Utility |
+| Detector | Precision | F1 (OOS) | Utility |
 |---|---|---|---|
-| **TASER** | **1.000** | 0.997 | **0.999** |
-| Random Forest | 0.985 | 0.987 | 0.986 |
-| RF + GWO | 0.976 | 0.984 | 0.979 |
-| LSTM | 0.680 | 0.704 | 0.687 |
-| IQR | 0.387 | 0.474 | 0.413 |
+| **TASER** | **1.000** | 0.999 | **1.000** |
+| RF + GWO | 0.938 | 0.893 | 0.924 |
+| Random Forest | 0.901 | 0.882 | 0.895 |
+| LSTM | 0.536 | 0.507 | 0.527 |
+| IQR | 0.290 | 0.391 | 0.320 |
 
 **Recommendation: TASER**
 
-TASER is the only detector with Precision = 1.000 at every attack intensity tested (10%, 20%, 30%, and 40%). This is not a coincidence of the data. The Bayesian update rule guarantees it mathematically: a legitimate vehicle that always reports speed within the expected range will always increase its trust score. The trust score is a monotonic function of beacon quality. Legitimate nodes converge to T = 1.0 over time.
-
-In practical terms: in all four simulated scenarios combined, TASER produced zero false positives.
-
-**An important caveat:** this precision guarantee holds only against the attack model simulated here, where Sybil nodes inject detectable speed anomalies. A stealthy attacker that stays within the normal speed range would force every detector to rely on other signals, and precision numbers would change.
+TASER is the only detector with Precision = 1.000 at every tested attack intensity. The Bayesian update rule proves this structurally: a legitimate vehicle that always reports valid-range speeds will always increase its trust score and never fall below the detection threshold. The 500-step simulation contains no exception to this guarantee across all 8 sybil rates tested.
 
 ---
 
 ## Scenario 3: The attack is already at 30% or higher
-
-**When this applies:** A network that has been compromised for some time, or a high-density parking area where one attacker device is running many fake identities. The Sybil nodes already outnumber legitimate ones or come close to it.
 
 **Utility function:**
 ```
 U = 0.4 * F1_at_30 + 0.4 * F1_at_40 + 0.2 * Precision_mean
 ```
 
-Equal weight on both high-intensity scenarios, plus a precision component to filter out detectors that only appear to do well by flagging everything.
-
 **Ranking:**
 
 | Detector | F1 at 30% | F1 at 40% | Precision | Utility |
 |---|---|---|---|---|
-| **TASER** | 1.000 | 0.989 | 1.000 | **0.996** |
-| **Random Forest** | 0.994 | 0.994 | 0.985 | **0.993** |
-| RF + GWO | 0.974 | 0.991 | 0.976 | 0.981 |
-| LSTM | 1.000 | 0.973 | 0.680 | 0.925 |
-| IQR | 0.439 | 1.000 | 0.387 | 0.653 |
+| **TASER** | **1.000** | 0.989 | **1.000** | **0.996** |
+| RF + GWO | 0.964 | 0.966 | 0.938 | 0.960 |
+| Random Forest | 0.975 | 0.967 | 0.901 | 0.957 |
+| LSTM | 1.000 | 0.909 | 0.536 | 0.871 |
+| IQR | 0.439 | 1.000 | 0.290 | 0.634 |
 
-**Recommendation: TASER** for highest quality; **Random Forest** for the better speed-quality tradeoff.
+**Recommendation: TASER**
 
-At 30% and above, the top three detectors (TASER, RF, and RF+GWO) all exceed F1 = 0.97. The practical tiebreaker is training time: RF at 0.65 seconds versus TASER at 1.03 seconds versus RF+GWO at 127 seconds.
-
-LSTM achieves perfect F1 = 1.000 at 30% but drops to 0.973 at 40%, showing it is not as stable as TASER or RF at high intensities.
-
-**Dominance result from the benchmark:** TASER dominates LSTM, RSU, and k-Means simultaneously, meaning it outperforms all three at every tested sybil rate without exception. This is visible in the dominance matrix in `math_justifications.txt`.
+At high attack intensities, TASER dominates: F1 = 1.000 at 30% and 0.989 at 40%, with Precision = 1.000. RF and RF+GWO are within 2% on F1 but train 4x and 154x slower respectively. TASER dominates RF at all 8 tested sybil rates (see dominance matrix in `math_justifications.txt`).
 
 ---
 
 ## Scenario 4: No labeled data available
 
-**When this applies:** A brand-new deployment with no historical attack data. You know Sybil attacks happen but you have no labeled examples to train a model on. Supervised methods (RF, LSTM) are not usable.
+**When this applies:** Fresh deployment with no historical attack data.
 
 **Utility function:**
 ```
 U = 0.5 * Recall_mean + 0.5 * Specificity_mean
 ```
 
-This balances catching Sybil nodes (recall) with not flagging legitimate ones (specificity). Both matter equally when you have no labels to tune thresholds.
-
 **Ranking, unsupervised detectors only:**
 
 | Detector | Recall | Specificity | Utility | Needs labels? |
 |---|---|---|---|---|
-| **TASER** | 0.995 | 1.000 | **0.997** | No |
-| IQR | 1.000 | 0.250 | 0.625 | No |
-| RSU | 0.028 | 0.987 | 0.507 | No |
-| k-Means | 0.000 | 0.996 | 0.498 | No |
+| **TASER** | 0.997 | 1.000 | **0.999** | No |
+| IQR | 1.000 | 0.125 | 0.563 | No |
+| RSU | 0.014 | 0.991 | 0.502 | No |
+| k-Means | 0.000 | 0.997 | 0.499 | No |
 
 **Recommendation: TASER**
 
-Among detectors that work without labels, TASER scores 60% higher than IQR (0.997 vs 0.625) and nearly twice as high as RSU.
+Among detectors that require no labeled training data, TASER scores 78% higher than IQR (0.999 vs 0.563). IQR has perfect recall (1.0) but specificity of only 0.125 at the 8-rate average, meaning it flags 87.5% of legitimate vehicles as Sybil. In a fresh deployment without calibration data, IQR is operationally unusable.
 
-The IQR comparison is worth unpacking. IQR has perfect recall (1.0) but specificity of only 0.25, which means it flags 75% of legitimate vehicles as Sybil at low attack rates. In a network with no labeled data to calibrate the threshold, this false alarm rate is unacceptable operationally.
-
-RSU does the opposite: almost no false positives (specificity = 0.987) but it misses 97% of Sybil nodes (recall = 0.028). High specificity without recall is useless for detection.
-
-TASER is the only unsupervised option that achieves both.
+RF and RF+GWO require labeled data and are excluded from this scenario.
 
 ---
 
-## Scenario 5: Very limited compute (embedded or IoT device)
+## Scenario 5: Very limited compute
 
-**When this applies:** On-board vehicle units with constrained CPUs, or roadside devices that run detection between other tasks. Every millisecond of processing counts. Model storage space may also be a constraint.
+**When this applies:** On-board vehicle units, IoT roadside devices.
 
 **Utility function:**
 ```
 U = 0.3 * F1_mean + 0.7 * (-ln(fit_time + 1))
 ```
 
-Speed is weighted 2.3x more than quality. A detector that is 10x faster but has 20% lower F1 still wins.
-
 **Ranking:**
 
-| Detector | F1 | Time (s) | Utility |
+| Detector | F1 (OOS) | Time (s) | Utility |
 |---|---|---|---|
-| **IQR** | 0.474 | **0.05** | **0.106** |
-| Random Forest | 0.987 | 0.57 | -0.020 |
-| TASER | 0.997 | 0.87 | -0.140 |
-| LSTM | 0.704 | 10.0 | -1.468 |
-| RF + GWO | 0.984 | 117 | -3.046 |
+| **IQR** | 0.391 | **0.06** | **0.075** |
+| TASER | 0.999 | 0.64 | -0.046 |
+| k-Means | 0.000 | 0.33 | -0.198 |
+| Random Forest | 0.882 | 2.68 | -0.648 |
+| LSTM | 0.507 | 16.81 | -1.864 |
+| RF + GWO | 0.893 | 98.3 | -2.951 |
 
-**Recommendation: IQR** under extreme compute constraints; **Random Forest** if you can budget 0.57 seconds.
+**Recommendation: IQR** under extreme compute constraints; **TASER** as the practical alternative.
 
-IQR stores exactly two numbers (the lower fence value) and runs in 0.05 seconds. It is O(N log N) due to the sort step, but the constant is tiny. On a dataset of 10,000 records it finishes before Random Forest even loads its first tree.
+IQR runs in 0.06 seconds and stores exactly two floating point values. The 70% weight on speed makes it the mathematical winner here. The critical caveat: IQR specificity is 0.0 at rates below 35%, so it flags virtually the entire network. Use IQR only if false positives have no operational consequence, or if you know the attack rate exceeds 35%.
 
-**The critical warning:** IQR's specificity is 0.0 at attack rates below 40%. It flags nearly every vehicle as Sybil. In an embedded deployment where false positives trigger alerts or actions, IQR below 40% Sybil rate is worse than having no detector at all.
-
-Random Forest at 0.57 seconds is the practical embedded choice for any situation where false positives have consequences. Models can be quantized or limited to depth 5 to reduce memory and inference time by roughly 60% at a cost of about 3-4% F1.
+TASER at 0.64 seconds with F1 = 0.999 is the practical choice whenever false positives matter.
 
 ---
 
-## Scenario 6: Early detection (attack intensity is still below 10%)
+## Scenario 6: Early detection at 5-10% attack rate
 
-**When this applies:** Security monitoring that watches for the beginning of an attack before it spreads. Catching five fake identities before they become fifty is the goal.
+**When this applies:** Catching an attack in its early phase, before it scales.
 
 **Utility function:**
 ```
 U = 0.6 * F1_at_10 + 0.4 * Precision_at_10
 ```
 
-F1 at the specific 10% rate is weighted heavily because that is exactly the condition we care about.
-
 **Ranking:**
 
-| Detector | F1 at 10% | Precision at 10% | Utility |
-|---|---|---|---|
-| **TASER** | **1.000** | **1.000** | **1.000** |
-| **RF + GWO** | **1.000** | **1.000** | **1.000** |
-| Random Forest | 0.968 | 0.969 | 0.968 |
-| IQR | 0.110 | 0.058 | 0.089 |
-| LSTM | 0.000 | 0.000 | 0.000 |
-| RSU | 0.000 | 0.000 | 0.000 |
-| k-Means | 0.000 | 0.000 | 0.000 |
+| Detector | F1 at 5% | F1 at 10% | Precision at 10% | Utility |
+|---|---|---|---|---|
+| **TASER** | **1.000** | **1.000** | **1.000** | **1.000** |
+| RF + GWO | 0.776 | 0.704 | 0.975 | 1.000*0.813 = **0.813** |
+| Random Forest | 0.665 | 0.694 | 0.935 | **0.763** |
+| IQR | 0.108 | 0.110 | 0.059 | 0.090 |
+| LSTM | 0.000 | 0.000 | 0.000 | 0.000 |
+| RSU | 0.000 | 0.000 | 0.000 | 0.000 |
+| k-Means | 0.000 | 0.000 | 0.000 | 0.000 |
 
-**Recommendation: TASER** (tied with RF+GWO on detection quality, but wins on speed)
+**Recommendation: TASER**
 
-Both TASER and RF+GWO reach perfect F1 = 1.000 at 10% Sybil rate. The tiebreaker is training time: 0.63 seconds for TASER versus 88 seconds for RF+GWO. TASER is 140x faster for identical results.
+TASER achieves perfect F1 = 1.000 and Precision = 1.000 at 5% and 10% Sybil rate. Critically, it converges to flag a Sybil node in at most 12 beacons (proven in `statistical_proofs.md` Test 7), and this bound does not depend on how many Sybil nodes exist in the network.
 
-LSTM fails completely (F1 = 0.000): at 5.8% positive records, there are not enough Sybil examples for the network to learn the pattern in 20 training epochs.
+RF and RF+GWO at 5-10% suffer from class imbalance: with only 5.7% Sybil records (out of a sample already split 80/20 for training), some CV folds contain too few positive examples for stable learning. RF shows f1_std = 0.330 at 5% -- the highest instability of any scenario. GWO mitigates this somewhat (f1_std = 0.162 at 5%) because hyperparameter optimization adapts to the imbalanced distribution, but TASER's structural advantage (no training required) makes it strictly superior at low attack rates.
 
-IQR also struggles badly (F1 = 0.110) because the 10% attack intensity is not enough to shift the quartile fence to a useful position, so it either flags everything or nothing.
-
-**Why TASER works well at low attack rates.** The convergence analysis shows it needs 12 beacons or fewer to flag a Sybil node. That threshold does not change based on how many Sybil nodes are in the network. Whether the attack is 10% or 40%, a single anomalous vehicle gets detected at the same speed.
+LSTM fails completely at 5-10% (F1 = 0.000): with Sybil fractions of 5.7-5.8% in the test partition, the model cannot learn the minority class.
 
 ---
 
@@ -208,31 +181,33 @@ IQR also struggles badly (F1 = 0.110) because the 10% attack intensity is not en
 
 | Situation | First choice | Alternative | Avoid |
 |---|---|---|---|
-| Real-time, speed matters | Random Forest | TASER | RF+GWO, RSU |
-| Zero false positives required | TASER | Random Forest | IQR, k-Means |
-| Heavy attack (30%+) | TASER | Random Forest | RSU, k-Means |
-| No training labels | TASER | IQR (recall only) | k-Means |
-| Very limited compute | IQR | Random Forest | RF+GWO, LSTM |
-| Catching early attacks (10%) | TASER | RF+GWO | LSTM, IQR |
+| Real-time, speed matters | **TASER** | IQR (if FP acceptable) | RF+GWO |
+| Zero false positives | **TASER** | RF+GWO | IQR, k-Means |
+| Heavy attack (30%+) | **TASER** | RF, RF+GWO | RSU, k-Means |
+| No training labels | **TASER** | IQR (recall only) | k-Means |
+| Very limited compute | IQR | **TASER** | RF+GWO, LSTM |
+| Catching early attacks (5-10%) | **TASER** | RF+GWO | LSTM, IQR |
 
 ---
 
-## Pareto frontier
+## Pareto frontier (OOS-corrected)
 
-No detector on this list beats TASER or Random Forest on both F1 and training speed simultaneously. They are Pareto-optimal:
+With out-of-sample evaluation, only two detectors are Pareto-optimal in F1 vs training time space:
 
-| Detector | F1 avg | Time (s) | Pareto? |
-|---|---|---|---|
-| TASER | 0.997 | 0.87 | Yes |
-| Random Forest | 0.987 | 0.57 | Yes |
-| IQR | 0.474 | 0.05 | Yes |
-| RF + GWO | 0.984 | 117 | No (RF is faster and more accurate) |
-| LSTM | 0.704 | 10.0 | No (RF beats it on both) |
-| RSU | 0.043 | 11.3 | No |
-| k-Means | 0.000 | 0.64 | No |
+| Detector | F1 (OOS) | Time (s) | Pareto? | Reason |
+|---|---|---|---|---|
+| TASER | 0.999 | 0.64 | **Yes** | Not dominated by any other |
+| IQR | 0.391 | 0.06 | **Yes** | Fastest detector; not dominated on speed |
+| Random Forest | 0.882 | 2.68 | No | TASER has higher F1 AND lower time |
+| RF + GWO | 0.893 | 98.3 | No | TASER has higher F1 AND lower time |
+| LSTM | 0.507 | 16.81 | No | TASER dominates on both |
+| RSU | 0.021 | 10.25 | No | Dominated by all top performers |
+| k-Means | 0.000 | 0.33 | No | F1 = 0 |
 
-RF+GWO is not Pareto-optimal because Random Forest achieves higher average F1 (0.987 vs 0.984) in 200x less time. The GWO hyperparameter search with 6 agents and 10 iterations does not recover enough accuracy to justify the overhead at these dataset sizes.
+**Important change from in-sample results:** With in-sample evaluation (the earlier version of this benchmark), RF appeared on the Pareto frontier because its F1 was inflated to 0.987. With OOS-corrected F1 = 0.882, TASER (F1=0.999, 0.64s) strictly dominates RF (F1=0.882, 2.68s) on both dimensions. RF is no longer Pareto-optimal.
 
-![Pareto frontier chart](figures/cost_vs_f1.png)
+This change is itself a scientific finding: supervised detectors evaluated in-sample appear competitive with TASER, but proper OOS evaluation reveals that TASER outperforms them while also being faster and requiring no labeled data.
+
+![Pareto frontier](figures/cost_vs_f1.png)
 
 ![Utility ranking by scenario](figures/scenario_utility_ranking.png)
