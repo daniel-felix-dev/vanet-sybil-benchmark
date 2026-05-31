@@ -115,3 +115,21 @@ class GWORFDetector(BaseDetector):
 
     def predict(self, df: pd.DataFrame) -> np.ndarray:
         return self.model.predict(self._prepare(df))
+
+    def cv_evaluate(self, df: pd.DataFrame, k: int = 5) -> dict:
+        """
+        OOS evaluation using the hyperparameters found by GWO.
+        GWO selects n_estimators and max_depth on the full dataset;
+        those fixed parameters are then evaluated via k-fold CV split
+        by vehicle_id, matching the methodology of RFDetector.cv_evaluate().
+        This makes RF and RF+GWO directly comparable.
+        """
+        from .rf_detector import RFDetector
+        if not self.best_params:
+            raise RuntimeError("Call fit() before cv_evaluate().")
+        rf_oos = RFDetector(
+            n_estimators=self.best_params["n_estimators"],
+            max_depth=self.best_params["max_depth"],
+            seed=SEED,
+        )
+        return rf_oos.cv_evaluate(df, k=k)
