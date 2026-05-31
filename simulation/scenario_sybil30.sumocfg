@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+  <input>
+    <net-file value="network.net.xml"/>
+    <route-files value="routes_sybil30.rou.xml"/>
+  </input>
+  <time>
+    <begin value="0"/>
+    <end value="500"/>
+    <step-length value="1"/>
+  </time>
+  <report>
+    <no-step-log value="true"/>
+    <no-warnings value="true"/>
+  </report>
+</configuration>

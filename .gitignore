@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pkl
+simulation/_tmp_*.xml
+simulation/*.rou.alt.xml

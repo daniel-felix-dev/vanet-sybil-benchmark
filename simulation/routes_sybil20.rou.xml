@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='utf-8'?>
+<routes>
+  <vType id="legitimate" color="0,0,255" accel="2.6" decel="4.5" maxSpeed="13.89" />
+  <vType id="sybil" color="255,0,0" accel="2.6" decel="4.5" maxSpeed="13.89" />
+  <vehicle id="legit_0" depart="0.00" type="legitimate">
+    <route edges="D4D3 D3D2 D2D1 D1C1 C1B1 B1A1 A1A2" />
+  </vehicle>
+  <vehicle id="sybil_4" type="sybil" depart="1" departPos="2.4">
+    <route edges="A0A1 A1A2 A2A1 A1A0 A0B0" />
+  </vehicle>
+  <vehicle id="sybil_5" type="sybil" depart="1" departPos="2.6">
+    <route edges="A0A1 A1A2 A2A1 A1A0 A0B0" />
+  </vehicle>
+  <vehicle id="sybil_6" type="sybil" depart="1" departPos="3.9">
+    <route edges="A0A1 A1A2 A2A1 A1A0 A0B0" />
+  </vehicle>
+  <vehicle id="sybil_7" type="sybil" depart="1" departPos="1.7">
+    <route edges="A0A1 A1A2 A2A1 A1A0 A0B0" />
+  </vehicle>
+  <vehicle id="legit_1" depart="6.00" type="legitimate">
+    <route edges="B4B5 B5B4 B4B3 B3B2 B2C2" />
+  </vehicle>
+  <vehicle id="legit_2" depart="12.00" type="legitimate">
+    <route edges="E1F1 F1F2 F2F3 F3F4 F4F5 F5E5 E5D5 D5E5" />
+  </vehicle>
+  <vehicle id="legit_3" depart="18.00" type="legitimate">
+    <route edges="F1F0 F0E0 E0D0 D0C0 C0B0 B0A0 A0A1 A1A2 A2A3 A3B3" />
+  </vehicle>
+  <vehicle id="sybil_12" type="sybil" depart="19" departPos="4.3">
+    <route edges="C0C1 C1B1 B1B0 B0C0 C0D0" />
+  </vehicle>
+  <vehicle id="sybil_13" type="sybil" depart="19" departPos="3.0">
+    <route edges="C0C1 C1B1 B1B0 B0C0 C0D0" />
+  </vehicle>
+  <vehicle id="sybil_14" type="sybil" depart="19" departPos="1.2">
+    <route edges="C0C1 C1B1 B1B0 B0C0 C0D0" />
+  </vehicle>
+  <vehicle id="sybil_15" type="sybil" depart="19" departPos="3.0">
+    <route edges="C0C1 C1B1 B1B0 B0C0 C0D0" />
+  </vehicle>
+  <vehicle id="sybil_8" type="sybil" depart="20" departPos="2.7">
+    <route edges="D4C4 C4B4 B4A4 A4B4 B4B3" />
+  </vehicle>
+  <vehicle id="sybil_9" type="sybil" depart="20" departPos="2.8">
+    <route edges="D4C4 C4B4 B4A4 A4B4 B4B3" />
+  </vehicle>
+  <vehicle id="sybil_10" type="sybil" depart="20" departPos="3.1">
+    <route edges="D4C4 C4B4 B4A4 A4B4 B4B3" />
+  </vehicle>
+  <vehicle id="sybil_11" type="sybil" depart="20" departPos="4.7">
+    <route edges="D4C4 C4B4 B4A4 A4B4 B4B3" />
+  </vehicle>
+  <vehicle id="legit_4" depart="24.00" type="legitimate">
+    <route edges="C3C2 C2C1 C1B1 B1A1 A1A2" />
+  </vehicle>
+  <vehicle id="sybil_0" type="sybil" depart="29" departPos="1.5">
+    <route edges="F5E5 E5F5 F5F4 F4E4 E4D4" />
+  </vehicle>
+  <vehicle id="sybil_1" type="sybil" depart="29" departPos="3.4">
+    <route edges="F5E5 E5F5 F5F4 F4E4 E4D4" />
+  </vehicle>
+  <vehicle id="sybil_2" type="sybil" depart="29" departPos="0.9">
+    <route edges="F5E5 E5F5 F5F4 F4E4 E4D4" />
+  </vehicle>
+  <vehicle id="sybil_3" type="sybil" depart="29" departPos="0.9">
+    <route edges="F5E5 E5F5 F5F4 F4E4 E4D4" />
+  </vehicle>
+  <vehicle id="legit_5" depart="30.00" type="legitimate">
+    <route edges="B2C2 C2D2 D2D1 D1D0 D0C0" />
+  </vehicle>
+  <vehicle id="legit_6" depart="36.00" type="legitimate">
+    <route edges="A1A2 A2B2 B2A2" />
+  </vehicle>
+  <vehicle id="sybil_16" type="sybil" depart="36" departPos="2.8">
+    <route edges="B2B1 B1B0 B0B1 B1A1 A1A2" />
+  </vehicle>
+  <vehicle id="sybil_17" type="sybil" depart="36" departPos="1.0">
+    <route edges="B2B1 B1B0 B0B1 B1A1 A1A2" />
+  </vehicle>
+  <vehicle id="sybil_18" type="sybil" depart="36" departPos="0.7">
+    <route edges="B2B1 B1B0 B0B1 B1A1 A1A2" />
+  </vehicle>
+  <vehicle id="sybil_19" type="sybil" depart="36" departPos="0.7">
+    <route edges="B2B1 B1B0 B0B1 B1A1 A1A2" />
+  </vehicle>
+  <vehicle id="legit_7" depart="42.00" type="legitimate">
+    <route edges="D4D5 D5D4 D4D3 D3D2 D2D1 D1D2" />
+  </vehicle>
+  <vehicle id="legit_8" depart="48.00" type="legitimate">
+    <route edges="B2C2 C2D2 D2E2" />
+  </vehicle>
+  <vehicle id="legit_9" depart="54.00" type="legitimate">
+    <route edges="E4D4 D4D3 D3D2 D2D1 D1D0 D0C0 C0B0 B0A0 A0A1" />
+  </vehicle>
+  <vehicle id="legit_10" depart="60.00" type="legitimate">
+    <route edges="E3F3 F3F2 F2F1 F1F0 F0E0 E0E1" />
+  </vehicle>
+  <vehicle id="legit_11" depart="66.00" type="legitimate">
+    <route edges="F3F4 F4F3 F3F2 F2F1 F1F0 F0E0 E0D0 D0C0 C0D0" />
+  </vehicle>
+  <vehicle id="legit_12" depart="72.00" type="legitimate">
+    <route edges="A4A3" />
+  </vehicle>
+  <vehicle id="legit_13" depart="78.00" type="legitimate">
+    <route edges="E5D5 D5D4 D4D3 D3D2" />
+  </vehicle>
+  <vehicle id="legit_14" depart="84.00" type="legitimate">
+    <route edges="E3F3 F3F2 F2F1 F1E1 E1E2" />
+  </vehicle>
+  <vehicle id="legit_15" depart="90.00" type="legitimate">
+    <route edges="D1D0 D0D1 D1D2 D2D3 D3D4 D4E4 E4F4 F4F3" />
+  </vehicle>
+  <vehicle id="legit_16" depart="96.00" type="legitimate">
+    <route edges="C2B2 B2C2 C2C1 C1D1 D1E1" />
+  </vehicle>
+  <vehicle id="legit_17" depart="102.00" type="legitimate">
+    <route edges="E4E5 E5E4 E4E3 E3D3 D3E3" />
+  </vehicle>
+  <vehicle id="legit_18" depart="108.00" type="legitimate">
+    <route edges="E5F5 F5F4 F4F3 F3F2 F2E2 E2D2 D2D3" />
+  </vehicle>
+  <vehicle id="legit_19" depart="114.00" type="legitimate">
+    <route edges="E0F0 F0F1 F1F2 F2E2 E2D2 D2C2 C2B2 B2A2 A2A1" />
+  </vehicle>
+  <vehicle id="legit_20" depart="120.00" type="legitimate">
+    <route edges="B3A3 A3A4 A4B4 B4C4" />
+  </vehicle>
+  <vehicle id="legit_21" depart="126.00" type="legitimate">
+    <route edges="A4A5 A5B5 B5B4 B4B5" />
+  </vehicle>
+  <vehicle id="legit_22" depart="132.00" type="legitimate">
+    <route edges="D4D3 D3D2 D2D1 D1C1 C1C2" />
+  </vehicle>
+  <vehicle id="legit_23" depart="138.00" type="legitimate">
+    <route edges="C1D1 D1C1 C1B1 B1B2 B2B3" />
+  </vehicle>
+  <vehicle id="legit_24" depart="144.00" type="legitimate">
+    <route edges="B4B3 B3C3 C3D3 D3E3 E3F3 F3E3" />
+  </vehicle>
+  <vehicle id="legit_25" depart="150.00" type="legitimate">
+    <route edges="B1B0 B0C0 C0D0 D0E0 E0E1 E1E2" />
+  </vehicle>
+  <vehicle id="legit_26" depart="156.00" type="legitimate">
+    <route edges="B1A1 A1A2 A2B2 B2C2 C2B2" />
+  </vehicle>
+  <vehicle id="legit_27" depart="162.00" type="legitimate">
+    <route edges="F5E5 E5D5 D5D4 D4D3" />
+  </vehicle>
+  <vehicle id="legit_28" depart="168.00" type="legitimate">
+    <route edges="D1E1 E1E0 E0D0" />
+  </vehicle>
+  <vehicle id="legit_29" depart="174.00" type="legitimate">
+    <route edges="E5D5 D5E5 E5E4 E4E3 E3D3" />
+  </vehicle>
+  <vehicle id="legit_30" depart="180.00" type="legitimate">
+    <route edges="B3A3 A3A2 A2A1 A1A2" />
+  </vehicle>
+  <vehicle id="legit_31" depart="186.00" type="legitimate">
+    <route edges="B5C5 C5C4 C4B4 B4B3" />
+  </vehicle>
+  <vehicle id="legit_32" depart="192.00" type="legitimate">
+    <route edges="B2B3 B3C3 C3D3 D3E3 E3F3 F3F2" />
+  </vehicle>
+  <vehicle id="legit_33" depart="198.00" type="legitimate">
+    <route edges="F0F1 F1F2 F2F3 F3F4 F4F5 F5E5 E5D5 D5C5 C5B5 B5C5" />
+  </vehicle>
+  <vehicle id="legit_34" depart="204.00" type="legitimate">
+    <route edges="D4E4 E4E3 E3E2 E2D2 D2C2 C2C3" />
+  </vehicle>
+  <vehicle id="legit_35" depart="210.00" type="legitimate">
+    <route edges="F2E2 E2D2 D2C2 C2C3 C3C4 C4C5" />
+  </vehicle>
+  <vehicle id="legit_36" depart="216.00" type="legitimate">
+    <route edges="D2C2 C2C3 C3C4 C4B4 B4A4" />
+  </vehicle>
+  <vehicle id="legit_37" depart="222.00" type="legitimate">
+    <route edges="D2E2 E2F2 F2F1 F1F0" />
+  </vehicle>
+  <vehicle id="legit_38" depart="228.00" type="legitimate">
+    <route edges="F5F4 F4F3 F3F2 F2F1 F1F0 F0E0 E0D0 D0D1" />
+  </vehicle>
+  <vehicle id="legit_39" depart="234.00" type="legitimate">
+    <route edges="A3B3 B3A3 A3A2 A2A1" />
+  </vehicle>
+  <vehicle id="legit_40" depart="240.00" type="legitimate">
+    <route edges="A4B4 B4C4 C4D4 D4C4" />
+  </vehicle>
+  <vehicle id="legit_41" depart="246.00" type="legitimate">
+    <route edges="E3E4 E4E3 E3D3 D3C3 C3C2" />
+  </vehicle>
+  <vehicle id="legit_42" depart="252.00" type="legitimate">
+    <route edges="A2B2 B2C2 C2B2" />
+  </vehicle>
+  <vehicle id="legit_43" depart="258.00" type="legitimate">
+    <route edges="F5F4 F4F3 F3F2 F2F1 F1E1 E1D1 D1C1" />
+  </vehicle>
+  <vehicle id="legit_44" depart="264.00" type="legitimate">
+    <route edges="F4F3 F3E3 E3E4 E4E5 E5F5" />
+  </vehicle>
+  <vehicle id="legit_45" depart="270.00" type="legitimate">
+    <route edges="A0B0 B0C0 C0D0 D0D1 D1E1 E1E0" />
+  </vehicle>
+  <vehicle id="legit_46" depart="276.00" type="legitimate">
+    <route edges="D5E5 E5E4 E4D4 D4D3 D3D2 D2D1 D1D0" />
+  </vehicle>
+  <vehicle id="legit_47" depart="282.00" type="legitimate">
+    <route edges="B4B3 B3B4 B4C4 C4D4 D4D3" />
+  </vehicle>
+  <vehicle id="legit_48" depart="288.00" type="legitimate">
+    <route edges="A4B4 B4C4 C4C3 C3D3" />
+  </vehicle>
+  <vehicle id="legit_49" depart="294.00" type="legitimate">
+    <route edges="C4C3 C3D3 D3E3 E3F3 F3F4" />
+  </vehicle>
+  <vehicle id="legit_50" depart="300.00" type="legitimate">
+    <route edges="F0F1 F1F2 F2F3 F3F4 F4E4 E4D4 D4C4 C4B4 B4A4" />
+  </vehicle>
+  <vehicle id="legit_51" depart="306.00" type="legitimate">
+    <route edges="D0C0 C0B0 B0B1 B1B2" />
+  </vehicle>
+  <vehicle id="legit_52" depart="312.00" type="legitimate">
+    <route edges="F2E2 E2F2 F2F1 F1F0 F0E0" />
+  </vehicle>
+  <vehicle id="legit_53" depart="318.00" type="legitimate">
+    <route edges="B5A5 A5A4 A4B4 B4C4 C4D4 D4D3" />
+  </vehicle>
+  <vehicle id="legit_54" depart="324.00" type="legitimate">
+    <route edges="D3D4 D4D3 D3D2 D2D1 D1D0 D0C0 C0B0 B0C0" />
+  </vehicle>
+  <vehicle id="legit_55" depart="330.00" type="legitimate">
+    <route edges="E2E3 E3E2 E2D2 D2D1 D1D0" />
+  </vehicle>
+  <vehicle id="legit_56" depart="336.00" type="legitimate">
+    <route edges="E3D3 D3D2 D2D1 D1C1" />
+  </vehicle>
+  <vehicle id="legit_57" depart="342.00" type="legitimate">
+    <route edges="A0A1 A1B1 B1C1 C1C0 C0B0" />
+  </vehicle>
+  <vehicle id="legit_58" depart="348.00" type="legitimate">
+    <route edges="A1A0 A0B0 B0C0 C0D0 D0E0 E0F0 F0F1 F1F2 F2F3" />
+  </vehicle>
+  <vehicle id="legit_59" depart="354.00" type="legitimate">
+    <route edges="F0F1 F1F2 F2F3 F3F4 F4E4 E4E5" />
+  </vehicle>
+  <vehicle id="legit_60" depart="360.00" type="legitimate">
+    <route edges="B5B4 B4B3 B3B2 B2A2 A2A3" />
+  </vehicle>
+  <vehicle id="legit_61" depart="366.00" type="legitimate">
+    <route edges="F0F1 F1F2 F2F3 F3F2" />
+  </vehicle>
+  <vehicle id="legit_62" depart="372.00" type="legitimate">
+    <route edges="A3B3 B3B4 B4B5 B5C5 C5C4" />
+  </vehicle>
+  <vehicle id="legit_63" depart="378.00" type="legitimate">
+    <route edges="A3A2 A2B2 B2C2 C2D2 D2E2 E2E3" />
+  </vehicle>
+  <vehicle id="legit_64" depart="384.00" type="legitimate">
+    <route edges="E2E3 E3E4 E4D4 D4C4 C4B4 B4A4 A4A5 A5B5" />
+  </vehicle>
+  <vehicle id="legit_65" depart="390.00" type="legitimate">
+    <route edges="C5B5 B5C5 C5D5 D5D4 D4D3 D3D2 D2D1 D1D2" />
+  </vehicle>
+  <vehicle id="legit_66" depart="396.00" type="legitimate">
+    <route edges="B4A4 A4B4 B4C4 C4D4 D4E4 E4F4 F4F3 F3F2 F2F1 F1F0 F0E0" />
+  </vehicle>
+  <vehicle id="legit_67" depart="402.00" type="legitimate">
+    <route edges="C3C2 C2B2 B2B3" />
+  </vehicle>
+  <vehicle id="legit_68" depart="408.00" type="legitimate">
+    <route edges="D1D0 D0D1 D1E1 E1E2" />
+  </vehicle>
+  <vehicle id="legit_69" depart="414.00" type="legitimate">
+    <route edges="B2B1 B1B2 B2B3 B3B4 B4B5 B5C5" />
+  </vehicle>
+  <vehicle id="legit_70" depart="420.00" type="legitimate">
+    <route edges="F5F4 F4E4 E4D4 D4D5" />
+  </vehicle>
+  <vehicle id="legit_71" depart="426.00" type="legitimate">
+    <route edges="C3D3 D3D2 D2D1 D1D0 D0E0" />
+  </vehicle>
+  <vehicle id="legit_72" depart="432.00" type="legitimate">
+    <route edges="A5A4 A4A3 A3A2 A2B2 B2C2" />
+  </vehicle>
+  <vehicle id="legit_73" depart="438.00" type="legitimate">
+    <route edges="C0D0 D0D1 D1D2 D2E2" />
+  </vehicle>
+  <vehicle id="legit_74" depart="444.00" type="legitimate">
+    <route edges="B3A3 A3B3 B3B2 B2C2" />
+  </vehicle>
+  <vehicle id="legit_75" depart="450.00" type="legitimate">
+    <route edges="A3A2 A2A3 A3A4 A4B4 B4C4 C4D4 D4C4" />
+  </vehicle>
+  <vehicle id="legit_76" depart="456.00" type="legitimate">
+    <route edges="B3A3 A3B3 B3C3 C3D3 D3E3 E3F3 F3F2 F2F1 F1F2" />
+  </vehicle>
+  <vehicle id="legit_77" depart="462.00" type="legitimate">
+    <route edges="E5F5 F5F4 F4F3 F3E3 E3D3 D3C3 C3B3 B3A3 A3A2" />
+  </vehicle>
+  <vehicle id="legit_78" depart="468.00" type="legitimate">
+    <route edges="B3B2 B2B3 B3B4 B4B5 B5C5 C5D5 D5D4" />
+  </vehicle>
+  <vehicle id="legit_79" depart="474.00" type="legitimate">
+    <route edges="B2B3 B3B4 B4A4 A4A5 A5B5" />
+  </vehicle>
+  <vehicle id="legit_80" depart="480.00" type="legitimate">
+    <route edges="F3E3 E3D3 D3D2 D2D1" />
+  </vehicle>
+  <vehicle id="legit_81" depart="486.00" type="legitimate">
+    <route edges="C4D4 D4E4 E4E3 E3E2" />
+  </vehicle>
+  <vehicle id="legit_82" depart="492.00" type="legitimate">
+    <route edges="E3F3 F3F2 F2F1 F1E1 E1D1 D1C1 C1B1 B1C1" />
+  </vehicle>
+  <vehicle id="legit_83" depart="498.00" type="legitimate">
+    <route edges="A4A3 A3B3 B3C3 C3C4" />
+  </vehicle>
+</routes>
