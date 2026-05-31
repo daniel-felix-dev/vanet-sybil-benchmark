@@ -2,7 +2,7 @@
 
 Each plot shows how F1-Score changes as one hyperparameter varies,
 holding all others at their default values. The four lines represent
-the four sybil rates tested.
+the eight sybil rates tested.
 
 ## TASER: Detection threshold (lambda)
 

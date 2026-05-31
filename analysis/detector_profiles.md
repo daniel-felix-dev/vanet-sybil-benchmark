@@ -6,29 +6,31 @@ Each section below covers one algorithm: how it works, what the numbers show, an
 
 ## Summary
 
-| Detector | F1 avg | F1 variability | Precision | Recall | Specificity | Training time |
-|---|---|---|---|---|---|---|
-| TASER Bayesian Trust | **0.997** | 0.005 | **1.000** | 0.995 | **1.000** | 0.87 s |
-| Random Forest | 0.987 | 0.013 | 0.985 | **0.988** | 0.997 | **0.57 s** |
-| Random Forest + GWO | 0.984 | 0.014 | 0.976 | 0.993 | 0.991 | 117 s |
-| LSTM | 0.704 | 0.474 | 0.680 | 0.733 | 0.963 | 10 s |
-| IQR Speed Threshold | 0.474 | 0.377 | 0.387 | 1.000 | 0.250 | 0.05 s |
-| RSU Position Verification | 0.043 | 0.085 | 0.091 | 0.028 | 0.987 | 11.3 s |
-| Dynamic k-Means | 0.000 | 0.000 | 0.000 | 0.000 | 0.996 | 0.64 s |
+All F1 values are **out-of-sample (OOS)**. Random Forest and RF+GWO use 5-fold cross-validation split by vehicle ID. LSTM uses an 80/20 vehicle-level split. No detector is evaluated on data it trained on. F1 variability is the standard deviation of F1 across the 8 tested sybil rates (5% to 40%).
 
-The efficiency score in the table below is F1 divided by the natural log of (training time + 1). Higher means better detection per unit of compute:
+| Detector | F1 avg (OOS) | F1 std | Precision | Recall | Specificity | Training time |
+|---|---|---|---|---|---|---|
+| TASER Bayesian Trust | **0.999** | 0.004 | **1.000** | 0.997 | **1.000** | 0.64 s |
+| Random Forest + GWO | 0.893 | 0.099 | 0.938 | 0.879 | 0.978 | 98 s |
+| Random Forest | 0.882 | 0.128 | 0.901 | 0.875 | 0.981 | **2.7 s** |
+| LSTM | 0.507 | 0.437 | 0.536 | 0.531 | 0.941 | 16.8 s |
+| IQR Speed Threshold | 0.391 | 0.289 | 0.290 | **1.000** | 0.125 | **0.06 s** |
+| RSU Position Verification | 0.021 | 0.060 | 0.045 | 0.014 | 0.991 | 10.2 s |
+| Dynamic k-Means | 0.000 | 0.000 | 0.000 | 0.000 | 0.997 | 0.33 s |
+
+The efficiency score is F1 divided by ln(training time + 1). Higher means better detection per unit of compute:
 
 | Detector | Efficiency |
 |---|---|
-| IQR Speed Threshold | 9.26 |
-| Random Forest | 2.19 |
-| TASER Bayesian Trust | 1.59 |
-| LSTM | 0.29 |
-| Random Forest + GWO | 0.21 |
-| RSU Position Verification | 0.02 |
+| IQR Speed Threshold | 6.45 |
+| TASER Bayesian Trust | 2.03 |
+| Random Forest | 0.68 |
+| Random Forest + GWO | 0.19 |
+| LSTM | 0.18 |
+| RSU Position Verification | 0.01 |
 | Dynamic k-Means | 0.00 |
 
-Three detectors are on the Pareto frontier (no other option beats them on both quality and speed at the same time): TASER, Random Forest, and IQR.
+Two detectors are on the Pareto frontier (no other option beats them simultaneously on both quality and speed): **TASER** and **IQR**. With OOS evaluation, TASER (F1=0.999, 0.64s) strictly dominates Random Forest (F1=0.882, 2.7s) on both axes, so RF is no longer Pareto-optimal. The in-sample F1 of RF (0.987) created a false impression of competitiveness that disappears with correct evaluation.
 
 ---
 
@@ -82,9 +84,9 @@ So TASER needs fewer than 12 beacons to flag a Sybil node with certainty, regard
 
 **Strengths.** The best efficiency score among competitive detectors (2.19). Consistent across all attack intensities with low variance (F1 std = 0.013). Trains in under 0.6 seconds and produces no false negatives at 20-40% Sybil rate.
 
-**Weaknesses.** Requires labeled training data. The numbers here are in-sample, meaning the model is evaluated on the same data it was trained on. In a real deployment with unseen attack patterns, performance would be lower. Cross-validation would reduce F1 by roughly 1-3%.
+**Weaknesses.** Requires labeled training data. The numbers here use 5-fold cross-validation with vehicle-level splits (OOS). Each fold's test partition contains vehicles not seen during training. Even so, OOS performance (F1 = 0.882 average) is notably lower than the in-sample figure would be (around 0.987), which confirms that the earlier in-sample evaluation was substantially optimistic.
 
-**Compared to RF+GWO.** The baseline Random Forest beats the GWO-optimized version on mean F1 (0.987 vs 0.984) while training 200x faster. The GWO search with 6 agents and 10 iterations is not enough to consistently improve on scikit-learn's reasonable defaults.
+**Compared to RF+GWO.** With OOS evaluation, GWO achieves slightly higher mean F1 (0.893 vs 0.882), but a Wilcoxon signed-rank test gives p = 0.64 -- the difference is not statistically significant at alpha = 0.05. Bootstrap 95% confidence intervals for both detectors overlap substantially. GWO costs 36x more training time (98s vs 2.7s) for a benefit that cannot be confirmed by these tests. The recommendation is to use RF unless you have evidence that GWO's hyperparameter tuning will help with your specific class distribution.
 
 ---
 
@@ -183,7 +185,7 @@ The partial detection at 20% Sybil rate (F1 = 0.171) comes from edge cases where
 | 30% | 0.000 | 0.000 |
 | 40% | 0.000 | 0.000 |
 
-**Strengths.** Very high specificity (0.987), meaning it rarely accuses a legitimate vehicle. Works well against split-position attacks in infrastructure-rich networks.
+**Strengths.** Very high specificity (0.991), meaning it rarely accuses a legitimate vehicle. Works well against split-position attacks in infrastructure-rich networks.
 
 **Weaknesses.** Fundamentally mismatched to co-location attacks. O(RSU squared times Steps squared) detection complexity makes it slow on large simulations.
 

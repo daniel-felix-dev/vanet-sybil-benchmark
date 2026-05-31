@@ -61,7 +61,7 @@ This produces a 6x6 grid with 120 road segments covering a 1200x1200 meter area.
 ## Step 2: generating routes
 
 ```bash
-python simulation/generate_routes.py          # all four sybil rates
+python simulation/generate_routes.py          # all eight sybil rates: 5,10,15,20,25,30,35,40
 python simulation/generate_routes.py 20       # just the 20% scenario
 ```
 

@@ -47,7 +47,7 @@ def load(rate):
 lines = ["# Hyperparameter Sensitivity Analysis", "",
          "Each plot shows how F1-Score changes as one hyperparameter varies,",
          "holding all others at their default values. The four lines represent",
-         "the four sybil rates tested.", ""]
+         "the eight sybil rates tested.", ""]
 
 # ---- TASER: sweep lambda -----------------------------------------------
 section = "TASER: Detection threshold (lambda)"

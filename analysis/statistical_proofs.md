@@ -20,10 +20,9 @@ F1 distributions across the seven detectors.
 
 ## Test 2: Pairwise Wilcoxon signed-rank tests
 
-With n = 4 paired observations (one per sybil rate), the Wilcoxon signed-rank
-test is appropriate. The exact critical value at alpha = 0.05 (two-tailed) for
-n = 4 is W_crit = 0, meaning the test rejects H0 only when all differences are
-in the same direction. We report the W statistic and p-value.
+With n = 8 paired observations (one per sybil rate), the Wilcoxon signed-rank
+test is appropriate and has sufficient power to detect consistent differences.
+We report the W statistic and two-sided p-value for each key comparison.
 
 | Detector A | Detector B | W stat | p-value | Significant (p<0.05)? |
 |---|---|---|---|---|

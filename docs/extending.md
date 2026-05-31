@@ -113,4 +113,4 @@ Decisions are made per vehicle, not per step. A vehicle gets one final label app
 
 Unsupervised detectors like IQR and k-Means must not read `df["is_sybil"]` during `fit()`. The framework supplies ground truth only for evaluation, not for training. Supervised detectors like Random Forest may use it.
 
-If you want proper generalization testing, split inside `fit()` and train only on the training half. The current benchmark evaluates on the full dataset (in-sample), which gives optimistic numbers for supervised methods.
+If you want proper generalization testing, split inside `fit()` and train only on the training half. The benchmark already does this for Random Forest (5-fold CV by vehicle_id) and LSTM (80/20 split by vehicle_id). New detectors that implement `cv_evaluate()` will automatically receive the same OOS treatment in `benchmark.py`.
