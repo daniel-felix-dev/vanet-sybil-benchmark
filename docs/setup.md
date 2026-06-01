@@ -430,7 +430,7 @@ This is expected behavior. With fewer than 12% positive records, the LSTM defaul
 An older version of `benchmark_results.csv` is present. Delete it and re-run `python benchmark.py`.
 
 **`benchmark.py` takes more than 2 hours**
-GWO runs 180 Random Forest fits per sybil rate. Remove `GWORFDetector` from `ALL_DETECTORS` in `detectors/__init__.py` to reduce runtime to approximately 8 minutes.
+GWO (`gwo_rf_detector.py`) is not included in `ALL_DETECTORS` by default. If you added it back manually, it will run 180 RF fits per sybil rate. Remove `GWORFDetector` from `ALL_DETECTORS` in `detectors/__init__.py` to eliminate this bottleneck.
 
 **TensorFlow warnings about CUDA or GPU**
 TensorFlow on native Windows does not support GPU acceleration from version 2.11 onward. This is expected. The LSTM runs on CPU without any changes to the code.
