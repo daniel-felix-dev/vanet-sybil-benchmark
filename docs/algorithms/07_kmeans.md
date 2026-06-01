@@ -184,9 +184,9 @@ Procedure kMeans.fit(D):
 
 | Sybil Rate | F1 | Precision | Recall | Specificity |
 |---|---|---|---|---|
-| All rates | **0.000** | **0.000** | **0.000** | **0.997** |
+| All rates | **0.000** | **0.000** | **0.000** | **0.998** |
 
-F1 = 0.000 at every tested sybil rate. The very high specificity (0.997) confirms that the detector rarely produces false positives -- it simply fails to detect any Sybil vehicles at all.
+F1 = 0.000 at every tested sybil rate. The very high specificity (0.998) confirms that the detector rarely produces false positives -- it simply fails to detect any Sybil vehicles at all.
 
 ---
 
