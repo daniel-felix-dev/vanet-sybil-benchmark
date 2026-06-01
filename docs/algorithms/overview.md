@@ -71,7 +71,7 @@ All other detectors are dominated:
 
 ## 6. Design Decisions and Trade-offs
 
-### Why these 7 algorithms?
+### Why these 6 algorithms?
 
 The algorithms were selected to cover the space of approaches used in the VANET Sybil detection literature: one from each of the four paradigms (statistical, positional, probabilistic, supervised ML), plus a clustering baseline and a meta-optimized variant of the best ML approach. Each algorithm originates from an independent open-source repository, so the benchmark measures the generalization of published approaches rather than in-house optimizations.
 

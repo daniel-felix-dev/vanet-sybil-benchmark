@@ -132,19 +132,21 @@ The fit runs in O(N log N) for sorting and O(N) for the per-vehicle check.
 
 ## 7. Results (OOS)
 
+Values are means over 5 seeds x 8 rates = 40 runs.
+
 | Sybil Rate | F1 | Precision | Recall | Specificity |
 |---|---|---|---|---|
-| 5% | 0.108 | 0.057 | 1.000 | 0.000 |
-| 10% | 0.110 | 0.058 | 1.000 | 0.000 |
-| 15% | 0.207 | 0.115 | 1.000 | 0.000 |
-| 20% | 0.347 | 0.210 | 1.000 | 0.000 |
-| 25% | 0.402 | 0.251 | 1.000 | 0.000 |
-| 30% | 0.439 | 0.281 | 1.000 | 0.000 |
-| 35% | 0.516 | 0.347 | 1.000 | 0.000 |
+| 5% | 0.109 | 0.058 | 1.000 | 0.000 |
+| 10% | 0.108 | 0.057 | 1.000 | 0.000 |
+| 15% | 0.199 | 0.110 | 1.000 | 0.000 |
+| 20% | 0.343 | 0.207 | 1.000 | 0.000 |
+| 25% | 0.396 | 0.247 | 1.000 | 0.000 |
+| 30% | 0.443 | 0.284 | 1.000 | 0.000 |
+| 35% | 0.608 | 0.474 | 1.000 | 0.200 |
 | 40% | **1.000** | **1.000** | **1.000** | **1.000** |
 | **Mean** | **0.401** | **0.305** | **1.000** | **0.150** |
 
-Recall is perfect (1.000) at all sybil rates. Specificity is 0.000 at rates below 40%, meaning all legitimate vehicles are flagged as Sybil at those rates.
+Recall is perfect (1.000) at all sybil rates. Specificity is 0.000 at rates below 35%, meaning IQR flags essentially all vehicles as Sybil. At 35% (mean over 5 seeds) specificity rises to 0.200 as the IQR fence begins to discriminate; at 40% full discrimination is achieved.
 
 ---
 
