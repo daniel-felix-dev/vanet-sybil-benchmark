@@ -108,7 +108,7 @@ In the co-location attack model used in this benchmark:
 
 This is a fundamental model incompatibility: the algorithm assumes Sybil identities claim *different* locations; the attack model uses *identical* locations. The algorithm cannot detect co-location attacks regardless of parameter tuning.
 
-**At 20% and 30% sybil rate, marginal detection occurs (mean F1 = 0.034 and 0.065 over 5 seeds).** This results from boundary cases where different attackers' Sybil identities happen to be near the same RSU, and random vehicle routes produce occasional pairwise distances above 150 m. This is incidental and not reproducible: the effect averages to near zero across 5 seeds.
+**At 20% and 30% sybil rate, marginal detection occurs (mean F1 = 0.034 and 0.064 over 5 seeds).** This results from boundary cases where different attackers' Sybil identities happen to be near the same RSU, and random vehicle routes produce occasional pairwise distances above 150 m. This is incidental and not reproducible: the effect averages to near zero across 5 seeds.
 
 ---
 
@@ -171,12 +171,12 @@ Values are means over 5 seeds. Non-zero F1 at 20% and 30% is incidental (boundar
 | 15% | 0.000 | 0.000 | 0.000 | 0.995 |
 | 20% | 0.034 | 0.073 | 0.022 | 0.979 |
 | 25% | 0.000 | 0.000 | 0.000 | 0.991 |
-| 30% | 0.065 | 0.200 | 0.039 | 1.000 |
+| 30% | 0.064 | 0.200 | 0.039 | 1.000 |
 | 35% | 0.000 | 0.000 | 0.000 | 0.983 |
 | 40% | 0.000 | 0.000 | 0.000 | 0.995 |
 | **Mean** | **0.012** | **0.034** | **0.008** | **0.990** |
 
-The marginal F1 at 20% (0.034) and 30% (0.065) is not structural detection -- it results from coincidental vehicle trajectory overlaps. The low mean values confirm it is not reproducible across different random seeds.
+The marginal F1 at 20% (0.034) and 30% (0.064) is not structural detection -- it results from coincidental vehicle trajectory overlaps. The low mean values confirm it is not reproducible across different random seeds.
 
 ---
 

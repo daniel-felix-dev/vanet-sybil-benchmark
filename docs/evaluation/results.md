@@ -127,7 +127,7 @@ LSTM F1 std = 0.2575 reflects the bimodal behavior: F1 near 0 at sybil rates bel
 
 ### 4.4 RSU Detection is Consistently Near-Zero
 
-RSU mean F1 = 0.0123 across 40 runs. The only non-zero performance (F1=0.034 at 20% and F1=0.065 at 30%) is sporadic and not consistently reproduced across seeds. This confirms that RSU's failure is structural, not a coincidence of one seed.
+RSU mean F1 = 0.0123 across 40 runs. The only non-zero performance (F1=0.034 at 20% and F1=0.064 at 30%) is sporadic and not consistently reproduced across seeds. This confirms that RSU's failure is structural, not a coincidence of one seed.
 
 ---
 
