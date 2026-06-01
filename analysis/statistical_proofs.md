@@ -212,17 +212,17 @@ minority class. With early stopping at patience = 3, training ends before the
 network has seen enough Sybil examples to adjust its weights meaningfully.
 
 The transition from F1 = 0 to F1 > 0 occurs between 10% and 20% Sybil rate.
-At 20% (21.0% of records), LSTM achieves F1 = 0.842. At 30% (28.1%) it reaches
-F1 = 1.000. This threshold behavior is consistent with the class imbalance
-literature, where models typically require a minority fraction above 10-15%
-to train reliably without oversampling techniques like SMOTE.
+At 20% (21.0% of records), LSTM achieves F1 = 0.635 (mean over 5 seeds).
+At 30% (28.1%) it reaches F1 = 0.782. This threshold behavior is consistent
+with the class imbalance literature, where models typically require a minority
+fraction above 10-15% to train reliably without oversampling techniques like SMOTE.
 
 ![LSTM imbalance](figures/proofs_lstm_imbalance.png)
 
 ## Test 11: Random Forest CV variance at low sybil rates
 
-At 5% sybil rate, RF 5-fold CV produces f1_std = 0.330, the highest variance
-of any scenario. This is expected and not a defect in the method.
+At 5% sybil rate, RF 5-fold CV produces f1_std = 0.0675 (mean across 5 seeds),
+the highest variance of any scenario. This is expected and not a defect in the method.
 
 **Root cause:** With 5.7% positive records (443 Sybil out of 7754 total),
 stratified splitting by vehicle_id sometimes places very few Sybil vehicles in
