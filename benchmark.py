@@ -1,7 +1,7 @@
 """
 VANET Sybil Detection Benchmark
 ================================
-Runs all 7 detectors against each sybil-rate dataset and produces:
+Runs all 6 detectors against each sybil-rate dataset and produces:
   - results/metrics/benchmark_results.csv
   - figures/benchmark_*.png
 """

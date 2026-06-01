@@ -119,7 +119,7 @@ The transition from F1 = 0 to F1 > 0 occurs between 15% and 20% sybil rate, corr
 
 ### 4.3 AUC vs Operating-Point F1
 
-At 20% sybil rate, the LSTM achieves AUC = 0.9992 despite F1 = 0.667. This apparent contradiction is explained by the decision threshold:
+At 20% sybil rate, the LSTM achieves AUC = 1.0000 despite F1 = 0.635 (multi-seed mean). This apparent contradiction is explained by the decision threshold:
 
 - AUC measures the quality of the probability ranking across all possible thresholds.
 - F1 at the default threshold (0.5) reflects performance at one specific operating point.
@@ -195,21 +195,21 @@ Values are means over 5 seeds. F1 values at 5-15% are near zero due to class imb
 | Sybil Rate | F1 | Precision | Recall | Specificity | AUC |
 |---|---|---|---|---|---|
 | 5% | 0.000 | 0.000 | 0.000 | 1.000 | -- |
-| 10% | 0.160 | 0.100 | 0.400 | 0.929 | 0.840 |
+| 10% | 0.160 | 0.100 | 0.400 | 0.929 | 0.640 |
 | 15% | 0.248 | 0.156 | 0.700 | 0.600 | -- |
 | 20% | 0.635 | 0.667 | 0.650 | 0.906 | 0.999 |
 | 25% | 0.490 | 0.533 | 0.480 | 0.929 | -- |
-| 30% | 0.782 | 0.893 | 0.800 | 0.953 | 0.874 |
+| 30% | 0.782 | 0.893 | 0.800 | 0.953 | 0.930 |
 | 35% | 0.718 | 0.775 | 0.675 | 0.988 | -- |
-| 40% | 0.824 | 0.901 | 0.780 | 0.953 | 0.746 |
-| **Mean** | **0.482** | **0.503** | **0.561** | **0.907** | **0.865** |
+| 40% | 0.824 | 0.901 | 0.780 | 0.953 | 0.714 |
+| **Mean** | **0.482** | **0.503** | **0.561** | **0.907** | **0.821** |
 
 ---
 
 ## 8. Strengths
 
 - Captures temporal correlations that step-wise classifiers miss.
-- Excellent AUC (0.865 mean, 0.999 at 20%) when the positive class is adequately represented.
+- Excellent AUC (0.821 mean, 1.000 at 20%) when the positive class is adequately represented.
 - No feature engineering required beyond raw beacon data.
 
 ---

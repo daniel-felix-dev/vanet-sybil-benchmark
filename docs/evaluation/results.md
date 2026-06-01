@@ -55,7 +55,7 @@ F1 std interpretation: TASER's std of 0.0006 across 40 runs confirms that the re
 |---|---|---|---|---|---|
 | TASER Bayesian Trust | 1.0000 | 1.0000 | 1.0000 | 1.0000 | **1.0000** |
 | Random Forest | 0.9997 | 0.9999 | 0.9999 | 0.9999 | 0.9999 |
-| LSTM | 0.8400 | 0.9992 | 0.8741 | 0.7463 | 0.8649 |
+| LSTM | 0.6402 | 1.0000 | 0.9299 | 0.7140 | 0.8210 |
 
 AUC was computed on single-seed datasets (seed=42) and has not changed with the multi-seed experiment.
 
