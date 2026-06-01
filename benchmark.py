@@ -24,7 +24,7 @@ from detectors import ALL_DETECTORS
 
 RATES   = [5, 10, 15, 20, 25, 30, 35, 40]
 METRICS = ["accuracy", "precision", "recall", "f1", "specificity"]
-COLORS  = ["#2196F3","#4CAF50","#F44336","#FF9800","#9C27B0","#00BCD4","#795548"]
+COLORS  = ["#2196F3","#4CAF50","#F44336","#FF9800","#9C27B0","#795548"]
 
 STYLE = {"figure.figsize":(10,6),"axes.spines.top":False,
          "axes.spines.right":False,"axes.grid":True,"grid.alpha":0.3,"font.size":11}

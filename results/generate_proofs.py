@@ -36,12 +36,21 @@ ANA_DIR = os.path.join(BASE, "analysis")
 FIG_DIR = os.path.join(ANA_DIR, "figures")
 os.makedirs(FIG_DIR, exist_ok=True)
 
+# Aggregated: one row per (detector, rate), mean over seeds
 df  = pd.read_csv(DATA)
-RATES = sorted(df["sybil_rate"].unique())   # now 8 rates: 5,10,15,20,25,30,35,40
+RATES = sorted(df["sybil_rate"].unique())
+
+# Raw: one row per (detector, rate, seed) -- used for statistical tests (n=40 per detector)
+RAW_PATH = os.path.join(BASE, "results", "metrics", "multi_seed_raw.csv")
+if os.path.exists(RAW_PATH):
+    df_raw  = pd.read_csv(RAW_PATH)
+    N_SEEDS = df_raw["seed"].nunique()
+else:
+    df_raw  = df.copy()
+    N_SEEDS = 1
 DETS  = [
     "TASER Bayesian Trust",
     "Random Forest",
-    "Random Forest + GWO",
     "LSTM",
     "IQR Speed Threshold",
     "RSU Position Verification",
@@ -50,7 +59,6 @@ DETS  = [
 COLORS = {
     "TASER Bayesian Trust":      "#2196F3",
     "Random Forest":             "#4CAF50",
-    "Random Forest + GWO":       "#8BC34A",
     "LSTM":                      "#FF9800",
     "IQR Speed Threshold":       "#F44336",
     "RSU Position Verification": "#9C27B0",
@@ -69,14 +77,19 @@ def subsection(t): h(); h(f"### {t}"); h()
 h("# Statistical Proofs")
 h()
 h("Every claim in the scenario guide and detector profiles is backed by one or more")
-h("of the tests below. The benchmark covers eight sybil rates (n = 8 per detector),")
-h("which gives the non-parametric tests sufficient power to detect meaningful")
-h("differences. Standard t-tests are avoided because normality cannot be assumed")
-h("with small samples; Wilcoxon signed-rank and Kruskal-Wallis are used instead.")
+h(f"of the tests below. The benchmark uses {N_SEEDS} random seeds x 8 sybil rates,")
+h(f"giving n = {N_SEEDS * 8} observations per detector for the Kruskal-Wallis and")
+h("Wilcoxon tests. Standard t-tests are avoided because normality cannot be assumed;")
+h("Wilcoxon signed-rank and Kruskal-Wallis are used throughout.")
 h()
 
 # ── helper: get F1 vector for a detector ─────────────────────────────────────
 def f1(det):
+    """F1 values for a detector: all (rate, seed) combinations from raw data."""
+    return df_raw[df_raw["detector"] == det]["f1"].values
+
+def f1_agg(det):
+    """Mean F1 per rate (aggregated over seeds) -- for regression and plots."""
     return df[df["detector"] == det].sort_values("sybil_rate")["f1"].values
 
 def metric(det, col):
@@ -131,7 +144,6 @@ pairs = [
     ("TASER Bayesian Trust",  "Random Forest"),
     ("TASER Bayesian Trust",  "LSTM"),
     ("TASER Bayesian Trust",  "IQR Speed Threshold"),
-    ("Random Forest",         "Random Forest + GWO"),
     ("Random Forest",         "LSTM"),
     ("Random Forest",         "RSU Position Verification"),
     ("Random Forest",         "Dynamic k-Means"),
@@ -220,7 +232,6 @@ key_pairs = [
     ("TASER Bayesian Trust",  "Random Forest"),
     ("TASER Bayesian Trust",  "LSTM"),
     ("TASER Bayesian Trust",  "IQR Speed Threshold"),
-    ("Random Forest",         "Random Forest + GWO"),
     ("Random Forest",         "LSTM"),
     ("Random Forest",         "RSU Position Verification"),
     ("LSTM",                  "IQR Speed Threshold"),
@@ -257,7 +268,7 @@ h("|---|---|---|---|---|")
 reg_results = {}
 for det in DETS:
     x = np.array(RATES, dtype=float)
-    y = f1(det)
+    y = f1_agg(det)   # mean per rate over seeds, for regression
     slope, intercept, r, p, se = stats.linregress(x, y)
     r2 = r**2
     trend = "improves" if slope > 0 else ("flat" if abs(slope) < 0.001 else "degrades")
@@ -274,7 +285,7 @@ axes = axes.flatten()
 for idx, det in enumerate(DETS):
     ax = axes[idx]
     x = np.array(RATES, dtype=float)
-    y = f1(det)
+    y = f1_agg(det)
     slope, intercept, r2, p = reg_results[det]
     ax.scatter(x, y, color=COLORS[det], s=120, zorder=3)
     xfit = np.linspace(8, 42, 100)
@@ -507,15 +518,12 @@ for det in DETS:
     h(f"| {det} | {f1m:.4f} | {t:.2f} | {dom_str} | {pareto} |")
 
 h()
-h("With out-of-sample (OOS) evaluation applied equally to both RF and RF+GWO,")
-h("GWO achieves slightly higher mean F1 (0.893 vs 0.882 for RF). RF therefore")
-h("does NOT Pareto-dominate GWO when evaluation is fair: GWO wins on F1 but")
-h("loses badly on training time (117 s vs 0.57 s, a 205x overhead).")
+h("With out-of-sample (OOS) evaluation, TASER (F1=0.999, 0.64s) strictly")
+h("dominates RF (F1=0.882, 2.7s) on both quality and speed. Only TASER and IQR")
+h("sit on the Pareto frontier. All other detectors are dominated.")
 h("")
-h("The Pareto frontier in F1 vs time space still excludes GWO because TASER")
-h("achieves F1 = 0.999 in 0.87 s, strictly dominating GWO on both dimensions.")
-h("RF (F1=0.882, 0.57 s) is not dominated by TASER (F1=0.999, 0.87 s) because")
-h("RF is faster, so both remain on the frontier along with IQR.")
+h("Note: GWO was excluded from the multi-seed benchmark (Wilcoxon p=0.640,")
+h("Cohen's d=0.18 vs RF baseline). Single-seed results are in gwo_rf_detector.py.")
 
 # ── Fig: Pareto frontier plot
 fig, ax = plt.subplots(figsize=(13, 8))

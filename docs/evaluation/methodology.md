@@ -146,7 +146,7 @@ The overestimation is largest at low sybil rates (5-10%), where the classifier l
 
 ## 4. OOS Evaluation Protocols
 
-### 4.1 For Random Forest and RF+GWO: 5-Fold Cross-Validation by Vehicle ID
+### 4.1 For Random Forest: 5-Fold Cross-Validation by Vehicle ID
 
 ```
 Input: D = dataset, k = 5

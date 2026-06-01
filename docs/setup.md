@@ -25,7 +25,7 @@ This document covers everything needed to install, configure, and run the VANET 
 | Operating System | Windows 10 / Windows 11 | Linux and macOS require path adjustments (see Section 4) |
 | Python | 3.9 | Tested on 3.11. Python 3.12 also works. |
 | SUMO | 1.12.0 | Default install path: `C:\Program Files (x86)\Eclipse\Sumo` |
-| RAM | 8 GB | 16 GB recommended when running GWO and LSTM simultaneously |
+| RAM | 8 GB | 16 GB recommended when running LSTM |
 | Disk | 2 GB free | For datasets, figures, and model checkpoints |
 | GPU | Optional | TensorFlow 2.11+ does not use GPU on native Windows. LSTM runs on CPU. |
 
@@ -118,7 +118,7 @@ pip install scikit-learn tensorflow joblib pandas numpy matplotlib scipy
 
 | Package | Version tested | Purpose |
 |---|---|---|
-| scikit-learn | 1.8.0 | IQR, Random Forest, GWO-RF, k-Means |
+| scikit-learn | 1.8.0 | IQR, Random Forest, k-Means |
 | tensorflow | 2.21.0 | LSTM detector |
 | pandas | any | Dataset I/O and manipulation |
 | numpy | any | Numerical operations |
@@ -302,7 +302,7 @@ Running scenario sybil20% seed=42...
 python benchmark.py
 ```
 
-Evaluates all 7 detectors on all 8 datasets using out-of-sample protocols (5-fold CV by vehicle_id for RF/GWO, 80/20 vehicle split for LSTM). Runtime: approximately 60 minutes with all detectors. Approximately 8 minutes without GWO.
+Evaluates all 6 detectors (IQR, RSU, TASER, RF, LSTM, k-Means) on all 8 datasets using out-of-sample protocols (5-fold CV by vehicle_id for RF, 80/20 vehicle split for LSTM). Runtime: approximately 20 minutes.
 
 Expected output per scenario:
 
@@ -361,21 +361,7 @@ Runs all 11 statistical tests (Kruskal-Wallis, Wilcoxon, bootstrap CI, Cohen's d
 python simulation/collect_dataset.py 20 30    # only 20% and 30%
 ```
 
-### Skip GWO to save time (~55 minutes saved)
-
-Edit `detectors/__init__.py` and remove the GWO entry:
-
-```python
-ALL_DETECTORS = [
-    IQRDetector,
-    RSUDetector,
-    TASERDetector,
-    RFDetector,
-    # GWORFDetector,    <-- comment out
-    LSTMDetector,
-    KMeansDetector,
-]
-```
+**Note on GWO:** The Grey Wolf Optimizer variant of Random Forest (`gwo_rf_detector.py`) is not included in `ALL_DETECTORS` by default. A single-seed evaluation showed no statistically significant benefit over the RF baseline (Wilcoxon p=0.640, Cohen's d=0.18). It can be added back by importing `GWORFDetector` in `detectors/__init__.py` if needed for comparison purposes.
 
 ### Run a single detector
 

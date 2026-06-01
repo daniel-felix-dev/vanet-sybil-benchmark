@@ -188,7 +188,7 @@ scikit-learn parallelizes tree training with `n_jobs=-1` (all CPU cores). Measur
 ## 8. Strengths
 
 - Strong generalization (F1 = 0.975 OOS at 30%) without requiring domain-specific feature engineering.
-- Fast training (2.7 s) compared to GWO (98 s) and LSTM (16.8 s).
+- Fast training (2.7 s) compared to LSTM (16.8 s). GWO -- a metaheuristic variant of RF -- takes 98 s per run and was shown to provide no statistically significant improvement (Wilcoxon p=0.640).
 - Parallelizable across CPU cores.
 - Robust to missing or irrelevant features (random feature subsampling naturally downweights unhelpful features).
 

@@ -29,7 +29,6 @@ RATES     = sorted(df["sybil_rate"].unique())   # now 8 rates: 5,10,15,20,25,30,
 DETECTORS = [
     "TASER Bayesian Trust",
     "Random Forest",
-    "Random Forest + GWO",
     "LSTM",
     "IQR Speed Threshold",
     "RSU Position Verification",
@@ -39,7 +38,6 @@ METRICS = ["accuracy", "precision", "recall", "f1", "specificity"]
 COLORS  = {
     "TASER Bayesian Trust":      "#2196F3",
     "Random Forest":             "#4CAF50",
-    "Random Forest + GWO":       "#8BC34A",
     "LSTM":                      "#FF9800",
     "IQR Speed Threshold":       "#F44336",
     "RSU Position Verification": "#9C27B0",

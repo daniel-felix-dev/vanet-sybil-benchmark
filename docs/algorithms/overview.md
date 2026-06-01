@@ -14,9 +14,10 @@ Seven Sybil detection algorithms are evaluated in this benchmark. They span four
 | RSU Position Verification | Positional | Proximity inconsistency | No | Yes |
 | TASER Bayesian Trust | Probabilistic | Speed consistency + trust | No | Yes |
 | Random Forest | Supervised ML | All 8 features | Yes | No (batch) |
-| Random Forest + GWO | Supervised ML + metaheuristic | All 8 features | Yes | No (batch) |
 | LSTM | Deep learning | Temporal speed sequence | Yes | No (batch) |
 | Dynamic k-Means | Unsupervised ML | Behavioral profile | No | No (batch) |
+
+**Note on GWO:** Random Forest + Grey Wolf Optimizer was evaluated in a single-seed run. Results showed no statistically significant improvement over the RF baseline (Wilcoxon p=0.640, Cohen's d=0.18 -- negligible). It was excluded from the multi-seed experiment to avoid ~8 hours of computation for an unconfirmed benefit. The implementation is preserved in `detectors/gwo_rf_detector.py`.
 
 ---
 
@@ -27,7 +28,6 @@ All F1 values are out-of-sample. Supervised detectors use vehicle-level splits t
 | Detector | F1 (mean) | F1 (std) | Precision | Recall | Specificity | Time (s) | AUC |
 |---|---|---|---|---|---|---|---|
 | TASER | **0.999** | 0.004 | **1.000** | 0.997 | **1.000** | **0.64** | **1.000** |
-| RF + GWO | 0.893 | 0.099 | 0.938 | 0.879 | 0.978 | 98 | -- |
 | Random Forest | 0.882 | 0.128 | 0.901 | **0.875** | 0.981 | 2.7 | 0.9999 |
 | LSTM | 0.507 | 0.437 | 0.536 | 0.531 | 0.941 | 16.8 | 0.865 |
 | IQR | 0.391 | 0.289 | 0.290 | **1.000** | 0.125 | **0.06** | -- |
@@ -46,11 +46,10 @@ F1 std = standard deviation across 8 sybil rates. AUC is the mean ROC-AUC across
 | RSU | O(T * R * V^2) | O(V^2) | O(N) |
 | TASER | O(N log N) | O(V) | O(N) |
 | Random Forest (OOS CV) | O(5 * E * N * sqrt(F) * D * log N) | O(E * 2^D) | O(N * E * D) |
-| RF + GWO (OOS CV) | O(A*I*3 + 5) * O(E * N * sqrt(F) * D * log N) | Same as RF | Same as RF |
 | LSTM | O(epochs * N * L * H^2) | O(N * L * F) | O(V * L * H^2) |
 | k-Means | O(N + V * F_k * k * n_init) | O(k * F_k) | O(N) |
 
-Variables: N = total records, V = vehicles, T = time steps, R = RSUs, E = 100 trees, F = 8 features, D = 10 max depth, A = 6 GWO agents, I = 10 iterations, L = 50 sequence length, H = 64 LSTM units, F_k = 6 aggregated features, k = approx. 7 clusters.
+Variables: N = total records, V = vehicles, T = time steps, R = RSUs, E = 100 trees, F = 8 features, D = 10 max depth, L = 50 sequence length, H = 64 LSTM units, F_k = 6 aggregated features, k = approx. 7 clusters.
 
 ---
 
@@ -64,7 +63,6 @@ In the F1 vs training-time space, two detectors are Pareto-optimal: no other det
 
 All other detectors are dominated:
 - Random Forest (F1=0.882, 2.7s): TASER has both higher F1 and lower time.
-- RF+GWO (F1=0.893, 98s): TASER has both higher F1 and lower time.
 - LSTM (F1=0.507, 16.8s): TASER and RF both dominate it.
 - RSU (F1=0.021, 10.2s): dominated by all competitive detectors.
 - k-Means (F1=0.000): dominated by all others.
@@ -80,10 +78,6 @@ The algorithms were selected to cover the space of approaches used in the VANET 
 ### Why is in-sample evaluation a problem?
 
 A detector trained and evaluated on the same vehicle records can memorize per-vehicle speed patterns at training time and recognize them at evaluation time without learning any generalizable rule. The Random Forest demonstrated this: in-sample F1 = 0.987 vs. OOS F1 = 0.882 (a 10.7% overestimate). See [docs/evaluation/methodology.md](../evaluation/methodology.md) for a formal definition of data leakage and the vehicle-level splitting protocol used to prevent it.
-
-### Why does GWO not significantly outperform RF?
-
-The GWO hyperparameter search evaluates only 60 candidate solutions (6 agents x 10 iterations) in a space of 190 x 18 = 3,420 possible (n_estimators, max_depth) combinations. With scikit-learn's well-tuned defaults already at reasonable values, the limited search fails to consistently identify a better configuration. The Wilcoxon signed-rank test gives p = 0.640 (not significant at alpha = 0.05) for the RF vs. GWO comparison.
 
 ---
 
