@@ -179,7 +179,7 @@ F1 std here is the standard deviation across the 5 seeds for that sybil rate (no
 | 30% | 0.967 | 0.009 | 0.954 | 0.981 | 0.980 |
 | 35% | 0.958 | 0.003 | 0.937 | 0.982 | 0.963 |
 | 40% | 0.970 | 0.004 | 0.955 | 0.987 | 0.968 |
-| **Mean** | **0.895** | **0.024** | **0.916** | **0.886** | **0.980** |
+| **Mean** | **0.894** | **0.024** | **0.916** | **0.886** | **0.980** |
 
 **Note on high variance at low sybil rates:** At 5% sybil rate, F1_std = 0.330. This reflects that with only 443 Sybil records out of 7,754 total (5.71%), some CV folds receive too few Sybil vehicles in the training partition to learn a stable decision boundary. Those folds produce F1 = 0 or near 0, while folds with more Sybil vehicles produce near-perfect F1. The spread between folds drives the high standard deviation.
 

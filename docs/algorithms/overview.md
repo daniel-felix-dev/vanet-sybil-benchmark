@@ -62,7 +62,7 @@ In the F1 vs training-time space, two detectors are Pareto-optimal: no other det
 **IQR (F1=0.401, time=0.05s):** The absolute fastest detector. While its F1 is moderate, it is faster than TASER and cannot be beaten on speed by any detector with higher F1.
 
 All other detectors are dominated:
-- Random Forest (F1=0.895, 2.78s): TASER has both higher F1 and lower time.
+- Random Forest (F1=0.894, 2.78s): TASER has both higher F1 and lower time.
 - LSTM (F1=0.507, 16.8s): TASER and RF both dominate it.
 - RSU (F1=0.012, 10.6s): dominated by all competitive detectors.
 - k-Means (F1=0.000): dominated by all others.

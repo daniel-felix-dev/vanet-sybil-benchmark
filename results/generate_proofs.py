@@ -337,11 +337,14 @@ for rate in RATES:
       f"{min_s:.3f} | {fence < min_s} -- {is_nondisc} |")
 
 h()
-h("At 10-30% Sybil rate the fence falls below the minimum recorded speed,")
-h("meaning no vehicle ever crosses it. The detector defaults to flagging based")
-h("on a different condition (any vehicle with at least one reading below Q3) which")
-h("fires for all vehicles. At 40%, the fence rises above 0 and cleanly separates")
-h("the two populations because enough anomalous readings have shifted Q1 downward.")
+h("At sybil rates 5-35%, the IQR fence is positive (above 0 m/s). This means")
+h("legitimate vehicles that stop at intersections (speed = 0) are BELOW the fence")
+h("and get flagged as Sybil, producing specificity near zero. Sybil vehicles are")
+h("also flagged because their Gaussian noise frequently produces readings above the")
+h("upper fence (Q3 + 1.5*IQR). Both classes get flagged, so recall = 1 but")
+h("precision is low. At 40%, the fence drops below 0 m/s (-0.356), so no vehicle")
+h("is below it via the lower bound. Sybil vehicles are still caught via the upper")
+h("fence, and legitimate vehicles are not -- full discrimination is achieved.")
 
 # ── Fig: fence vs distribution
 fig, axes = plt.subplots(1, 4, figsize=(22, 5))

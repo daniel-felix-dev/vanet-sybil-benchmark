@@ -105,11 +105,14 @@ actual datasets and compare it to the minimum observable speed.
 | 35% | 8.066 | 13.300 | 5.233 | **0.216** | 0.000 | False -- cuts off 5.3% of data |
 | 40% | 7.862 | 13.341 | 5.479 | **-0.356** | 0.000 | True -- non-discriminative |
 
-At 10-30% Sybil rate the fence falls below the minimum recorded speed,
-meaning no vehicle ever crosses it. The detector defaults to flagging based
-on a different condition (any vehicle with at least one reading below Q3) which
-fires for all vehicles. At 40%, the fence rises above 0 and cleanly separates
-the two populations because enough anomalous readings have shifted Q1 downward.
+At sybil rates 5-35%, the IQR fence is positive (above 0 m/s). This means
+legitimate vehicles that stop at intersections (speed = 0) are BELOW the fence
+and get flagged as Sybil, producing specificity near zero. Sybil vehicles are
+also flagged because their Gaussian noise frequently produces readings above the
+upper fence (Q3 + 1.5*IQR). Both classes get flagged, so recall = 1 but
+precision is low. At 40%, the fence drops below 0 m/s (-0.356), so no vehicle
+is below it via the lower bound. Sybil vehicles are still caught via the upper
+fence, and legitimate vehicles are not -- full discrimination is achieved.
 
 ![IQR fence](figures/proofs_iqr_fence.png)
 
