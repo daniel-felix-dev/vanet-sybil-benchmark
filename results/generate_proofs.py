@@ -108,7 +108,7 @@ h(f"H statistic = {H:.4f}  |  p-value = {p_kw:.6f}  |  df = {len(DETS)-1}")
 h()
 if p_kw < 0.05:
     h(f"p < 0.05: **H0 rejected.** There is a statistically significant difference in")
-    h("F1 distributions across the seven detectors.")
+    h("F1 distributions across the six detectors.")
 else:
     h("p >= 0.05: cannot reject H0.")
 

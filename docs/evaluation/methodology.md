@@ -131,14 +131,14 @@ No vehicle appears in both partitions. This ensures the classifier cannot recogn
 
 In this benchmark, Random Forest F1 under the two protocols:
 
-| Sybil Rate | In-sample F1 | OOS F1 (5-fold CV) | Overestimate |
+| Sybil Rate | In-sample F1 | OOS F1 (5-fold CV, mean 5 seeds) | Overestimate |
 |---|---|---|---|
-| 5% | ~0.967 | 0.665 | +45.4% |
-| 10% | ~0.963 | 0.694 | +38.8% |
-| 20% | ~0.990 | 0.954 | +3.8% |
-| 30% | ~0.994 | 0.975 | +2.0% |
-| 40% | ~0.996 | 0.967 | +3.0% |
-| **Mean** | ~0.987 | 0.882 | **+11.9%** |
+| 5% | ~0.967 | 0.741 | +30.5% |
+| 10% | ~0.963 | 0.754 | +27.7% |
+| 20% | ~0.990 | 0.953 | +3.9% |
+| 30% | ~0.994 | 0.967 | +2.8% |
+| 40% | ~0.996 | 0.970 | +2.7% |
+| **Mean** | ~0.987 | **0.895** | **~10%** |
 
 The overestimation is largest at low sybil rates (5-10%), where the classifier learns fewer positive examples and memorizes them more aggressively.
 
@@ -237,7 +237,7 @@ Given the same seed, every number in the benchmark results is exactly reproducib
 
 ### 5.2 Evaluation Grid
 
-All 7 detectors are evaluated at all 8 sybil rates (5%, 10%, 15%, 20%, 25%, 30%, 35%, 40%), producing 56 measurement points total. Statistical comparisons use all 8 observations per detector as paired samples.
+All 6 detectors are evaluated at all 8 sybil rates (5% to 40%) with 5 random seeds, producing 240 raw observations total. Statistical comparisons use n=40 observations per detector (5 seeds x 8 rates).
 
 ### 5.3 Limitations
 
@@ -253,10 +253,10 @@ All statistical tests are performed in `results/generate_proofs.py` using the sc
 
 | Test | Purpose | n per group |
 |---|---|---|
-| Kruskal-Wallis H-test | Overall comparison of all 7 detectors | 8 per detector |
+| Kruskal-Wallis H-test | Overall comparison of all 6 detectors | 40 per detector |
 | Wilcoxon signed-rank | Pairwise comparison (key pairs) | 8 paired |
 | Bootstrap 95% CI | Mean F1 confidence interval | 10,000 resamples |
 | Cohen's d | Effect size for key comparisons | 8 per group |
-| Linear regression | F1 trend vs sybil rate | 8 per detector |
+| Linear regression | F1 trend vs sybil rate | 40 per detector |
 
 See [docs/evaluation/statistical_analysis.md](statistical_analysis.md) for the full test results with computed values.

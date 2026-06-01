@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
-Six Sybil detection algorithms are evaluated in this multi-seed benchmark. They span four distinct algorithmic paradigms: statistical thresholding, infrastructure-based position verification, probabilistic trust modeling, and machine learning. This document provides a high-level comparison across all seven before the individual algorithm documents present full technical details.
+Six Sybil detection algorithms are evaluated in this multi-seed benchmark. They span four distinct algorithmic paradigms: statistical thresholding, infrastructure-based position verification, probabilistic trust modeling, and machine learning. This document provides a high-level comparison across all six before the individual algorithm documents present full technical details.
 
 ---
 
@@ -64,7 +64,7 @@ In the F1 vs training-time space, two detectors are Pareto-optimal: no other det
 All other detectors are dominated:
 - Random Forest (F1=0.895, 2.78s): TASER has both higher F1 and lower time.
 - LSTM (F1=0.507, 16.8s): TASER and RF both dominate it.
-- RSU (F1=0.021, 10.2s): dominated by all competitive detectors.
+- RSU (F1=0.012, 10.6s): dominated by all competitive detectors.
 - k-Means (F1=0.000): dominated by all others.
 
 ---
@@ -77,7 +77,7 @@ The algorithms were selected to cover the space of approaches used in the VANET 
 
 ### Why is in-sample evaluation a problem?
 
-A detector trained and evaluated on the same vehicle records can memorize per-vehicle speed patterns at training time and recognize them at evaluation time without learning any generalizable rule. The Random Forest demonstrated this: in-sample F1 = 0.987 vs. OOS F1 = 0.882 (a 10.7% overestimate). See [docs/evaluation/methodology.md](../evaluation/methodology.md) for a formal definition of data leakage and the vehicle-level splitting protocol used to prevent it.
+A detector trained and evaluated on the same vehicle records can memorize per-vehicle speed patterns at training time and recognize them at evaluation time without learning any generalizable rule. The Random Forest demonstrated this: in-sample F1 approximately 0.987 vs. OOS F1 = 0.895 (multi-seed, a ~9% overestimate). See [docs/evaluation/methodology.md](../evaluation/methodology.md) for a formal definition of data leakage and the vehicle-level splitting protocol used to prevent it.
 
 ---
 

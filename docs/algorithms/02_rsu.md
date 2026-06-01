@@ -170,7 +170,7 @@ At 10 million operations per second in Python, this would take approximately 7,2
 | 30% | 0.000 | 0.000 | 0.000 | 1.000 |
 | 35% | 0.000 | 0.000 | 0.000 | 1.000 |
 | 40% | 0.000 | 0.000 | 0.000 | 1.000 |
-| **Mean** | **0.021** | **0.045** | **0.014** | **0.991** |
+| **Mean** | **0.012** | **0.034** | **0.008** | **0.990** |
 
 The F1 = 0.171 at 20% sybil rate is not structural detection -- it results from coincidental vehicle trajectory overlaps and is not reproducible across different random seeds.
 

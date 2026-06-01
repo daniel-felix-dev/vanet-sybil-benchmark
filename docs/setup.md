@@ -237,7 +237,7 @@ for n in names:
 "
 ```
 
-Expected: 7 detectors listed.
+Expected: 6 detectors listed.
 
 ### Check 4: Benchmark smoke test (fast)
 
@@ -398,7 +398,7 @@ python simulation/run_multi_seed.py            # 5 seeds x 8 rates (full)
 |---|---|---|
 | `results/datasets/dataset_sybil{N}.csv` | `collect_dataset.py` | Per-vehicle per-step features, 8 files |
 | `results/metrics/benchmark_results.csv` | `benchmark.py` | 56 rows: F1, precision, recall, specificity, fit_time per (detector, rate) |
-| `figures/benchmark_f1.png` | `benchmark.py` | F1 vs sybil rate, all 7 detectors |
+| `figures/benchmark_f1.png` | `benchmark.py` | F1 vs sybil rate, all 6 detectors |
 | `figures/benchmark_accuracy.png` | `benchmark.py` | Accuracy vs sybil rate |
 | `figures/benchmark_metrics_20pct.png` | `benchmark.py` | All 5 metrics at 20% sybil rate |
 | `figures/benchmark_precision_recall.png` | `benchmark.py` | Precision-recall scatter |

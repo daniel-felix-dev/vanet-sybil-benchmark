@@ -14,7 +14,7 @@ Wilcoxon signed-rank and Kruskal-Wallis are used throughout.
 H statistic = 193.1274  |  p-value = 0.000000  |  df = 5
 
 p < 0.05: **H0 rejected.** There is a statistically significant difference in
-F1 distributions across the seven detectors.
+F1 distributions across the six detectors.
 
 ![Kruskal-Wallis distributions](figures/proofs_kruskal_wallis.png)
 

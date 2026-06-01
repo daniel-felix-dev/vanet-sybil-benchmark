@@ -16,7 +16,7 @@ Statistical tests (Kruskal-Wallis, Wilcoxon, bootstrap) use the raw file with n=
 
 ## 2. Test 1: Global Comparison (Kruskal-Wallis)
 
-**Purpose:** Determine whether all 7 detectors have the same underlying F1-Score distribution. If not, at least one pair differs.
+**Purpose:** Determine whether all 6 detectors have the same underlying F1-Score distribution. If not, at least one pair differs.
 
 **Test:** Kruskal-Wallis H-test (non-parametric one-way ANOVA). Chosen over standard ANOVA because normality cannot be assumed. Uses n=40 observations per group (5 seeds x 8 rates).
 
@@ -33,7 +33,7 @@ df          = 5
 n per group = 40 (5 seeds x 8 sybil rates)
 ```
 
-**Conclusion:** H0 is rejected at alpha = 0.001 (or any standard significance level). There is a statistically significant difference in F1-Score distributions among the 7 detectors.
+**Conclusion:** H0 is rejected at alpha = 0.001 (or any standard significance level). There is a statistically significant difference in F1-Score distributions among the 6 detectors.
 
 **Interpretation:** This result justifies performing post-hoc pairwise comparisons. The benchmark does not merely show numerically different F1 values -- the differences are statistically significant.
 
