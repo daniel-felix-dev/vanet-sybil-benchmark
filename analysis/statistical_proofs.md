@@ -193,7 +193,7 @@ Cohen's d=0.18 vs RF baseline). Single-seed results are in gwo_rf_detector.py.
 
 ## Test 10: LSTM failure at 10% - class imbalance analysis
 
-LSTM produces F1 = 0.000 at 10% Sybil rate. The root cause is class imbalance.
+LSTM produces F1 = 0.16 at 10% Sybil rate (mean over 5 seeds; individual seeds may produce F1 = 0). The root cause is class imbalance.
 
 | Sybil Rate | Total records | Sybil records | Sybil fraction | LSTM F1 |
 |---|---|---|---|---|

@@ -578,7 +578,9 @@ h("![Pareto frontier](figures/proofs_pareto.png)")
 # ─────────────────────────────────────────────────────────────────────────────
 section("Test 10: LSTM failure at 10% - class imbalance analysis")
 
-h("LSTM produces F1 = 0.000 at 10% Sybil rate. The root cause is class imbalance.")
+lstm_f1_10 = round(float(df[(df["detector"]=="LSTM") & (df["sybil_rate"]==10)]["f1"].values[0]), 3)
+h(f"LSTM produces F1 = {lstm_f1_10} at 10% Sybil rate (mean over 5 seeds; individual seeds"
+  + " may produce F1 = 0). The root cause is class imbalance.")
 h()
 h("| Sybil Rate | Total records | Sybil records | Sybil fraction | LSTM F1 |")
 h("|---|---|---|---|---|")

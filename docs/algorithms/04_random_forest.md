@@ -181,7 +181,7 @@ F1 std here is the standard deviation across the 5 seeds for that sybil rate (no
 | 40% | 0.970 | 0.004 | 0.955 | 0.987 | 0.968 |
 | **Mean** | **0.894** | **0.024** | **0.916** | **0.886** | **0.980** |
 
-**Note on high variance at low sybil rates:** At 5% sybil rate, F1_std = 0.330. This reflects that with only 443 Sybil records out of 7,754 total (5.71%), some CV folds receive too few Sybil vehicles in the training partition to learn a stable decision boundary. Those folds produce F1 = 0 or near 0, while folds with more Sybil vehicles produce near-perfect F1. The spread between folds drives the high standard deviation.
+**Note on high variance at low sybil rates:** At 5% sybil rate, the mean within-CV f1_std across 5 seeds is 0.068. In individual seed runs this value can reach as high as 0.330 (seed=42), reflecting that some CV folds receive too few Sybil vehicles in the training partition to learn a stable decision boundary. Those folds produce F1 = 0 or near 0, while folds with more Sybil vehicles produce near-perfect F1. The spread between folds drives the instability.
 
 **ROC-AUC:** 0.9999 mean across sybil rates 10%-40%. The class probabilities output by `predict_proba()` nearly perfectly separate Sybil from legitimate vehicles in probability space, even when the operating-point F1 is lower.
 
