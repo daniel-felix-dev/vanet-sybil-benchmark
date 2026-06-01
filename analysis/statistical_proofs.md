@@ -38,7 +38,8 @@ We report the W statistic and two-sided p-value for each key comparison.
 
 ## Test 3: Bootstrap 95% confidence intervals for mean F1
 
-10,000 bootstrap resamples of the eight sybil-rate F1 values per detector.
+10,000 bootstrap resamples of the n=40 F1 observations per detector
+(5 seeds x 8 sybil rates, drawn from multi_seed_raw.csv).
 CI is the 2.5th and 97.5th percentile of the bootstrap distribution of means.
 
 | Detector | Mean F1 | 95% CI lower | 95% CI upper | CI width |

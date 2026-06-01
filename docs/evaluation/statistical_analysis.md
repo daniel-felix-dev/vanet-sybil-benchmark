@@ -68,22 +68,22 @@ With n=40, all key comparisons reach statistical significance. W=0.0 for the fir
 
 **Method:** 10,000 bootstrap resamples of the n=40 F1 observations per detector (5 seeds x 8 rates). The 95% CI is the [2.5th, 97.5th] percentile of the bootstrap distribution of means.
 
-**Results (n=40 per detector, 10,000 bootstrap resamples):**
+**Results (n=40 per detector, 10,000 bootstrap resamples from multi_seed_raw.csv):**
 
 | Detector | Mean F1 | 95% CI lower | 95% CI upper | CI width |
 |---|---|---|---|---|
-| TASER | 0.9997 | 0.9987 | 1.0000 | 0.0013 |
-| Random Forest | 0.8945 | 0.8496 | 0.9329 | 0.0833 |
-| LSTM | 0.4821 | 0.3588 | 0.6106 | 0.2518 |
-| IQR | 0.4007 | 0.3569 | 0.4469 | 0.0900 |
-| RSU | 0.0123 | 0.0000 | 0.0378 | 0.0378 |
+| TASER | 0.9997 | 0.9992 | 1.0000 | 0.0008 |
+| Random Forest | 0.8945 | 0.8641 | 0.9224 | 0.0582 |
+| LSTM | 0.4821 | 0.3616 | 0.6027 | 0.2411 |
+| IQR | 0.4007 | 0.3137 | 0.4944 | 0.1807 |
+| RSU | 0.0123 | 0.0000 | 0.0327 | 0.0327 |
 | k-Means | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
 
 **Interpretation:**
 
-- TASER CI [0.999, 1.000] and RF CI [0.850, 0.933] have zero overlap. With n=40, the CIs are much tighter than with n=8, making the difference statistically certain.
-- LSTM CI [0.359, 0.611] reflects the bimodal behavior (F1=0 at 5-10%, F1=0.7+ above 20%).
-- IQR CI [0.357, 0.447] is relatively narrow, confirming that IQR's moderate performance is consistent across seeds (not a seed-specific artifact).
+- TASER CI [0.999, 1.000] and RF CI [0.864, 0.922] have zero overlap. The difference is statistically certain.
+- LSTM CI [0.362, 0.603] reflects the bimodal behavior (F1=0 at 5-15%, F1=0.7+ above 25%).
+- IQR CI [0.314, 0.494] is relatively narrow, confirming that IQR's moderate performance is consistent across seeds (not a seed-specific artifact).
 
 ---
 

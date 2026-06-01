@@ -173,7 +173,8 @@ for a, b in pairs:
 # TEST 3 – Bootstrap 95% CI for mean F1
 # ─────────────────────────────────────────────────────────────────────────────
 section("Test 3: Bootstrap 95% confidence intervals for mean F1")
-h("10,000 bootstrap resamples of the eight sybil-rate F1 values per detector.")
+h(f"10,000 bootstrap resamples of the n={N_SEEDS*8} F1 observations per detector")
+h(f"({N_SEEDS} seeds x 8 sybil rates, drawn from multi_seed_raw.csv).")
 h("CI is the 2.5th and 97.5th percentile of the bootstrap distribution of means.")
 h()
 
