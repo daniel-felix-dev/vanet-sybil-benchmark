@@ -165,19 +165,21 @@ scikit-learn parallelizes tree training with `n_jobs=-1` (all CPU cores). Measur
 
 ---
 
-## 7. Results (OOS, 5-fold CV by vehicle_id)
+## 7. Results (OOS, 5-fold CV by vehicle_id, mean over 5 seeds)
+
+F1 std here is the standard deviation across the 5 seeds for that sybil rate (not across CV folds).
 
 | Sybil Rate | F1 | F1 std | Precision | Recall | Specificity |
 |---|---|---|---|---|---|
-| 5% | 0.665 | 0.330 | 0.724 | 0.622 | 0.993 |
-| 10% | 0.694 | 0.179 | 0.866 | 0.594 | 0.995 |
-| 15% | 0.890 | 0.072 | 0.894 | 0.890 | 0.985 |
-| 20% | 0.954 | 0.022 | 0.938 | 0.974 | 0.981 |
-| 25% | 0.949 | 0.027 | 0.926 | 0.975 | 0.971 |
-| 30% | 0.975 | 0.010 | 0.968 | 0.981 | 0.987 |
-| 35% | 0.959 | 0.025 | 0.938 | 0.981 | 0.967 |
-| 40% | 0.967 | 0.016 | 0.950 | 0.985 | 0.966 |
-| **Mean** | **0.882** | **0.128** | **0.901** | **0.875** | **0.981** |
+| 5% | 0.741 | 0.068 | 0.854 | 0.663 | 0.995 |
+| 10% | 0.754 | 0.054 | 0.881 | 0.673 | 0.995 |
+| 15% | 0.865 | 0.038 | 0.883 | 0.855 | 0.986 |
+| 20% | 0.953 | 0.010 | 0.935 | 0.973 | 0.981 |
+| 25% | 0.948 | 0.007 | 0.927 | 0.972 | 0.974 |
+| 30% | 0.967 | 0.009 | 0.954 | 0.981 | 0.980 |
+| 35% | 0.958 | 0.003 | 0.937 | 0.982 | 0.963 |
+| 40% | 0.970 | 0.004 | 0.955 | 0.987 | 0.968 |
+| **Mean** | **0.895** | **0.024** | **0.916** | **0.886** | **0.980** |
 
 **Note on high variance at low sybil rates:** At 5% sybil rate, F1_std = 0.330. This reflects that with only 443 Sybil records out of 7,754 total (5.71%), some CV folds receive too few Sybil vehicles in the training partition to learn a stable decision boundary. Those folds produce F1 = 0 or near 0, while folds with more Sybil vehicles produce near-perfect F1. The spread between folds drives the high standard deviation.
 

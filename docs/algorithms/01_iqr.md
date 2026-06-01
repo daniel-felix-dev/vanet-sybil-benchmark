@@ -142,7 +142,7 @@ The fit runs in O(N log N) for sorting and O(N) for the per-vehicle check.
 | 30% | 0.439 | 0.281 | 1.000 | 0.000 |
 | 35% | 0.516 | 0.347 | 1.000 | 0.000 |
 | 40% | **1.000** | **1.000** | **1.000** | **1.000** |
-| **Mean** | **0.391** | **0.290** | **1.000** | **0.125** |
+| **Mean** | **0.401** | **0.305** | **1.000** | **0.150** |
 
 Recall is perfect (1.000) at all sybil rates. Specificity is 0.000 at rates below 40%, meaning all legitimate vehicles are flagged as Sybil at those rates.
 

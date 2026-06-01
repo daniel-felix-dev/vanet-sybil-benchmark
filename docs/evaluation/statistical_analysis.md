@@ -18,7 +18,7 @@ Statistical tests (Kruskal-Wallis, Wilcoxon, bootstrap) use the raw file with n=
 
 **Purpose:** Determine whether all 7 detectors have the same underlying F1-Score distribution. If not, at least one pair differs.
 
-**Test:** Kruskal-Wallis H-test (non-parametric one-way ANOVA). Chosen over standard ANOVA because normality cannot be assumed with n=8 samples per group.
+**Test:** Kruskal-Wallis H-test (non-parametric one-way ANOVA). Chosen over standard ANOVA because normality cannot be assumed. Uses n=40 observations per group (5 seeds x 8 rates).
 
 **Data:** F1-Score for each detector across all 40 observations (5 seeds x 8 rates).
 
@@ -43,7 +43,7 @@ n per group = 40 (5 seeds x 8 sybil rates)
 
 **Purpose:** For specific pairs of detectors, determine whether one significantly outperforms the other.
 
-**Test:** Wilcoxon signed-rank test on n=8 paired observations (one per sybil rate). Paired because each rate represents the same experimental condition applied to both detectors.
+**Test:** Wilcoxon signed-rank test on n=40 observations per detector (5 seeds x 8 sybil rates). The raw multi-seed data (`multi_seed_raw.csv`) is used so each (seed, rate) combination is an independent observation.
 
 **Null hypothesis H0 (for each pair):** The two detectors have the same F1-Score distribution.
 
@@ -66,7 +66,7 @@ With n=40, all key comparisons reach statistical significance. W=0.0 for the fir
 
 **Purpose:** Provide distributional estimates for the mean F1-Score that are not sensitive to normality assumptions.
 
-**Method:** 10,000 bootstrap resamples of the n=8 F1 observations per detector. The 95% CI is the [2.5th, 97.5th] percentile of the bootstrap distribution of means.
+**Method:** 10,000 bootstrap resamples of the n=40 F1 observations per detector (5 seeds x 8 rates). The 95% CI is the [2.5th, 97.5th] percentile of the bootstrap distribution of means.
 
 **Results (n=40 per detector, 10,000 bootstrap resamples):**
 

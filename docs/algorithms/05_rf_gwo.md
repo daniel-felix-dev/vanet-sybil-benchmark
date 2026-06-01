@@ -166,7 +166,9 @@ This is 37x more computation than RF's 5-fold CV (which requires only 5 * E * ..
 
 ---
 
-## 7. Results (OOS, 5-fold CV by vehicle_id)
+## 7. Results (OOS, single seed=42 only -- GWO excluded from multi-seed experiment)
+
+These results are from a single-seed evaluation. GWO was excluded from the multi-seed experiment (5 seeds x 8 rates) because the single-seed Wilcoxon test already showed no statistically significant benefit over RF (p=0.640, Cohen's d=0.18). The multi-seed benchmark uses 6 detectors; RF+GWO is not among them.
 
 | Sybil Rate | F1 | F1 std | Precision | Recall | Specificity |
 |---|---|---|---|---|---|

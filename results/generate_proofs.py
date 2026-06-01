@@ -6,7 +6,7 @@ and analysis/detector_profiles.md.
 
 Tests performed:
   1.  Kruskal-Wallis H-test across all detectors (F1)
-  2.  Pairwise Wilcoxon signed-rank tests (F1, n=8)
+  2.  Pairwise Wilcoxon signed-rank tests (F1, n=40)
   3.  Bootstrap 95% CI for mean F1 (10 000 resamples)
   4.  Cohen's d effect sizes for key pairs
   5.  Linear regression  F1 ~ sybil_rate  per detector
@@ -120,7 +120,7 @@ for patch, det in zip(bp["boxes"], DETS):
     patch.set_facecolor(COLORS[det]); patch.set_alpha(0.82)
 ax.set_xticks(range(1, len(DETS)+1))
 ax.set_xticklabels(DETS, rotation=18, ha="right", fontsize=10)
-ax.set_ylabel("F1-Score (n=8 sybil rates)")
+ax.set_ylabel("F1-Score (n=40: 5 seeds x 8 rates)")
 ax.set_title(f"Kruskal-Wallis H = {H:.2f}, p = {p_kw:.5f}\n"
              f"(p < 0.05 confirms detectors are NOT equivalent)")
 fig.tight_layout()
@@ -134,8 +134,8 @@ h("![Kruskal-Wallis distributions](figures/proofs_kruskal_wallis.png)")
 # ─────────────────────────────────────────────────────────────────────────────
 section("Test 2: Pairwise Wilcoxon signed-rank tests")
 
-h("With n = 8 paired observations (one per sybil rate), the Wilcoxon signed-rank")
-h("test is appropriate and has sufficient power to detect consistent differences.")
+h(f"With n = {N_SEEDS * 8} observations per detector ({N_SEEDS} seeds x 8 sybil rates),")
+h("the Wilcoxon signed-rank test has sufficient power to detect consistent differences.")
 h("We report the W statistic and two-sided p-value for each key comparison.")
 h()
 

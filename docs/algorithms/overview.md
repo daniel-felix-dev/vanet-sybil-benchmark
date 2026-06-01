@@ -2,7 +2,7 @@
 
 ## 1. Introduction
 
-Seven Sybil detection algorithms are evaluated in this benchmark. They span four distinct algorithmic paradigms: statistical thresholding, infrastructure-based position verification, probabilistic trust modeling, and machine learning. This document provides a high-level comparison across all seven before the individual algorithm documents present full technical details.
+Six Sybil detection algorithms are evaluated in this multi-seed benchmark. They span four distinct algorithmic paradigms: statistical thresholding, infrastructure-based position verification, probabilistic trust modeling, and machine learning. This document provides a high-level comparison across all seven before the individual algorithm documents present full technical details.
 
 ---
 
@@ -25,16 +25,16 @@ Seven Sybil detection algorithms are evaluated in this benchmark. They span four
 
 All F1 values are out-of-sample. Supervised detectors use vehicle-level splits to prevent data leakage (see [docs/evaluation/methodology.md](../evaluation/methodology.md)).
 
+Values are means over 5 seeds x 8 rates = 40 runs. F1 std = standard deviation across all 40 runs.
+
 | Detector | F1 (mean) | F1 (std) | Precision | Recall | Specificity | Time (s) | AUC |
 |---|---|---|---|---|---|---|---|
-| TASER | **0.999** | 0.004 | **1.000** | 0.997 | **1.000** | **0.64** | **1.000** |
-| Random Forest | 0.882 | 0.128 | 0.901 | **0.875** | 0.981 | 2.7 | 0.9999 |
-| LSTM | 0.507 | 0.437 | 0.536 | 0.531 | 0.941 | 16.8 | 0.865 |
-| IQR | 0.391 | 0.289 | 0.290 | **1.000** | 0.125 | **0.06** | -- |
-| RSU | 0.021 | 0.060 | 0.045 | 0.014 | 0.991 | 10.2 | -- |
-| k-Means | 0.000 | 0.000 | 0.000 | 0.000 | 0.997 | 0.33 | -- |
-
-F1 std = standard deviation across 8 sybil rates. AUC is the mean ROC-AUC across sybil rates 10%-40% (only for detectors with continuous probability output).
+| TASER | **0.9997** | **0.0006** | **1.0000** | 0.9995 | **1.0000** | **0.69** | **1.0000** |
+| Random Forest | 0.8945 | 0.0242 | 0.9156 | **0.8856** | 0.9802 | 2.78 | 0.9999 |
+| LSTM | 0.4821 | 0.2575 | 0.5031 | 0.5606 | 0.9074 | 16.7 | 0.865 |
+| IQR | 0.4007 | 0.0326 | 0.3046 | **1.0000** | 0.1500 | **0.05** | -- |
+| RSU | 0.0123 | 0.0276 | 0.0341 | 0.0076 | 0.9899 | 10.6 | -- |
+| k-Means | 0.0000 | 0.0000 | 0.0000 | 0.0000 | 0.9978 | 0.14 | -- |
 
 ---
 
@@ -59,10 +59,10 @@ In the F1 vs training-time space, two detectors are Pareto-optimal: no other det
 
 **TASER (F1=0.999, time=0.64s):** The fastest competitive detector AND the most accurate. No other detector has both higher F1 and lower training time.
 
-**IQR (F1=0.391, time=0.06s):** The absolute fastest detector. While its F1 is low, it is faster than TASER and cannot be beaten on speed by any detector with higher F1.
+**IQR (F1=0.401, time=0.05s):** The absolute fastest detector. While its F1 is moderate, it is faster than TASER and cannot be beaten on speed by any detector with higher F1.
 
 All other detectors are dominated:
-- Random Forest (F1=0.882, 2.7s): TASER has both higher F1 and lower time.
+- Random Forest (F1=0.895, 2.78s): TASER has both higher F1 and lower time.
 - LSTM (F1=0.507, 16.8s): TASER and RF both dominate it.
 - RSU (F1=0.021, 10.2s): dominated by all competitive detectors.
 - k-Means (F1=0.000): dominated by all others.
