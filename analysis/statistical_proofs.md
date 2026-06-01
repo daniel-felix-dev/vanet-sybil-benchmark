@@ -182,8 +182,8 @@ Detector A Pareto-dominates detector B if and only if:
 | RSU Position Verification | 0.0123 | 10.61 | TASER, Random, IQR | No |
 | Dynamic k-Means | 0.0000 | 0.14 | IQR | No |
 
-With out-of-sample (OOS) evaluation, TASER (F1=0.999, 0.64s) strictly
-dominates RF (F1=0.882, 2.7s) on both quality and speed. Only TASER and IQR
+With out-of-sample (OOS) evaluation, TASER (F1=1.0, 0.69s) strictly
+dominates RF (F1=0.894, 2.78s) on both quality and speed. Only TASER and IQR
 sit on the Pareto frontier. All other detectors are dominated.
 
 Note: GWO was excluded from the multi-seed benchmark (Wilcoxon p=0.640,
