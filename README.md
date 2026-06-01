@@ -169,7 +169,7 @@ F1 std = standard deviation across 40 runs (5 seeds x 8 rates). Lower std means 
 
 **1. TASER is Pareto-dominant with high statistical confidence.** With n=40 observations per detector, Kruskal-Wallis gives H=193.1 (p=0.000000). TASER achieves F1=0.9997 with std=0.0006 across 40 runs -- the most stable result of any detector. It trains in 0.69 seconds, faster than any competitive alternative. No other detector beats it on both F1 and speed simultaneously.
 
-**2. In-sample evaluation inflates RF performance by approximately 11%.** RF OOS F1 (5-fold CV by vehicle_id) = 0.8945, compared to an in-sample estimate of approximately 0.987. The 10.7% gap is caused by the model memorizing per-vehicle speed patterns at training time.
+**2. In-sample evaluation inflates RF performance by approximately 9%.** RF OOS F1 (5-fold CV by vehicle_id, 5-seed mean) = 0.8945, compared to an in-sample estimate of approximately 0.987. The ~9.4% gap is caused by the model memorizing per-vehicle speed patterns at training time.
 
 **3. GWO hyperparameter optimization was statistically equivalent to RF.** Single-seed evaluation gave Wilcoxon p=0.640, Cohen's d=0.18. It was excluded from the multi-seed experiment based on this evidence.
 

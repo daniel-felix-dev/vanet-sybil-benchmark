@@ -60,7 +60,7 @@ In this benchmark, the same Random Forest trained on the 20% sybil dataset achie
 
 The difference is 3.3 percentage points at 20% sybil rate. At 5% sybil rate (fewer Sybil vehicles, more unstable training signal), the gap is larger: approximately 0.665 OOS vs approximately 0.96 in-sample.
 
-Across all 8 sybil rates, the mean F1 drops from approximately 0.987 (in-sample) to 0.882 (OOS), a 10.7% overestimate due to data leakage.
+Across all 8 sybil rates, the mean F1 drops from approximately 0.987 (in-sample) to 0.894 (OOS, multi-seed mean), a ~9.4% overestimate due to data leakage.
 
 ---
 
