@@ -1,6 +1,6 @@
 # Statistical Proofs
 
-Every claim in the scenario guide and detector profiles is backed by one or more
+Every claim in docs/evaluation/results.md and docs/algorithms/ is backed by one or more
 of the tests below. The benchmark uses 5 random seeds x 8 sybil rates,
 giving n = 40 observations per detector for the Kruskal-Wallis and
 Wilcoxon tests. Standard t-tests are avoided because normality cannot be assumed;

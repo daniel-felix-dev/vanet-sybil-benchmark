@@ -76,7 +76,7 @@ def subsection(t): h(); h(f"### {t}"); h()
 
 h("# Statistical Proofs")
 h()
-h("Every claim in the scenario guide and detector profiles is backed by one or more")
+h("Every claim in docs/evaluation/results.md and docs/algorithms/ is backed by one or more")
 h(f"of the tests below. The benchmark uses {N_SEEDS} random seeds x 8 sybil rates,")
 h(f"giving n = {N_SEEDS * 8} observations per detector for the Kruskal-Wallis and")
 h("Wilcoxon tests. Standard t-tests are avoided because normality cannot be assumed;")
