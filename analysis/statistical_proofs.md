@@ -11,7 +11,7 @@ Wilcoxon signed-rank and Kruskal-Wallis are used throughout.
 
 **Null hypothesis H0:** all detectors have the same median F1-Score distribution.
 
-H statistic = 193.1274  |  p-value = 0.000000  |  df = 5
+H statistic = 180.6940  |  p-value = 0.000000  |  df = 5
 
 p < 0.05: **H0 rejected.** There is a statistically significant difference in
 F1 distributions across the six detectors.
@@ -29,11 +29,11 @@ We report the W statistic and two-sided p-value for each key comparison.
 | TASER Bayesian Trust | Random Forest | 0.0 | 0.0000 | **Yes** |
 | TASER Bayesian Trust | LSTM | 0.0 | 0.0000 | **Yes** |
 | TASER Bayesian Trust | IQR Speed Threshold | 1.0 | 0.0000 | **Yes** |
-| Random Forest | LSTM | 16.0 | 0.0000 | **Yes** |
+| Random Forest | LSTM | 22.0 | 0.0000 | **Yes** |
 | Random Forest | RSU Position Verification | 0.0 | 0.0000 | **Yes** |
-| Random Forest | Dynamic k-Means | 0.0 | 0.0000 | **Yes** |
-| LSTM | IQR Speed Threshold | 310.0 | 0.2642 | No |
-| LSTM | RSU Position Verification | 0.0 | 0.0000 | **Yes** |
+| Random Forest | Dynamic k-Means | 27.0 | 0.0000 | **Yes** |
+| LSTM | IQR Speed Threshold | 335.0 | 0.4428 | No |
+| LSTM | RSU Position Verification | 1.0 | 0.0000 | **Yes** |
 | IQR Speed Threshold | RSU Position Verification | 0.0 | 0.0000 | **Yes** |
 
 ## Test 3: Bootstrap 95% confidence intervals for mean F1
@@ -46,10 +46,10 @@ CI is the 2.5th and 97.5th percentile of the bootstrap distribution of means.
 |---|---|---|---|---|
 | TASER Bayesian Trust | 0.9997 | 0.9992 | 1.0000 | 0.0008 |
 | Random Forest | 0.8945 | 0.8641 | 0.9224 | 0.0582 |
-| LSTM | 0.4821 | 0.3616 | 0.6027 | 0.2411 |
+| LSTM | 0.4487 | 0.3191 | 0.5758 | 0.2567 |
 | IQR Speed Threshold | 0.4007 | 0.3137 | 0.4944 | 0.1807 |
 | RSU Position Verification | 0.0123 | 0.0000 | 0.0327 | 0.0327 |
-| Dynamic k-Means | 0.0000 | 0.0000 | 0.0000 | 0.0000 |
+| Dynamic k-Means | 0.9795 | 0.9683 | 0.9887 | 0.0204 |
 
 Non-overlapping confidence intervals between two detectors is strong evidence
 that their true mean F1 values differ.
@@ -64,12 +64,12 @@ Cohen's d = (mean_A - mean_B) / pooled_std.  Interpretation: |d| < 0.2 small,
 | Comparison | Cohen's d | Magnitude |
 |---|---|---|
 | TASER Bayesian Trust vs Random Forest | +1.540 | **large** |
-| TASER Bayesian Trust vs LSTM | +1.850 | **large** |
+| TASER Bayesian Trust vs LSTM | +1.907 | **large** |
 | TASER Bayesian Trust vs IQR Speed Threshold | +2.918 | **large** |
-| Random Forest vs LSTM | +1.432 | **large** |
+| Random Forest vs LSTM | +1.501 | **large** |
 | Random Forest vs RSU Position Verification | +11.115 | **large** |
-| LSTM vs IQR Speed Threshold | +0.235 | small |
-| LSTM vs RSU Position Verification | +1.662 | **large** |
+| LSTM vs IQR Speed Threshold | +0.136 | negligible |
+| LSTM vs RSU Position Verification | +1.496 | **large** |
 
 ## Test 5: Linear regression  F1 ~ sybil_rate  per detector
 
@@ -80,10 +80,10 @@ Positive slope = improves under heavier attack. Negative = degrades.
 |---|---|---|---|---|
 | TASER Bayesian Trust | -0.0000 | 0.3333 | 0.1340 | flat |
 | Random Forest | +0.0070 | 0.7781 | 0.0037* | improves |
-| LSTM | +0.0239 | 0.8818 | 0.0005* | improves |
+| LSTM | +0.0293 | 0.8985 | 0.0003* | improves |
 | IQR Speed Threshold | +0.0227 | 0.8720 | 0.0007* | improves |
 | RSU Position Verification | +0.0004 | 0.0368 | 0.6490 | improves |
-| Dynamic k-Means | +0.0000 | nan | nan | flat |
+| Dynamic k-Means | +0.0005 | 0.1986 | 0.2684 | improves |
 
 (*) p < 0.05
 
@@ -157,10 +157,10 @@ does not change with attack intensity.
 |---|---|---|---|---|
 | TASER Bayesian Trust | 1.000  1.000  1.000  1.000  1.000  1.000  1.000  1.000 | 1.0000 | 0.0000 | 0.0000 |
 | Random Forest | 0.854  0.880  0.883  0.935  0.926  0.954  0.937  0.955 | 0.9155 | 0.0378 | 0.0413 |
-| LSTM | 0.000  0.100  0.155  0.667  0.533  0.893  0.775  0.901 | 0.5031 | 0.3681 | 0.7317 |
+| LSTM | 0.000  0.029  0.033  0.500  0.453  0.938  0.896  0.862 | 0.4638 | 0.4073 | 0.8780 |
 | IQR Speed Threshold | 0.058  0.057  0.110  0.207  0.247  0.284  0.474  1.000 | 0.3046 | 0.3129 | 1.0272 |
 | RSU Position Verification | 0.000  0.000  0.000  0.073  0.000  0.200  0.000  0.000 | 0.0341 | 0.0717 | 2.1035 |
-| Dynamic k-Means | 0.000  0.000  0.000  0.000  0.000  0.000  0.000  0.000 | 0.0000 | 0.0000 | inf |
+| Dynamic k-Means | 0.971  0.972  0.917  0.987  0.974  0.980  0.982  0.954 | 0.9671 | 0.0224 | 0.0232 |
 
 TASER's CV = 0.0000 because its precision is exactly 1.000 at every tested rate.
 This is a structural property of the Bayesian update rule proven in Test 7,
@@ -176,15 +176,15 @@ Detector A Pareto-dominates detector B if and only if:
 
 | Detector | F1 mean | Fit time (s) | Dominated by | Pareto? |
 |---|---|---|---|---|
-| TASER Bayesian Trust | 0.9997 | 0.69 | none | **Yes** |
-| Random Forest | 0.8945 | 2.78 | TASER | No |
-| LSTM | 0.4821 | 16.70 | TASER, Random | No |
-| IQR Speed Threshold | 0.4007 | 0.05 | none | **Yes** |
-| RSU Position Verification | 0.0123 | 10.61 | TASER, Random, IQR | No |
-| Dynamic k-Means | 0.0000 | 0.14 | IQR | No |
+| TASER Bayesian Trust | 0.9997 | 1.07 | none | **Yes** |
+| Random Forest | 0.8945 | 5.03 | TASER, Dynamic | No |
+| LSTM | 0.4487 | 35.95 | TASER, Random, Dynamic | No |
+| IQR Speed Threshold | 0.4007 | 0.13 | none | **Yes** |
+| RSU Position Verification | 0.0123 | 23.75 | TASER, Random, IQR, Dynamic | No |
+| Dynamic k-Means | 0.9795 | 0.30 | none | **Yes** |
 
-With out-of-sample (OOS) evaluation, TASER (F1=1.0, 0.69s) strictly
-dominates RF (F1=0.894, 2.78s) on both quality and speed. Only TASER and IQR
+With out-of-sample (OOS) evaluation, TASER (F1=1.0, 1.07s) strictly
+dominates RF (F1=0.894, 5.03s) on both quality and speed. Only TASER and IQR
 sit on the Pareto frontier. All other detectors are dominated.
 
 Note: GWO was excluded from the multi-seed benchmark (Wilcoxon p=0.640,
@@ -194,18 +194,18 @@ Cohen's d=0.18 vs RF baseline). Single-seed results are in gwo_rf_detector.py.
 
 ## Test 10: LSTM failure at 10% - class imbalance analysis
 
-LSTM produces F1 = 0.16 at 10% Sybil rate (mean over 5 seeds; individual seeds may produce F1 = 0). The root cause is class imbalance.
+LSTM produces F1 = 0.05 at 10% Sybil rate (mean over 5 seeds; individual seeds may produce F1 = 0). The root cause is class imbalance.
 
 | Sybil Rate | Total records | Sybil records | Sybil fraction | LSTM F1 |
 |---|---|---|---|---|
 | 5% | 7,754 | 443 | 0.057 (5.7%) | 0.0000 |
-| 10% | 7,747 | 451 | 0.058 (5.8%) | 0.1600 |
-| 15% | 8,195 | 946 | 0.115 (11.5%) | 0.2476 |
-| 20% | 9,153 | 1,922 | 0.210 (21.0%) | 0.6351 |
-| 25% | 9,690 | 2,436 | 0.251 (25.1%) | 0.4895 |
-| 30% | 10,086 | 2,837 | 0.281 (28.1%) | 0.7824 |
-| 35% | 11,088 | 3,851 | 0.347 (34.7%) | 0.7178 |
-| 40% | 12,000 | 4,773 | 0.398 (39.8%) | 0.8243 |
+| 10% | 7,747 | 451 | 0.058 (5.8%) | 0.0500 |
+| 15% | 8,195 | 946 | 0.115 (11.5%) | 0.0500 |
+| 20% | 9,153 | 1,922 | 0.210 (21.0%) | 0.4428 |
+| 25% | 9,690 | 2,436 | 0.251 (25.1%) | 0.4988 |
+| 30% | 10,086 | 2,837 | 0.281 (28.1%) | 0.8513 |
+| 35% | 11,088 | 3,851 | 0.347 (34.7%) | 0.8832 |
+| 40% | 12,000 | 4,773 | 0.398 (39.8%) | 0.8138 |
 
 When Sybil records represent 5.8% of the training data, the model achieves lower
 loss by predicting 'legitimate' for all inputs than by attempting to learn the
@@ -213,8 +213,8 @@ minority class. With early stopping at patience = 3, training ends before the
 network has seen enough Sybil examples to adjust its weights meaningfully.
 
 The transition from F1 = 0 to F1 > 0 occurs between 10% and 20% Sybil rate.
-At 20% (21.0% of records), LSTM achieves F1 = 0.635 (mean over 5 seeds).
-At 30% (28.1%) it reaches F1 = 0.782. This threshold behavior is consistent
+At 20% (21.0% of records), LSTM achieves F1 = 0.443 (mean over 5 seeds).
+At 30% (28.1%) it reaches F1 = 0.851. This threshold behavior is consistent
 with the class imbalance literature, where models typically require a minority
 fraction above 10-15% to train reliably without oversampling techniques like SMOTE.
 
