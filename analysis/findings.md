@@ -183,7 +183,8 @@ anomalous event drops trust by 10% (β = 0.10), which consistent beacons
 gradually restore (α = 0.01). Sybil vehicles injecting persistent speed noise
 cannot avoid repeated anomalous events, so their trust crosses the threshold
 within 12 beacons (Equation above) and they are flagged. Legitimate vehicles
-never reach this trajectory.
+never reach this trajectory. Figure `precision_by_rate.png` compares precision
+across all six detectors per rate, confirming TASER is unique in this property.
 
 **F1 = 0.998 at 40% sybil rate** - the only rate where TASER is not perfect -
 because a small fraction of Sybil vehicles emit fewer anomalous beacons than
@@ -249,6 +250,7 @@ Minor oscillations occur at 25% (F1 = 0.948 vs 0.953 at 20%) and 35% (0.958 vs
 in-sample F1 ≈ 0.987. Row-level splitting allows the model to see speed sequences
 from a vehicle in training and classify the same vehicle in testing, creating
 artificial familiarity. Vehicle-level splitting removes this entirely.
+Figure `data_leakage_comparison.png` visualises this gap across all 8 sybil rates.
 
 This gap means that the majority of published RF-based VANET detectors that do not
 report vehicle-level OOS results are likely overestimating performance by a similar
@@ -376,6 +378,7 @@ show ≈ 2–4 m/s. This produces a clear, robust separation across all sybil ra
 
 Using MAD instead of standard deviation for z-score computation prevents the
 global reference from being contaminated at high sybil rates (up to 40%).
+Figure `kmeans_criterion_fix.png` shows the per-rate F1 before and after the fix.
 
 ### Findings
 
@@ -477,7 +480,7 @@ Row-level splitting - used in most published evaluations - allows speed sequence
 from the same vehicle to appear in both training and test sets. The model memorizes
 per-vehicle patterns and achieves in-sample F1 ≈ 0.987. Vehicle-level OOS
 evaluation produces F1 = 0.895 - a 9.3 percentage point overestimate with
-row-level splitting.
+row-level splitting. See `data_leakage_comparison.png`.
 
 ### 8.3 Criterion Root-Cause Analysis: k-Means from F1=0.000 to F1=0.9795
 
@@ -485,7 +488,7 @@ The original k-Means criterion (mean-speed z-score) produced F1 = 0.000 because
 speed noise has mean = 0. Switching to std-speed z-score with MAD normalization
 produced F1 = 0.9795 - a mathematically justified correction that transforms
 a useless detector into the second best. This demonstrates the importance of
-criterion analysis over result reporting.
+criterion analysis over result reporting. See `kmeans_criterion_fix.png`.
 
 ### 8.4 Attack Model Dependency Quantified
 
@@ -493,6 +496,7 @@ RSU F1 rises from 0.012 to 0.835 when the attack model switches from co-location
 to split-position. This confirms that algorithm evaluation is not portable across
 attack models: each detector's performance is a function of the alignment between
 its detection assumption and the attacker's strategy.
+See `attack_model_comparison.png` and `heatmap_f1_split.png`.
 
 ### 8.5 Multi-Seed Replication (n=40) with Non-Parametric Tests
 

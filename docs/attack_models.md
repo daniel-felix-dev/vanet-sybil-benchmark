@@ -45,3 +45,8 @@ RSU center (rx, ry)
 | IQR | 0.4007 | 0.3808 | −0.020 |
 
 **Key finding:** Detection guarantees depend critically on the alignment between the algorithm's assumptions and the attack model. TASER is the only detector robust to both models (F1 ≥ 0.999 in both). RSU and RF gain substantially in split-position because distinct reported positions provide richer features for detection.
+
+**Figures:**
+- `analysis/figures/attack_model_comparison.png` - grouped bar chart comparing mean F1 per detector under both models
+- `analysis/figures/heatmap_f1.png` - F1 heatmap (co-location, 5-seed mean)
+- `analysis/figures/heatmap_f1_split.png` - F1 heatmap (split-position, single seed)
