@@ -64,10 +64,10 @@ All F1 values are out-of-sample. F1 std = mean of per-rate standard deviations a
 | Detector | F1 | F1 std | Precision | Recall | Specificity |
 |---|---|---|---|---|---|
 | **TASER** | **1.0000** | 0.0000 | **1.0000** | **1.0000** | **1.0000** |
-| **Random Forest** | **0.9926** | 0.0104 | 0.9955 | 0.9908 | 0.9990 |
-| **Dynamic k-Means** | **0.9440** | 0.0897 | 0.9125 | 0.9820 | 0.9702 |
+| **Random Forest** | **0.9926** | 0.0104 | 0.9984 | 0.9878 | 0.9997 |
+| **Dynamic k-Means** | **0.9440** | 0.0897 | 0.9318 | 0.9720 | 0.9835 |
 | **RSU** | **0.8350** | 0.1292 | 0.8511 | 0.8479 | 0.9628 |
-| LSTM | 0.4862 | 0.4055 | 0.5087 | 0.5208 | 0.9087 |
+| LSTM | 0.4862 | 0.4055 | 0.4945 | 0.5133 | 0.9147 |
 | IQR | 0.3808 | 0.2755 | 0.2825 | 1.0000 | 0.1250 |
 
 ### F1 by sybil rate — split-position (mean over 5 seeds)
