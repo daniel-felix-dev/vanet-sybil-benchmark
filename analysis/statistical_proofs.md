@@ -1,4 +1,4 @@
-# Statistical Proofs
+﻿# Statistical Proofs
 
 Every claim in docs/evaluation/results.md and docs/algorithms/ is backed by one or more
 of the tests below. The benchmark uses 5 random seeds x 8 sybil rates,
@@ -191,7 +191,7 @@ TASER strictly dominates RF (F1=0.895, 5.03s) and k-Means strictly dominates RF
 on both F1 and training time. RF, LSTM, and RSU are all Pareto-dominated.
 
 Note: A GWO-based RF variant was excluded from the multi-seed benchmark
-(single-seed Wilcoxon p=0.640, Cohen's d=0.18 vs RF baseline — negligible benefit).
+(single-seed Wilcoxon p=0.640, Cohen's d=0.18 vs RF baseline - negligible benefit).
 Its implementation remains in `detectors/` but is not included in published results.
 
 ![Pareto frontier](figures/proofs_pareto.png)

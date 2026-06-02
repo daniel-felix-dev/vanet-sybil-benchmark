@@ -1,4 +1,4 @@
-# VANET Sybil Detection Benchmark
+﻿# VANET Sybil Detection Benchmark
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
 [![SUMO](https://img.shields.io/badge/SUMO-1.12.0-green)](https://eclipse.dev/sumo/)
@@ -7,7 +7,7 @@
 
 Comparative benchmark of **6 Sybil attack detection algorithms** for VANETs. All detectors run on the same SUMO-generated dataset under identical conditions, with rigorous out-of-sample evaluation (vehicle-level splits) and 5 random seeds.
 
-Two attack models are tested: **co-location** (all fake IDs report the same position) and **split-position** (IDs report distinct positions around RSU centers — the model RSU detection was designed for).
+Two attack models are tested: **co-location** (all fake IDs report the same position) and **split-position** (IDs report distinct positions around RSU centers - the model RSU detection was designed for).
 
 ---
 
@@ -71,13 +71,13 @@ All F1 values are out-of-sample.
 
 ## Key Findings
 
-1. **TASER is Pareto-optimal** — highest F1 (0.9997) at 1.07s training time. Precision = 1.000 at all rates, robust to both attack models. Provably flags Sybil nodes within 12 beacons.
+1. **TASER is Pareto-optimal** - highest F1 (0.9997) at 1.07s training time. Precision = 1.000 at all rates, robust to both attack models. Provably flags Sybil nodes within 12 beacons.
 
-2. **In-sample evaluation inflates RF by 9.3 pp** — OOS RF F1 = 0.895 vs in-sample ≈ 0.987. Vehicle-level splits are required to prevent data leakage.
+2. **In-sample evaluation inflates RF by 9.3 pp** - OOS RF F1 = 0.895 vs in-sample ≈ 0.987. Vehicle-level splits are required to prevent data leakage.
 
-3. **RSU failure is model-specific, not algorithmic** — F1 jumps from 0.012 (co-location) to 0.835 (split-position), confirming RSU works correctly in the attack scenario it was designed for.
+3. **RSU failure is model-specific, not algorithmic** - F1 jumps from 0.012 (co-location) to 0.835 (split-position), confirming RSU works correctly in the attack scenario it was designed for.
 
-4. **k-Means improved from F1=0.000 to F1=0.9795** by switching from mean-speed z-score to MAD-based std_speed z-score. Speed noise (sigma=8) raises variance, not mean — the original criterion was mathematically wrong.
+4. **k-Means improved from F1=0.000 to F1=0.9795** by switching from mean-speed z-score to MAD-based std_speed z-score. Speed noise (sigma=8) raises variance, not mean - the original criterion was mathematically wrong.
 
 5. **Kruskal-Wallis H=180.7** (p < 10⁻³⁶, n=40) confirms statistical significance. Wilcoxon W=0 for TASER vs RF and TASER vs k-Means (p < 0.001).
 

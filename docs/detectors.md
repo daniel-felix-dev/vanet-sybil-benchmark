@@ -1,4 +1,4 @@
-# Detector Reference
+﻿# Detector Reference
 
 All detectors share the same interface: `fit(df)` trains on the full dataset, `predict(df)` returns a binary array, `evaluate(df)` returns a metrics dict. Supervised detectors use vehicle-level out-of-sample splits (5-fold CV for RF, 80/20 for LSTM) to prevent data leakage.
 
@@ -43,7 +43,7 @@ Results: F1 = 0.9997, std = 0.0006, Precision = 1.000 at all rates. Robust to bo
 
 100 trees, max_depth = 10, trained on 8 features: speed, acceleration, heading angle, x, y, neighbors within 150 m, min/mean RSU distance.
 
-Evaluated with 5-fold CV split by vehicle\_id (no leakage). In-sample estimate ≈ 0.987 vs OOS = 0.895 — a 9.3 percentage-point gap caused by data leakage without vehicle-level splitting.
+Evaluated with 5-fold CV split by vehicle\_id (no leakage). In-sample estimate ≈ 0.987 vs OOS = 0.895 - a 9.3 percentage-point gap caused by data leakage without vehicle-level splitting.
 
 ---
 
@@ -61,10 +61,10 @@ F1 ≈ 0 at 5–15% (positive fraction below 12%); improves significantly at 20%
 
 Aggregates 8 behavioral features per vehicle (mean/std of x, y, speed, acceleration, neighbor count) and clusters with k = ⌊√(V/2)⌋. A cluster is flagged if any of three criteria hold:
 
-1. **Small cluster** — fewer than 3 members
-2. **High speed variance** — centroid std_speed z-score > 2.0 (via MAD)
+1. **Small cluster** - fewer than 3 members
+2. **High speed variance** - centroid std_speed z-score > 2.0 (via MAD)
    Rationale: Gaussian noise (σ = 8) raises std_speed to ≈ 8 m/s vs ≈ 2–4 m/s for legitimate vehicles
-3. **Low position variance** — centroid pos_std z-score < −2.0 (via MAD)
+3. **Low position variance** - centroid pos_std z-score < −2.0 (via MAD)
    Rationale: split-position Sybil IDs are fixed near RSU centers (near-zero movement)
 
 Uses **median + MAD** instead of mean + std to resist contamination when many Sybil vehicles are present (robust to up to ≈40% positive fraction).
