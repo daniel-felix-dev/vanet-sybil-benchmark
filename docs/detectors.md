@@ -52,7 +52,7 @@ Evaluated with 5-fold CV split by vehicle\_id (no leakage). In-sample estimate �
 
 Two-layer LSTM (64→32 units, 0.3 dropout), sequence length 50, same 8 features as RF. Evaluated 80/20 vehicle-level split (5-fold CV not used: 5 training cycles × 20 epochs × 8 rates would be computationally prohibitive in multi-seed design).
 
-F1 = 0 at 5–10% (< 6% positive fraction); improves above 20%.
+F1 ≈ 0 at 5–15% (positive fraction below 12%); improves significantly at 20% (21% positive records).
 
 ---
 

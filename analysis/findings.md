@@ -22,7 +22,7 @@ No training data or fitting required; the fence is recomputed per scenario.
 | Metric | Value |
 |---|---|
 | Mean F1 | 0.4007 |
-| F1 std (across 40 runs) | 0.0326 |
+| F1 std (mean across seeds per rate) | 0.0326 |
 | Precision | 0.3046 |
 | Recall | **1.0000** |
 | Specificity | 0.1500 |
@@ -145,7 +145,7 @@ calibrated to the legitimate speed distribution in the simulation).
 | Metric | Value |
 |---|---|
 | Mean F1 | **0.9997** |
-| F1 std (across 40 runs) | **0.0006** |
+| F1 std (mean across seeds per rate) | **0.0006** |
 | Precision | **1.0000** |
 | Recall | 0.9995 |
 | Specificity | **1.0000** |
@@ -177,10 +177,13 @@ across 40 independent runs. The narrow distribution is a structural guarantee, n
 a statistical artifact.
 
 **Precision = 1.0000 at every tested rate.** TASER never generates false
-positives. This is caused by the asymmetric update rule: a legitimate vehicle
-with a single anomalous reading recovers quickly (α = 0.01 means trust grows
-slowly), while a Sybil vehicle with persistent noise cannot recover before
-crossing the λ = 0.15 threshold.
+positives because legitimate vehicles emit only rare anomalous beacons. Without
+sustained anomalous activity, trust stays well above λ = 0.15: a single
+anomalous event drops trust by 10% (β = 0.10), which consistent beacons
+gradually restore (α = 0.01). Sybil vehicles injecting persistent speed noise
+cannot avoid repeated anomalous events, so their trust crosses the threshold
+within 12 beacons (Equation above) and they are flagged. Legitimate vehicles
+never reach this trajectory.
 
 **F1 = 0.998 at 40% sybil rate** — the only rate where TASER is not perfect —
 because a small fraction of Sybil vehicles emit fewer anomalous beacons than
@@ -189,10 +192,10 @@ cross the threshold.
 
 **Wilcoxon signed-rank: W = 0, p < 0.001 vs Random Forest.** TASER dominates
 RF at all 40 paired observations. Bootstrap 95% CI: [0.9992, 1.0000] — zero
-overlap with RF CI [0.8640, 0.9224].
+overlap with RF CI [0.8639, 0.9228].
 
 **TASER is Pareto-optimal**, dominating RF, LSTM, and RSU on both F1 and
-training time. Only k-Means (0.30 s, F1 = 0.980) and IQR (0.13 s) remain
+training time. Only k-Means (0.30 s, F1 = 0.9795) and IQR (0.13 s) remain
 non-dominated because they are faster.
 
 **No labeled data required.** TASER is the only method combining:
@@ -237,8 +240,10 @@ leakage (vehicle patterns cannot appear in both train and test within any fold).
 
 ### Findings
 
-**RF achieves F1 = 0.8945 out-of-sample**, growing monotonically from 0.741 at 5%
+**RF achieves F1 = 0.8945 out-of-sample**, generally improving from 0.741 at 5%
 to 0.970 at 40% as the sybil fraction provides more positive training examples.
+Minor oscillations occur at 25% (F1 = 0.948 vs 0.953 at 20%) and 35% (0.958 vs
+0.967 at 30%), reflecting variance in the 5-fold CV across different seed conditions.
 
 **The data leakage gap is 9.3 percentage points.** Without vehicle-level splitting,
 in-sample F1 ≈ 0.987. Row-level splitting allows the model to see speed sequences
@@ -276,7 +281,7 @@ due to computational cost: 5 folds × 5 seeds × 8 rates × 20 epochs would requ
 | Metric | Value |
 |---|---|
 | Mean F1 | 0.4487 |
-| F1 std (across 40 runs) | 0.1766 |
+| F1 std (mean across seeds per rate) | 0.1766 |
 | Precision | 0.4638 |
 | Recall | 0.4735 |
 | Specificity | 0.9280 |
@@ -343,7 +348,7 @@ when many Sybil vehicles bias the global distribution.
 | Metric | Value |
 |---|---|
 | Mean F1 | **0.9795** |
-| F1 std (across 40 runs) | 0.0257 |
+| F1 std (mean across seeds per rate) | 0.0257 |
 | Precision | 0.9671 |
 | Recall | **0.9944** |
 | Specificity | 0.9895 |
@@ -386,7 +391,7 @@ and maximum at 20% (F1 = 0.993). The stability contrasts sharply with LSTM
 
 **Wilcoxon TASER vs k-Means: W = 0, p < 0.001, Cohen's d = 0.86 (large).**
 TASER still significantly outperforms k-Means, dominating at all 40 observations.
-Bootstrap 95% CI for k-Means: [0.9681, 0.9885] — non-overlapping with TASER
+Bootstrap 95% CI for k-Means: [0.9682, 0.9885] — non-overlapping with TASER
 CI [0.9992, 1.0000].
 
 **Split-position attack: F1 = 0.923 (mean across 8 rates).** k-Means degrades
@@ -434,10 +439,10 @@ operating via completely different mechanisms.
 | Detector | Mean F1 | CI Lower | CI Upper | CI Width |
 |---|---|---|---|---|
 | TASER | 0.9997 | 0.9992 | 1.0000 | 0.0008 |
-| k-Means | 0.9795 | 0.9681 | 0.9885 | 0.0204 |
-| Random Forest | 0.8945 | 0.8640 | 0.9224 | 0.0584 |
-| LSTM | 0.4487 | 0.3257 | 0.5733 | 0.2476 |
-| IQR | 0.4007 | 0.3151 | 0.4939 | 0.1788 |
+| k-Means | 0.9795 | 0.9682 | 0.9885 | 0.0203 |
+| Random Forest | 0.8945 | 0.8639 | 0.9228 | 0.0589 |
+| LSTM | 0.4487 | 0.3251 | 0.5762 | 0.2511 |
+| IQR | 0.4007 | 0.3158 | 0.4932 | 0.1774 |
 | RSU | 0.0123 | 0.0000 | 0.0327 | 0.0327 |
 
 Non-overlapping intervals between TASER and RF, TASER and k-Means (where CI widths
@@ -474,7 +479,7 @@ per-vehicle patterns and achieves in-sample F1 ≈ 0.987. Vehicle-level OOS
 evaluation produces F1 = 0.895 — a 9.3 percentage point overestimate with
 row-level splitting.
 
-### 8.3 Criterion Root-Cause Analysis: k-Means from F1=0.000 to F1=0.980
+### 8.3 Criterion Root-Cause Analysis: k-Means from F1=0.000 to F1=0.9795
 
 The original k-Means criterion (mean-speed z-score) produced F1 = 0.000 because
 speed noise has mean = 0. Switching to std-speed z-score with MAD normalization

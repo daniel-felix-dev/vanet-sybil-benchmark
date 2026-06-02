@@ -46,10 +46,10 @@ CI is the 2.5th and 97.5th percentile of the bootstrap distribution of means.
 | Detector | Mean F1 | 95% CI lower | 95% CI upper | CI width |
 |---|---|---|---|---|
 | TASER Bayesian Trust | 0.9997 | 0.9992 | 1.0000 | 0.0008 |
-| Dynamic k-Means | 0.9795 | 0.9681 | 0.9885 | 0.0204 |
-| Random Forest | 0.8945 | 0.8640 | 0.9224 | 0.0584 |
-| LSTM | 0.4487 | 0.3257 | 0.5733 | 0.2476 |
-| IQR Speed Threshold | 0.4007 | 0.3151 | 0.4939 | 0.1788 |
+| Dynamic k-Means | 0.9795 | 0.9682 | 0.9885 | 0.0203 |
+| Random Forest | 0.8945 | 0.8639 | 0.9228 | 0.0589 |
+| LSTM | 0.4487 | 0.3251 | 0.5762 | 0.2511 |
+| IQR Speed Threshold | 0.4007 | 0.3158 | 0.4932 | 0.1774 |
 | RSU Position Verification | 0.0123 | 0.0000 | 0.0327 | 0.0327 |
 
 Non-overlapping confidence intervals between two detectors is strong evidence
