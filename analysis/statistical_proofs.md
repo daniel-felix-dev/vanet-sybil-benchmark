@@ -1,4 +1,4 @@
-﻿# Statistical Proofs
+# Statistical Proofs
 
 Every claim in docs/evaluation/results.md and docs/algorithms/ is backed by one or more
 of the tests below. The benchmark uses 5 random seeds x 8 sybil rates,
@@ -46,11 +46,11 @@ CI is the 2.5th and 97.5th percentile of the bootstrap distribution of means.
 | Detector | Mean F1 | 95% CI lower | 95% CI upper | CI width |
 |---|---|---|---|---|
 | TASER Bayesian Trust | 0.9997 | 0.9992 | 1.0000 | 0.0008 |
-| Dynamic k-Means | 0.9795 | 0.9682 | 0.9885 | 0.0203 |
-| Random Forest | 0.8945 | 0.8639 | 0.9228 | 0.0589 |
-| LSTM | 0.4487 | 0.3251 | 0.5762 | 0.2511 |
-| IQR Speed Threshold | 0.4007 | 0.3158 | 0.4932 | 0.1774 |
+| Random Forest | 0.8945 | 0.8641 | 0.9224 | 0.0582 |
+| LSTM | 0.4487 | 0.3191 | 0.5758 | 0.2567 |
+| IQR Speed Threshold | 0.4007 | 0.3137 | 0.4944 | 0.1807 |
 | RSU Position Verification | 0.0123 | 0.0000 | 0.0327 | 0.0327 |
+| Dynamic k-Means | 0.9795 | 0.9683 | 0.9887 | 0.0204 |
 
 Non-overlapping confidence intervals between two detectors is strong evidence
 that their true mean F1 values differ.
@@ -64,14 +64,13 @@ Cohen's d = (mean_A - mean_B) / pooled_std.  Interpretation: |d| < 0.2 small,
 
 | Comparison | Cohen's d | Magnitude |
 |---|---|---|
-| TASER Bayesian Trust vs Random Forest | +1.559 | **large** |
-| TASER Bayesian Trust vs LSTM | +1.931 | **large** |
-| TASER Bayesian Trust vs IQR Speed Threshold | +2.955 | **large** |
-| TASER Bayesian Trust vs Dynamic k-Means | +0.858 | **large** |
-| Random Forest vs LSTM | +1.521 | **large** |
-| Random Forest vs RSU Position Verification | +11.257 | **large** |
-| LSTM vs IQR Speed Threshold | +0.137 | negligible |
-| LSTM vs RSU Position Verification | +1.515 | **large** |
+| TASER Bayesian Trust vs Random Forest | +1.540 | **large** |
+| TASER Bayesian Trust vs LSTM | +1.907 | **large** |
+| TASER Bayesian Trust vs IQR Speed Threshold | +2.918 | **large** |
+| Random Forest vs LSTM | +1.501 | **large** |
+| Random Forest vs RSU Position Verification | +11.115 | **large** |
+| LSTM vs IQR Speed Threshold | +0.136 | negligible |
+| LSTM vs RSU Position Verification | +1.496 | **large** |
 
 ## Test 5: Linear regression  F1 ~ sybil_rate  per detector
 
@@ -84,8 +83,8 @@ Positive slope = improves under heavier attack. Negative = degrades.
 | Random Forest | +0.0070 | 0.7781 | 0.0037* | improves |
 | LSTM | +0.0293 | 0.8985 | 0.0003* | improves |
 | IQR Speed Threshold | +0.0227 | 0.8720 | 0.0007* | improves |
-| RSU Position Verification | +0.0004 | 0.0368 | 0.6490 | flat |
-| Dynamic k-Means | +0.0005 | 0.1994 | 0.2674 | flat |
+| RSU Position Verification | +0.0004 | 0.0368 | 0.6490 | improves |
+| Dynamic k-Means | +0.0005 | 0.1986 | 0.2684 | improves |
 
 (*) p < 0.05
 
@@ -144,7 +143,7 @@ ceil(11.43) = **12 beacons**.
   For T_n >= 0.99:
   n = ln(0.01/0.5) / ln(0.99) = **389.2 steps to reach T >= 0.99**
 
-This means a legitimate vehicle needs about 390 beacons to reach near-maximum trust,
+This means a legitimate vehicle needs about 229 beacons to reach near-maximum trust,
 while a Sybil vehicle is caught in 12. The asymmetry is the core of TASER's precision.
 
 ![TASER convergence](figures/proofs_taser_convergence.png)
@@ -185,14 +184,12 @@ Detector A Pareto-dominates detector B if and only if:
 | RSU Position Verification | 0.0123 | 23.75 | TASER, Random, IQR, Dynamic | No |
 | Dynamic k-Means | 0.9795 | 0.30 | none | **Yes** |
 
-With out-of-sample (OOS) evaluation, three detectors sit on the Pareto frontier:
-IQR (F1=0.401, 0.13s), Dynamic k-Means (F1=0.9795, 0.30s), and TASER (F1=0.9997, 1.07s).
-TASER strictly dominates RF (F1=0.895, 5.03s) and k-Means strictly dominates RF
-on both F1 and training time. RF, LSTM, and RSU are all Pareto-dominated.
+With out-of-sample (OOS) evaluation, TASER (F1=1.0, 1.07s) strictly
+dominates RF (F1=0.894, 5.03s) on both quality and speed. Only TASER and IQR
+sit on the Pareto frontier. All other detectors are dominated.
 
-Note: A GWO-based RF variant was excluded from the multi-seed benchmark
-(single-seed Wilcoxon p=0.640, Cohen's d=0.18 vs RF baseline - negligible benefit).
-Its implementation remains in `detectors/` but is not included in published results.
+Note: GWO was excluded from the multi-seed benchmark (Wilcoxon p=0.640,
+Cohen's d=0.18 vs RF baseline). Single-seed results are in gwo_rf_detector.py.
 
 ![Pareto frontier](figures/proofs_pareto.png)
 
