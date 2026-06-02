@@ -1,13 +1,17 @@
-﻿# VANET Sybil Detection Benchmark
+# VANET Sybil Detection Benchmark
 
 [![Python](https://img.shields.io/badge/Python-3.9%2B-blue)](https://www.python.org/)
 [![SUMO](https://img.shields.io/badge/SUMO-1.12.0-green)](https://eclipse.dev/sumo/)
-[![License](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
 [![Seeds](https://img.shields.io/badge/Seeds-5-orange)](results/metrics/multi_seed_raw.csv)
 
-Comparative benchmark of **6 Sybil attack detection algorithms** for VANETs. All detectors run on the same SUMO-generated dataset under identical conditions, with rigorous out-of-sample evaluation (vehicle-level splits) and 5 random seeds.
+Comparative benchmark of **6 Sybil attack detection algorithms** for VANETs.
+All detectors run on the same SUMO-generated dataset under identical conditions,
+with rigorous out-of-sample evaluation (vehicle-level splits) and **5 random seeds
+on both attack models**.
 
-Two attack models are tested: **co-location** (all fake IDs report the same position) and **split-position** (IDs report distinct positions around RSU centers - the model RSU detection was designed for).
+Two attack models are tested:
+- **Co-location** - all fake IDs report the same position (primary benchmark, 5 seeds)
+- **Split-position** - IDs report distinct positions around RSU centers (5 seeds, same replication design)
 
 ---
 
@@ -16,36 +20,33 @@ Two attack models are tested: **co-location** (all fake IDs report the same posi
 ```bash
 pip install scikit-learn tensorflow pandas numpy matplotlib scipy
 
-# Collect datasets (seed=42, ~35s)
-python simulation/collect_dataset.py
-
-# Run benchmark (6 detectors, 8 sybil rates, ~20 min)
-python benchmark.py
-
-# Multi-seed benchmark (5 seeds, published results, ~20 min)
+# Co-location benchmark (5 seeds x 8 rates = 40 runs, ~20 min)
 python simulation/run_multi_seed.py
 
-# Split-position attack model
-python simulation/collect_dataset_split.py
-python benchmark_split.py
+# Split-position benchmark (5 seeds x 8 rates = 40 runs, ~20 min)
+python simulation/run_multi_seed_split.py
+
+# Single-seed quick run (seed=42 only)
+python simulation/collect_dataset.py
+python benchmark.py
 ```
 
 ---
 
-## Results (co-location attack, 5 seeds × 8 rates = 40 runs)
+## Results — Co-location Attack (5 seeds × 8 rates = 40 runs)
 
-All F1 values are out-of-sample.
+All F1 values are out-of-sample. F1 std = mean of per-rate standard deviations across seeds.
 
 | Detector | F1 | F1 std | Precision | Recall | Specificity | Time (s) |
 |---|---|---|---|---|---|---|
-| **TASER** | **0.9997** | 0.0006 | **1.0000** | 0.9995 | **1.0000** | **1.07** |
-| **Dynamic k-Means** | **0.9795** | 0.0257 | 0.9671 | 0.9944 | 0.9895 | 0.30 |
+| **TASER** | **0.9997** | 0.0006 | **1.0000** | 0.9995 | **1.0000** | 1.07 |
+| **Dynamic k-Means** | **0.9795** | 0.0257 | 0.9671 | 0.9944 | 0.9895 | **0.30** |
 | Random Forest | 0.8945 | 0.0242 | 0.9156 | 0.8856 | 0.9802 | 5.03 |
 | LSTM | 0.4487 | 0.1766 | 0.4638 | 0.4735 | 0.9280 | 35.9 |
 | IQR | 0.4007 | 0.0326 | 0.3046 | **1.0000** | 0.1500 | **0.13** |
 | RSU | 0.0123 | 0.0276 | 0.0341 | 0.0076 | 0.9899 | 23.7 |
 
-### F1 by sybil rate (mean over 5 seeds)
+### F1 by sybil rate — co-location (mean over 5 seeds)
 
 | Detector | 5% | 10% | 15% | 20% | 25% | 30% | 35% | 40% |
 |---|---|---|---|---|---|---|---|---|
@@ -56,16 +57,40 @@ All F1 values are out-of-sample.
 | IQR | 0.109 | 0.108 | 0.198 | 0.343 | 0.396 | 0.443 | 0.608 | 1.000 |
 | RSU | 0.000 | 0.000 | 0.000 | 0.034 | 0.000 | 0.064 | 0.000 | 0.000 |
 
-### Attack model comparison (single seed, mean over 8 rates)
+---
 
-| Detector | Co-location F1 | Split-position F1 |
-|---|---|---|
-| TASER | 0.9997 | 1.0000 |
-| Random Forest | 0.8945 | 0.9948 |
-| **RSU** | 0.0123 | **0.8350** |
-| **k-Means** | **0.9795** | **0.9226** |
-| LSTM | 0.4487 | 0.4662 |
-| IQR | 0.4007 | 0.3808 |
+## Results — Split-position Attack (5 seeds × 8 rates = 40 runs)
+
+| Detector | F1 | F1 std | Precision | Recall | Specificity |
+|---|---|---|---|---|---|
+| **TASER** | **1.0000** | 0.0000 | **1.0000** | **1.0000** | **1.0000** |
+| **Random Forest** | **0.9926** | 0.0104 | 0.9955 | 0.9908 | 0.9990 |
+| **Dynamic k-Means** | **0.9440** | 0.0897 | 0.9125 | 0.9820 | 0.9702 |
+| **RSU** | **0.8350** | 0.1292 | 0.8511 | 0.8479 | 0.9628 |
+| LSTM | 0.4862 | 0.4055 | 0.5087 | 0.5208 | 0.9087 |
+| IQR | 0.3808 | 0.2755 | 0.2825 | 1.0000 | 0.1250 |
+
+### F1 by sybil rate — split-position (mean over 5 seeds)
+
+| Detector | 5% | 10% | 15% | 20% | 25% | 30% | 35% | 40% |
+|---|---|---|---|---|---|---|---|---|
+| TASER | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 | 1.000 |
+| k-Means | 0.989 | 0.921 | 0.840 | 0.858 | 0.963 | 0.999 | 0.997 | 0.985 |
+| Random Forest | 0.982 | 0.978 | 0.983 | 1.000 | 1.000 | 1.000 | 0.999 | 1.000 |
+| LSTM | 0.000 | 0.000 | 0.225 | 0.643 | 0.370 | 0.830 | 0.913 | 0.908 |
+| IQR | 0.104 | 0.105 | 0.193 | 0.332 | 0.372 | 0.442 | 0.500 | 1.000 |
+| RSU | 0.557 | 0.896 | 1.000 | 0.877 | 0.959 | 0.796 | 0.784 | 0.811 |
+
+### Attack model comparison (5 seeds, mean over 8 rates)
+
+| Detector | Co-location F1 | Split-position F1 | Delta |
+|---|---|---|---|
+| TASER | 0.9997 | 1.0000 | +0.000 |
+| Random Forest | 0.8945 | 0.9926 | **+0.098** |
+| **RSU** | 0.0123 | **0.8350** | **+0.823** |
+| **k-Means** | **0.9795** | **0.9440** | -0.036 |
+| LSTM | 0.4487 | 0.4862 | +0.038 |
+| IQR | 0.4007 | 0.3808 | -0.020 |
 
 ---
 
@@ -75,18 +100,17 @@ All figures are in `analysis/figures/`. Generated by running the scripts in `res
 
 | Figure | Script | What it shows |
 |---|---|---|
-| `heatmap_f1.png` | `generate_analysis.py` | F1 per detector per rate — co-location attack |
-| `heatmap_f1_split.png` | `generate_additional_figures.py` | F1 per detector per rate — split-position attack |
-| `f1_trend_lines.png` | `generate_additional_figures.py` | F1 vs sybil rate line chart (all detectors) |
-| `attack_model_comparison.png` | `generate_additional_figures.py` | Mean F1: co-location vs split-position per detector |
-| `data_leakage_comparison.png` | `generate_additional_figures.py` | RF in-sample (≈0.987) vs OOS (0.895) gap |
+| `heatmap_f1.png` | `generate_analysis.py` | F1 per detector per rate — co-location |
+| `heatmap_f1_split.png` | `generate_additional_figures.py` | F1 per detector per rate — split-position |
+| `attack_model_comparison.png` | `generate_additional_figures.py` | Mean F1: co-location vs split-position |
+| `data_leakage_comparison.png` | `generate_additional_figures.py` | RF in-sample vs OOS data leakage |
 | `kmeans_criterion_fix.png` | `generate_additional_figures.py` | k-Means F1 before (0.000) and after (0.9795) criterion fix |
-| `precision_by_rate.png` | `generate_additional_figures.py` | Precision per rate — only TASER holds 1.000 always |
+| `precision_by_rate.png` | `generate_additional_figures.py` | Precision per rate (only TASER holds 1.000 always) |
 | `cost_vs_f1.png` | `generate_analysis.py` | Pareto frontier: F1 vs training time |
 | `f1_variance.png` | `generate_analysis.py` | F1 distribution across 40 runs (boxplot) |
-| `proofs_kruskal_wallis.png` | `generate_proofs.py` | F1 distributions driving H=180.69 |
+| `proofs_kruskal_wallis.png` | `generate_proofs.py` | F1 distributions (H=180.69) |
 | `proofs_bootstrap_ci.png` | `generate_proofs.py` | Bootstrap 95% CIs for mean F1 |
-| `proofs_taser_convergence.png` | `generate_proofs.py` | TASER trust score convergence (n\*=12 beacons) |
+| `proofs_taser_convergence.png` | `generate_proofs.py` | TASER trust score convergence (n*=12 beacons) |
 | `proofs_lstm_imbalance.png` | `generate_proofs.py` | LSTM class-imbalance threshold effect |
 | `roc_curves_sybil{10,20,30,40}.png` | `generate_roc.py` | ROC curves at each sybil rate |
 | `sensitivity_taser_lambda.png` | `generate_sensitivity.py` | TASER threshold λ sensitivity |
@@ -100,11 +124,13 @@ All figures are in `analysis/figures/`. Generated by running the scripts in `res
 
 2. **In-sample evaluation inflates RF by 9.3 pp** - OOS RF F1 = 0.895 vs in-sample ≈ 0.987. Vehicle-level splits are required to prevent data leakage.
 
-3. **RSU failure is model-specific, not algorithmic** - F1 jumps from 0.012 (co-location) to 0.835 (split-position), confirming RSU works correctly in the attack scenario it was designed for.
+3. **RSU failure is model-specific, not algorithmic** - F1 jumps from 0.012 (co-location) to 0.835 (split-position, 5 seeds), confirming RSU works correctly in the attack scenario it was designed for.
 
 4. **k-Means improved from F1=0.000 to F1=0.9795** by switching from mean-speed z-score to MAD-based std_speed z-score. Speed noise (sigma=8) raises variance, not mean - the original criterion was mathematically wrong.
 
 5. **Kruskal-Wallis H=180.7** (p < 10⁻³⁶, n=40) confirms statistical significance. Wilcoxon W=0 for TASER vs RF and TASER vs k-Means (p < 0.001).
+
+6. **Both attack models use 5 seeds** - ensuring consistent statistical power across co-location and split-position comparisons.
 
 ---
 
@@ -112,9 +138,10 @@ All figures are in `analysis/figures/`. Generated by running the scripts in `res
 
 ```
 ├── simulation/
-│   ├── collect_dataset.py          co-location datasets (seed-aware)
-│   ├── collect_dataset_split.py    split-position datasets
-│   ├── run_multi_seed.py           5-seed orchestrator
+│   ├── collect_dataset.py              co-location datasets (seed-aware)
+│   ├── collect_dataset_split.py        split-position datasets (seed-aware)
+│   ├── run_multi_seed.py               co-location: 5 seeds x 8 rates
+│   ├── run_multi_seed_split.py         split-position: 5 seeds x 8 rates
 │   ├── generate_routes.py / make_configs.py
 │   └── network.net.xml + routes_sybil{N}.rou.xml
 ├── detectors/
@@ -122,24 +149,27 @@ All figures are in `analysis/figures/`. Generated by running the scripts in `res
 │   ├── rf_detector.py / lstm_detector.py / kmeans_detector.py
 │   └── base_detector.py / __init__.py
 ├── results/
-│   ├── datasets/                   co-location CSVs (seed=42 + multi_seed/)
-│   ├── datasets/split_position/    split-position CSVs
-│   └── metrics/                    benchmark_results.csv, multi_seed_raw.csv,
-│                                   benchmark_split_results.csv
-├── benchmark.py                    main benchmark runner
-├── benchmark_split.py              split-position benchmark
+│   ├── datasets/                       co-location CSVs (multi_seed/)
+│   ├── datasets/split_position/        split-position CSVs (latest seed)
+│   ├── datasets/split_position_multiseed/  per-seed split-position CSVs
+│   └── metrics/
+│       ├── benchmark_results.csv       co-location aggregated (5 seeds)
+│       ├── multi_seed_raw.csv          co-location raw (40 obs/detector)
+│       ├── benchmark_split_results.csv split-position aggregated (5 seeds)
+│       └── multi_seed_split_raw.csv    split-position raw (40 obs/detector)
+├── benchmark.py                        single-seed benchmark runner
+├── benchmark_split.py                  single-seed split-position runner
 ├── docs/
-│   ├── setup.md                    installation and usage
-│   ├── detectors.md                algorithm reference
-│   └── attack_models.md            co-location vs split-position
+│   ├── setup.md                        installation and usage
+│   ├── detectors.md                    algorithm reference
+│   └── attack_models.md                co-location vs split-position
 └── results/
-    ├── generate_analysis.py        main figures (heatmap, boxplot, Pareto, etc.)
-    ├── generate_proofs.py          statistical proof figures
-    ├── generate_roc.py             ROC curve figures
-    ├── generate_sensitivity.py     hyperparameter sensitivity figures
-    ├── generate_additional_figures.py  supplementary figures (trend lines,
-    │                               attack comparison, data leakage, k-Means fix)
-    └── compare_attack_models.py    co-location vs split-position summary
+    ├── generate_analysis.py            main figures
+    ├── generate_proofs.py              statistical proof figures
+    ├── generate_roc.py                 ROC curve figures
+    ├── generate_sensitivity.py         hyperparameter sensitivity figures
+    ├── generate_additional_figures.py  supplementary figures
+    └── compare_attack_models.py        co-location vs split-position summary
 ```
 
 ---

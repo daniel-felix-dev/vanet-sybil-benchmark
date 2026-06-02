@@ -2,8 +2,11 @@
 
 This document consolidates the per-algorithm analysis and cross-detector insights
 produced by the benchmark. All metrics are **out-of-sample** (vehicle-level splits)
-averaged over **5 seeds × 8 sybil rates = 40 observations** per detector unless
-otherwise stated. Raw data: `results/metrics/multi_seed_raw.csv`.
+averaged over **5 seeds × 8 sybil rates = 40 observations** per detector.
+**Both attack models (co-location and split-position) use 5 seeds**, ensuring
+consistent statistical power across comparisons.
+- Co-location raw data: `results/metrics/multi_seed_raw.csv`
+- Split-position raw data: `results/metrics/multi_seed_split_raw.csv`
 
 ---
 
@@ -397,13 +400,14 @@ TASER still significantly outperforms k-Means, dominating at all 40 observations
 Bootstrap 95% CI for k-Means: [0.9682, 0.9885] - non-overlapping with TASER
 CI [0.9992, 1.0000].
 
-**Split-position attack: F1 = 0.923 (mean across 8 rates).** k-Means degrades
-modestly (−0.057 delta from co-location). The speed-variance criterion (criterion 2)
-still fires because Sybil vehicles inject Gaussian noise regardless of attack model.
-The position-variance criterion (criterion 3) is less effective in split-position
-because Sybil identities at distinct RSU-centered positions have non-zero mean_pos_std,
-reducing the clustering contrast. Despite this, k-Means remains the second-best
-detector in split-position (RSU F1=0.835, k-Means F1=0.923).
+**Split-position attack: F1 = 0.944 (mean across 8 rates, 5 seeds).** k-Means
+degrades modestly (−0.036 delta from co-location). The speed-variance criterion
+(criterion 2) still fires because Sybil vehicles inject Gaussian noise regardless of
+attack model. The position-variance criterion (criterion 3) is less effective in
+split-position because Sybil identities at distinct RSU-centered positions have
+non-zero mean_pos_std, reducing the clustering contrast. Despite this, k-Means
+remains the second-best detector in split-position (RSU F1=0.835, k-Means F1=0.944).
+See `kmeans_criterion_fix.png`.
 
 **Primary research contribution:** demonstrating that a near-trivial criterion
 change (mean → variance) converts a completely ineffective detector (F1 = 0.000)
