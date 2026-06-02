@@ -129,9 +129,3 @@ All algorithms sourced from independent open-source repositories:
 | k-Means | [Gideon-Adele/Dynamic-k-means-Clustering](https://github.com/Gideon-Adele/Dynamic-k-means-Clustering) |
 
 Simulation: [SUMO 1.12.0](https://eclipse.dev/sumo/) (Eclipse Public License 2.0)
-
----
-
-## License
-
-[MIT License](LICENSE)
