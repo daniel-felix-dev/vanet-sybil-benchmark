@@ -84,8 +84,8 @@ Positive slope = improves under heavier attack. Negative = degrades.
 | Random Forest | +0.0070 | 0.7781 | 0.0037* | improves |
 | LSTM | +0.0293 | 0.8985 | 0.0003* | improves |
 | IQR Speed Threshold | +0.0227 | 0.8720 | 0.0007* | improves |
-| RSU Position Verification | +0.0004 | 0.0368 | 0.6490 | improves |
-| Dynamic k-Means | +0.0005 | 0.1986 | 0.2684 | improves |
+| RSU Position Verification | +0.0004 | 0.0368 | 0.6490 | flat |
+| Dynamic k-Means | +0.0005 | 0.1994 | 0.2674 | flat |
 
 (*) p < 0.05
 
@@ -144,7 +144,7 @@ ceil(11.43) = **12 beacons**.
   For T_n >= 0.99:
   n = ln(0.01/0.5) / ln(0.99) = **389.2 steps to reach T >= 0.99**
 
-This means a legitimate vehicle needs about 229 beacons to reach near-maximum trust,
+This means a legitimate vehicle needs about 390 beacons to reach near-maximum trust,
 while a Sybil vehicle is caught in 12. The asymmetry is the core of TASER's precision.
 
 ![TASER convergence](figures/proofs_taser_convergence.png)

@@ -71,7 +71,7 @@ All F1 values are out-of-sample.
 
 ## Key Findings
 
-1. **TASER is Pareto-optimal** — highest F1 (0.9997) with lowest competitive training time (0.69s). Precision = 1.000 at all rates, robust to both attack models. Provably flags Sybil nodes within 12 beacons.
+1. **TASER is Pareto-optimal** — highest F1 (0.9997) at 1.07s training time. Precision = 1.000 at all rates, robust to both attack models. Provably flags Sybil nodes within 12 beacons.
 
 2. **In-sample evaluation inflates RF by 9.3 pp** — OOS RF F1 = 0.895 vs in-sample ≈ 0.987. Vehicle-level splits are required to prevent data leakage.
 
