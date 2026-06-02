@@ -186,7 +186,7 @@ Detector A Pareto-dominates detector B if and only if:
 | Dynamic k-Means | 0.9795 | 0.30 | none | **Yes** |
 
 With out-of-sample (OOS) evaluation, three detectors sit on the Pareto frontier:
-IQR (F1=0.401, 0.13s), Dynamic k-Means (F1=0.980, 0.30s), and TASER (F1=1.000, 1.07s).
+IQR (F1=0.401, 0.13s), Dynamic k-Means (F1=0.9795, 0.30s), and TASER (F1=0.9997, 1.07s).
 TASER strictly dominates RF (F1=0.895, 5.03s) and k-Means strictly dominates RF
 on both F1 and training time. RF, LSTM, and RSU are all Pareto-dominated.
 

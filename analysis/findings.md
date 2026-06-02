@@ -256,7 +256,7 @@ margin.
 
 **RF is Pareto-dominated by both TASER and k-Means.** TASER achieves higher F1
 (1.000 vs 0.895) *and* lower training time (1.07 s vs 5.03 s). k-Means achieves
-higher F1 (0.980 vs 0.895) *and* lower training time (0.30 s vs 5.03 s).
+higher F1 (0.9795 vs 0.895) *and* lower training time (0.30 s vs 5.03 s).
 There is no deployment scenario where RF is the optimal choice.
 
 **Wilcoxon W = 22, p < 0.001 (RF vs LSTM):** RF significantly outperforms LSTM
