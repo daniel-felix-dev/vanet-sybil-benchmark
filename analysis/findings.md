@@ -282,7 +282,7 @@ due to computational cost: 5 folds × 5 seeds × 8 rates × 20 epochs would requ
 | Specificity | 0.9280 |
 | Fit time | 35.9 s |
 | Pareto status | Dominated (TASER, RF, k-Means all superior) |
-| Mean AUC | 0.821 |
+| Mean AUC | 0.850 |
 
 ### Per-Rate F1
 
@@ -303,7 +303,7 @@ LSTM achieves F1 = 0.443, rising to 0.851 at 30% and 0.883 at 35%. Beyond 20%
 the training signal is sufficient, but results oscillate due to the stochastic
 interaction between class balance and early stopping across seeds.
 
-**AUC = 0.821 despite low operating-point F1.** The learned probability scores
+**AUC = 0.850 (mean across 10–40% rates) despite low operating-point F1.** The learned probability scores
 have genuine discriminative power even at low sybil rates, but the default
 threshold (0.5) is poorly calibrated for the imbalanced class distribution.
 Threshold tuning or SMOTE oversampling would likely recover significant F1 gains
