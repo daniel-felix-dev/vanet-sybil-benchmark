@@ -60,12 +60,12 @@ All F1 values are out-of-sample.
 
 | Detector | Co-location F1 | Split-position F1 |
 |---|---|---|
-| TASER | 0.9997 | 1.000 |
-| Random Forest | 0.895 | 0.995 |
-| **RSU** | 0.012 | **0.835** |
-| **k-Means** | **0.9795** | **0.923** |
-| IQR | 0.401 | 0.381 |
-| LSTM | 0.482 | 0.315 |
+| TASER | 0.9997 | 1.0000 |
+| Random Forest | 0.8945 | 0.9948 |
+| **RSU** | 0.0123 | **0.8350** |
+| **k-Means** | **0.9795** | **0.9226** |
+| LSTM | 0.4487 | 0.4662 |
+| IQR | 0.4007 | 0.3808 |
 
 ---
 
@@ -79,7 +79,7 @@ All F1 values are out-of-sample.
 
 4. **k-Means improved from F1=0.000 to F1=0.9795** by switching from mean-speed z-score to MAD-based std_speed z-score. Speed noise (sigma=8) raises variance, not mean — the original criterion was mathematically wrong.
 
-5. **Kruskal-Wallis H=193.1** (p < 10⁻⁶, n=40) confirms statistical significance. Wilcoxon W=0 for TASER vs RF (p < 0.001).
+5. **Kruskal-Wallis H=180.7** (p < 10⁻³⁶, n=40) confirms statistical significance. Wilcoxon W=0 for TASER vs RF and TASER vs k-Means (p < 0.001).
 
 ---
 

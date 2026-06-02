@@ -26,15 +26,16 @@ We report the W statistic and two-sided p-value for each key comparison.
 
 | Detector A | Detector B | W stat | p-value | Significant (p<0.05)? |
 |---|---|---|---|---|
-| TASER Bayesian Trust | Random Forest | 0.0 | 0.0000 | **Yes** |
-| TASER Bayesian Trust | LSTM | 0.0 | 0.0000 | **Yes** |
-| TASER Bayesian Trust | IQR Speed Threshold | 1.0 | 0.0000 | **Yes** |
-| Random Forest | LSTM | 22.0 | 0.0000 | **Yes** |
-| Random Forest | RSU Position Verification | 0.0 | 0.0000 | **Yes** |
-| Random Forest | Dynamic k-Means | 27.0 | 0.0000 | **Yes** |
-| LSTM | IQR Speed Threshold | 335.0 | 0.4428 | No |
-| LSTM | RSU Position Verification | 1.0 | 0.0000 | **Yes** |
-| IQR Speed Threshold | RSU Position Verification | 0.0 | 0.0000 | **Yes** |
+| TASER Bayesian Trust | Random Forest | 0.0 | 1.82e-12 | **Yes** |
+| TASER Bayesian Trust | LSTM | 0.0 | 1.31e-07 | **Yes** |
+| TASER Bayesian Trust | IQR Speed Threshold | 1.0 | 2.70e-07 | **Yes** |
+| TASER Bayesian Trust | Dynamic k-Means | 0.0 | 3.57e-08 | **Yes** |
+| Random Forest | LSTM | 22.0 | 9.75e-10 | **Yes** |
+| Random Forest | RSU Position Verification | 0.0 | 3.57e-08 | **Yes** |
+| Random Forest | Dynamic k-Means | 27.0 | 2.63e-07 | **Yes** |
+| LSTM | IQR Speed Threshold | 335.0 | 4.43e-01 | No |
+| LSTM | RSU Position Verification | 1.0 | 9.20e-06 | **Yes** |
+| IQR Speed Threshold | RSU Position Verification | 0.0 | 3.53e-08 | **Yes** |
 
 ## Test 3: Bootstrap 95% confidence intervals for mean F1
 
@@ -45,11 +46,11 @@ CI is the 2.5th and 97.5th percentile of the bootstrap distribution of means.
 | Detector | Mean F1 | 95% CI lower | 95% CI upper | CI width |
 |---|---|---|---|---|
 | TASER Bayesian Trust | 0.9997 | 0.9992 | 1.0000 | 0.0008 |
-| Random Forest | 0.8945 | 0.8641 | 0.9224 | 0.0582 |
-| LSTM | 0.4487 | 0.3191 | 0.5758 | 0.2567 |
-| IQR Speed Threshold | 0.4007 | 0.3137 | 0.4944 | 0.1807 |
+| Dynamic k-Means | 0.9795 | 0.9681 | 0.9885 | 0.0204 |
+| Random Forest | 0.8945 | 0.8640 | 0.9224 | 0.0584 |
+| LSTM | 0.4487 | 0.3257 | 0.5733 | 0.2476 |
+| IQR Speed Threshold | 0.4007 | 0.3151 | 0.4939 | 0.1788 |
 | RSU Position Verification | 0.0123 | 0.0000 | 0.0327 | 0.0327 |
-| Dynamic k-Means | 0.9795 | 0.9683 | 0.9887 | 0.0204 |
 
 Non-overlapping confidence intervals between two detectors is strong evidence
 that their true mean F1 values differ.
@@ -63,13 +64,14 @@ Cohen's d = (mean_A - mean_B) / pooled_std.  Interpretation: |d| < 0.2 small,
 
 | Comparison | Cohen's d | Magnitude |
 |---|---|---|
-| TASER Bayesian Trust vs Random Forest | +1.540 | **large** |
-| TASER Bayesian Trust vs LSTM | +1.907 | **large** |
-| TASER Bayesian Trust vs IQR Speed Threshold | +2.918 | **large** |
-| Random Forest vs LSTM | +1.501 | **large** |
-| Random Forest vs RSU Position Verification | +11.115 | **large** |
-| LSTM vs IQR Speed Threshold | +0.136 | negligible |
-| LSTM vs RSU Position Verification | +1.496 | **large** |
+| TASER Bayesian Trust vs Random Forest | +1.559 | **large** |
+| TASER Bayesian Trust vs LSTM | +1.931 | **large** |
+| TASER Bayesian Trust vs IQR Speed Threshold | +2.955 | **large** |
+| TASER Bayesian Trust vs Dynamic k-Means | +0.858 | **large** |
+| Random Forest vs LSTM | +1.521 | **large** |
+| Random Forest vs RSU Position Verification | +11.257 | **large** |
+| LSTM vs IQR Speed Threshold | +0.137 | negligible |
+| LSTM vs RSU Position Verification | +1.515 | **large** |
 
 ## Test 5: Linear regression  F1 ~ sybil_rate  per detector
 
@@ -183,12 +185,14 @@ Detector A Pareto-dominates detector B if and only if:
 | RSU Position Verification | 0.0123 | 23.75 | TASER, Random, IQR, Dynamic | No |
 | Dynamic k-Means | 0.9795 | 0.30 | none | **Yes** |
 
-With out-of-sample (OOS) evaluation, TASER (F1=1.0, 1.07s) strictly
-dominates RF (F1=0.894, 5.03s) on both quality and speed. Only TASER and IQR
-sit on the Pareto frontier. All other detectors are dominated.
+With out-of-sample (OOS) evaluation, three detectors sit on the Pareto frontier:
+IQR (F1=0.401, 0.13s), Dynamic k-Means (F1=0.980, 0.30s), and TASER (F1=1.000, 1.07s).
+TASER strictly dominates RF (F1=0.895, 5.03s) and k-Means strictly dominates RF
+on both F1 and training time. RF, LSTM, and RSU are all Pareto-dominated.
 
-Note: GWO was excluded from the multi-seed benchmark (Wilcoxon p=0.640,
-Cohen's d=0.18 vs RF baseline). Single-seed results are in gwo_rf_detector.py.
+Note: A GWO-based RF variant was excluded from the multi-seed benchmark
+(single-seed Wilcoxon p=0.640, Cohen's d=0.18 vs RF baseline — negligible benefit).
+Its implementation remains in `detectors/` but is not included in published results.
 
 ![Pareto frontier](figures/proofs_pareto.png)
 
