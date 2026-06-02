@@ -35,13 +35,15 @@ RSU center (rx, ry)
 
 ## Comparison
 
+All values are mean F1 over 5 seeds × 8 rates = 40 observations per detector.
+
 | Detector | Co-location F1 | Split-position F1 | Delta |
 |---|---|---|---|
 | TASER | 0.9997 | 1.0000 | +0.000 |
-| Random Forest | 0.8945 | 0.9948 | **+0.100** |
+| Random Forest | 0.8945 | 0.9926 | **+0.098** |
 | RSU | 0.0123 | 0.8350 | **+0.823** |
-| k-Means | 0.9795 | 0.9226 | −0.057 |
-| LSTM | 0.4487 | 0.4662 | +0.018 |
+| k-Means | 0.9795 | 0.9440 | −0.036 |
+| LSTM | 0.4487 | 0.4862 | +0.038 |
 | IQR | 0.4007 | 0.3808 | −0.020 |
 
 **Key finding:** Detection guarantees depend critically on the alignment between the algorithm's assumptions and the attack model. TASER is the only detector robust to both models (F1 ≥ 0.999 in both). RSU and RF gain substantially in split-position because distinct reported positions provide richer features for detection.

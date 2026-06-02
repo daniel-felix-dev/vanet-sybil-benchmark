@@ -1,0 +1,241 @@
+detector,accuracy,precision,recall,f1,specificity,f1_std,sybil_rate,seed,fit_time_s,attack_model
+IQR Speed Threshold,0.0548,0.0548,1.0,0.1038,0.0,0.0,5,42,0.05,split_position
+RSU Position Verification,0.9298,0.4256,0.8067,0.5572,0.9369,0.0,5,42,9.94,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,5,42,0.8,split_position
+Random Forest,0.9988,0.998,0.9826,0.9902,0.9998,0.01,5,42,4.46,split_position
+LSTM,0.8889,0.0,0.0,0.0,0.9412,0.0,5,42,33.65,split_position
+Dynamic k-Means,0.9988,0.9783,1.0,0.989,0.9987,0.0,5,42,4.84,split_position
+IQR Speed Threshold,0.0552,0.0552,1.0,0.1046,0.0,0.0,10,42,0.11,split_position
+RSU Position Verification,0.9896,1.0,0.8124,0.8965,1.0,0.0,10,42,21.68,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,10,42,0.78,split_position
+Random Forest,0.9975,0.9948,0.9577,0.9743,0.9997,0.0457,10,42,4.65,split_position
+LSTM,0.8889,0.0,0.0,0.0,0.9412,0.0,10,42,37.09,split_position
+Dynamic k-Means,0.9988,0.9784,1.0,0.9891,0.9987,0.0,10,42,0.18,split_position
+IQR Speed Threshold,0.1067,0.1067,1.0,0.1928,0.0,0.0,15,42,0.1,split_position
+RSU Position Verification,1.0,1.0,1.0,1.0,1.0,0.0,15,42,29.62,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,15,42,0.95,split_position
+Random Forest,0.9992,0.9977,0.9932,0.9954,0.9998,0.0059,15,42,5.71,split_position
+LSTM,0.8947,0.0,0.0,0.0,1.0,0.0,15,42,33.22,split_position
+Dynamic k-Means,0.9293,0.6014,1.0,0.7511,0.9208,0.0,15,42,0.22,split_position
+IQR Speed Threshold,0.1988,0.1988,1.0,0.3317,0.0,0.0,20,42,0.14,split_position
+RSU Position Verification,0.9443,0.7812,1.0,0.8772,0.9305,0.0,20,42,27.89,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,20,42,3.08,split_position
+Random Forest,0.9999,0.9995,1.0,0.9997,0.9999,0.0005,20,42,5.43,split_position
+LSTM,0.5238,0.0,0.0,0.0,0.6471,0.0,20,42,37.68,split_position
+Dynamic k-Means,0.8752,0.6143,1.0,0.7611,0.8442,0.0,20,42,0.17,split_position
+IQR Speed Threshold,0.2282,0.2282,1.0,0.3716,0.0,0.0,25,42,0.12,split_position
+RSU Position Verification,0.9806,0.9217,1.0,0.9592,0.9749,0.0,25,42,30.12,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,25,42,1.44,split_position
+Random Forest,1.0,1.0,1.0,1.0,1.0,0.0,25,42,6.36,split_position
+LSTM,0.8182,0.6667,0.4,0.5,0.9412,0.0,25,42,44.07,split_position
+Dynamic k-Means,0.9556,0.8604,0.9612,0.908,0.9539,0.0,25,42,0.16,split_position
+IQR Speed Threshold,0.2834,0.2834,1.0,0.4416,0.0,0.0,30,42,0.08,split_position
+RSU Position Verification,0.8993,0.9365,0.6916,0.7956,0.9815,0.0,30,42,20.76,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,30,42,0.97,split_position
+Random Forest,0.9998,0.9994,1.0,0.9997,0.9997,0.0006,30,42,5.91,split_position
+LSTM,0.7826,0.5556,0.8333,0.6667,0.7647,0.0,30,42,38.13,split_position
+Dynamic k-Means,0.9991,0.9967,1.0,0.9984,0.9987,0.0,30,42,0.21,split_position
+IQR Speed Threshold,0.3332,0.3332,1.0,0.4999,0.0,0.0,35,42,0.16,split_position
+RSU Position Verification,0.8624,0.8218,0.7495,0.784,0.9188,0.0,35,42,27.73,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,35,42,1.54,split_position
+Random Forest,0.9996,0.9987,1.0,0.9994,0.9993,0.0004,35,42,6.1,split_position
+LSTM,0.88,0.7778,0.875,0.8235,0.8824,0.0,35,42,39.24,split_position
+Dynamic k-Means,0.9979,0.9938,1.0,0.9969,0.9969,0.0,35,42,0.28,split_position
+IQR Speed Threshold,1.0,1.0,1.0,1.0,1.0,0.0,40,42,0.19,split_position
+RSU Position Verification,0.8667,0.922,0.7233,0.8107,0.9601,0.0,40,42,26.98,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,40,42,1.03,split_position
+Random Forest,0.9997,0.9992,1.0,0.9996,0.9995,0.0004,40,42,4.37,split_position
+LSTM,0.963,0.9091,1.0,0.9524,0.9412,0.0,40,42,38.55,split_position
+Dynamic k-Means,0.9898,0.9748,1.0,0.9873,0.9832,0.0,40,42,0.16,split_position
+IQR Speed Threshold,0.0548,0.0548,1.0,0.1038,0.0,0.0,5,123,0.07,split_position
+RSU Position Verification,0.9298,0.4256,0.8067,0.5572,0.9369,0.0,5,123,20.29,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,5,123,1.4,split_position
+Random Forest,0.9967,0.9979,0.9447,0.9696,0.9998,0.0321,5,123,4.94,split_position
+LSTM,0.9444,0.0,0.0,0.0,1.0,0.0,5,123,28.5,split_position
+Dynamic k-Means,0.9988,0.9783,1.0,0.989,0.9987,0.0,5,123,0.15,split_position
+IQR Speed Threshold,0.0552,0.0552,1.0,0.1046,0.0,0.0,10,123,0.08,split_position
+RSU Position Verification,0.9896,1.0,0.8124,0.8965,1.0,0.0,10,123,24.13,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,10,123,0.69,split_position
+Random Forest,0.9979,0.9949,0.9647,0.9783,0.9997,0.0405,10,123,2.6,split_position
+LSTM,0.9444,0.0,0.0,0.0,1.0,0.0,10,123,13.45,split_position
+Dynamic k-Means,0.9398,0.4784,1.0,0.6471,0.9363,0.0,10,123,0.06,split_position
+IQR Speed Threshold,0.1067,0.1067,1.0,0.1928,0.0,0.0,15,123,0.05,split_position
+RSU Position Verification,1.0,1.0,1.0,1.0,1.0,0.0,15,123,8.47,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,15,123,0.48,split_position
+Random Forest,0.9967,0.9975,0.968,0.9815,0.9998,0.0357,15,123,2.15,split_position
+LSTM,0.8421,0.4,1.0,0.5714,0.8235,0.0,15,123,10.94,split_position
+Dynamic k-Means,0.9972,0.9747,1.0,0.9872,0.9969,0.0,15,123,0.1,split_position
+IQR Speed Threshold,0.1988,0.1988,1.0,0.3317,0.0,0.0,20,123,0.04,split_position
+RSU Position Verification,0.9443,0.7812,1.0,0.8772,0.9305,0.0,20,123,8.67,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,20,123,0.52,split_position
+Random Forest,0.9999,0.9995,1.0,0.9997,0.9999,0.0005,20,123,2.17,split_position
+LSTM,0.9048,0.75,0.75,0.75,0.9412,0.0,20,123,12.6,split_position
+Dynamic k-Means,0.9585,0.9935,0.7963,0.884,0.9987,0.0,20,123,0.06,split_position
+IQR Speed Threshold,0.2282,0.2282,1.0,0.3716,0.0,0.0,25,123,0.06,split_position
+RSU Position Verification,0.9806,0.9217,1.0,0.9592,0.9749,0.0,25,123,11.07,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,25,123,0.53,split_position
+Random Forest,1.0,1.0,1.0,1.0,1.0,0.0,25,123,2.22,split_position
+LSTM,0.6818,0.0,0.0,0.0,0.8824,0.0,25,123,11.95,split_position
+Dynamic k-Means,0.9814,0.9962,0.922,0.9577,0.999,0.0,25,123,0.06,split_position
+IQR Speed Threshold,0.2834,0.2834,1.0,0.4416,0.0,0.0,30,123,0.06,split_position
+RSU Position Verification,0.8993,0.9365,0.6916,0.7956,0.9815,0.0,30,123,10.7,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,30,123,0.92,split_position
+Random Forest,0.9998,0.9994,1.0,0.9997,0.9997,0.0006,30,123,2.68,split_position
+LSTM,0.7826,0.5556,0.8333,0.6667,0.7647,0.0,30,123,9.19,split_position
+Dynamic k-Means,1.0,1.0,1.0,1.0,1.0,0.0,30,123,0.06,split_position
+IQR Speed Threshold,0.3332,0.3332,1.0,0.4999,0.0,0.0,35,123,0.04,split_position
+RSU Position Verification,0.8624,0.8218,0.7495,0.784,0.9188,0.0,35,123,8.21,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,35,123,0.58,split_position
+Random Forest,0.9996,0.9987,1.0,0.9994,0.9993,0.0004,35,123,1.94,split_position
+LSTM,0.96,1.0,0.875,0.9333,1.0,0.0,35,123,12.47,split_position
+Dynamic k-Means,0.9979,0.9938,1.0,0.9969,0.9969,0.0,35,123,0.06,split_position
+IQR Speed Threshold,1.0,1.0,1.0,1.0,1.0,0.0,40,123,0.03,split_position
+RSU Position Verification,0.8667,0.922,0.7233,0.8107,0.9601,0.0,40,123,7.56,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,40,123,0.59,split_position
+Random Forest,0.9997,0.9992,1.0,0.9996,0.9995,0.0004,40,123,1.79,split_position
+LSTM,0.8889,0.8889,0.8,0.8421,0.9412,0.0,40,123,10.18,split_position
+Dynamic k-Means,0.9898,0.9748,1.0,0.9873,0.9832,0.0,40,123,0.06,split_position
+IQR Speed Threshold,0.0548,0.0548,1.0,0.1038,0.0,0.0,5,456,0.03,split_position
+RSU Position Verification,0.9298,0.4256,0.8067,0.5572,0.9369,0.0,5,456,8.14,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,5,456,0.44,split_position
+Random Forest,0.9983,0.998,0.9732,0.9852,0.9998,0.0154,5,456,1.76,split_position
+LSTM,0.9444,0.0,0.0,0.0,1.0,0.0,5,456,9.41,split_position
+Dynamic k-Means,0.9988,0.9783,1.0,0.989,0.9987,0.0,5,456,0.04,split_position
+IQR Speed Threshold,0.0552,0.0552,1.0,0.1046,0.0,0.0,10,456,0.04,split_position
+RSU Position Verification,0.9896,1.0,0.8124,0.8965,1.0,0.0,10,456,7.3,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,10,456,0.41,split_position
+Random Forest,0.9976,0.9949,0.9601,0.976,0.9997,0.0395,10,456,1.41,split_position
+LSTM,0.9444,0.0,0.0,0.0,1.0,0.0,10,456,9.36,split_position
+Dynamic k-Means,0.9988,0.9784,1.0,0.9891,0.9987,0.0,10,456,0.05,split_position
+IQR Speed Threshold,0.1067,0.1067,1.0,0.1928,0.0,0.0,15,456,0.04,split_position
+RSU Position Verification,1.0,1.0,1.0,1.0,1.0,0.0,15,456,8.04,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,15,456,0.42,split_position
+Random Forest,0.9961,0.9975,0.9624,0.9782,0.9998,0.0423,15,456,1.59,split_position
+LSTM,0.6316,0.1429,0.5,0.2222,0.6471,0.0,15,456,8.46,split_position
+Dynamic k-Means,0.9007,0.5179,1.0,0.6824,0.8888,0.0,15,456,0.04,split_position
+IQR Speed Threshold,0.1988,0.1988,1.0,0.3317,0.0,0.0,20,456,0.03,split_position
+RSU Position Verification,0.9443,0.7812,1.0,0.8772,0.9305,0.0,20,456,7.12,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,20,456,0.47,split_position
+Random Forest,0.9999,0.9995,1.0,0.9997,0.9999,0.0005,20,456,1.63,split_position
+LSTM,0.9524,1.0,0.75,0.8571,1.0,0.0,20,456,8.48,split_position
+Dynamic k-Means,0.957,0.9845,0.7963,0.8805,0.9969,0.0,20,456,0.05,split_position
+IQR Speed Threshold,0.2282,0.2282,1.0,0.3716,0.0,0.0,25,456,0.04,split_position
+RSU Position Verification,0.9806,0.9217,1.0,0.9592,0.9749,0.0,25,456,7.19,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,25,456,0.48,split_position
+Random Forest,1.0,1.0,1.0,1.0,1.0,0.0,25,456,1.53,split_position
+LSTM,0.7273,0.3333,0.2,0.25,0.8824,0.0,25,456,8.82,split_position
+Dynamic k-Means,0.9978,0.9905,1.0,0.9952,0.9972,0.0,25,456,0.05,split_position
+IQR Speed Threshold,0.2834,0.2834,1.0,0.4416,0.0,0.0,30,456,0.04,split_position
+RSU Position Verification,0.8993,0.9365,0.6916,0.7956,0.9815,0.0,30,456,7.59,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,30,456,0.54,split_position
+Random Forest,0.9998,0.9994,1.0,0.9997,0.9997,0.0006,30,456,1.61,split_position
+LSTM,1.0,1.0,1.0,1.0,1.0,0.0,30,456,10.79,split_position
+Dynamic k-Means,1.0,1.0,1.0,1.0,1.0,0.0,30,456,0.05,split_position
+IQR Speed Threshold,0.3332,0.3332,1.0,0.4999,0.0,0.0,35,456,0.04,split_position
+RSU Position Verification,0.8624,0.8218,0.7495,0.784,0.9188,0.0,35,456,7.41,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,35,456,0.53,split_position
+Random Forest,0.9996,0.9987,1.0,0.9994,0.9993,0.0004,35,456,1.67,split_position
+LSTM,0.96,1.0,0.875,0.9333,1.0,0.0,35,456,9.56,split_position
+Dynamic k-Means,0.9979,0.9938,1.0,0.9969,0.9969,0.0,35,456,0.05,split_position
+IQR Speed Threshold,1.0,1.0,1.0,1.0,1.0,0.0,40,456,0.03,split_position
+RSU Position Verification,0.8667,0.922,0.7233,0.8107,0.9601,0.0,40,456,7.53,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,40,456,0.6,split_position
+Random Forest,0.9997,0.9992,1.0,0.9996,0.9995,0.0004,40,456,1.68,split_position
+LSTM,0.963,0.9091,1.0,0.9524,0.9412,0.0,40,456,10.49,split_position
+Dynamic k-Means,0.9898,0.9748,1.0,0.9873,0.9832,0.0,40,456,0.05,split_position
+IQR Speed Threshold,0.0548,0.0548,1.0,0.1038,0.0,0.0,5,789,0.03,split_position
+RSU Position Verification,0.9298,0.4256,0.8067,0.5572,0.9369,0.0,5,789,7.06,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,5,789,0.41,split_position
+Random Forest,0.9981,0.998,0.9685,0.9822,0.9998,0.0287,5,789,1.42,split_position
+LSTM,0.6111,0.0,0.0,0.0,0.6471,0.0,5,789,8.99,split_position
+Dynamic k-Means,0.9988,0.9783,1.0,0.989,0.9987,0.0,5,789,0.04,split_position
+IQR Speed Threshold,0.0552,0.0552,1.0,0.1046,0.0,0.0,10,789,0.08,split_position
+RSU Position Verification,0.9896,1.0,0.8124,0.8965,1.0,0.0,10,789,10.27,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,10,789,0.45,split_position
+Random Forest,0.9984,0.995,0.9741,0.9838,0.9997,0.0295,10,789,2.53,split_position
+LSTM,0.9444,0.0,0.0,0.0,1.0,0.0,10,789,10.24,split_position
+Dynamic k-Means,0.9988,0.9784,1.0,0.9891,0.9987,0.0,10,789,0.07,split_position
+IQR Speed Threshold,0.1067,0.1067,1.0,0.1928,0.0,0.0,15,789,0.03,split_position
+RSU Position Verification,1.0,1.0,1.0,1.0,1.0,0.0,15,789,7.37,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,15,789,0.47,split_position
+Random Forest,0.9988,0.9977,0.9901,0.9938,0.9998,0.0111,15,789,2.78,split_position
+LSTM,0.8421,0.0,0.0,0.0,0.9412,0.0,15,789,8.72,split_position
+Dynamic k-Means,0.9793,0.9011,0.9059,0.9035,0.9881,0.0,15,789,0.04,split_position
+IQR Speed Threshold,0.1988,0.1988,1.0,0.3317,0.0,0.0,20,789,0.04,split_position
+RSU Position Verification,0.9443,0.7812,1.0,0.8772,0.9305,0.0,20,789,7.17,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,20,789,0.48,split_position
+Random Forest,0.9999,0.9995,1.0,0.9997,0.9999,0.0005,20,789,1.64,split_position
+LSTM,0.9524,1.0,0.75,0.8571,1.0,0.0,20,789,9.32,split_position
+Dynamic k-Means,0.9585,0.9935,0.7963,0.884,0.9987,0.0,20,789,0.06,split_position
+IQR Speed Threshold,0.2282,0.2282,1.0,0.3716,0.0,0.0,25,789,0.04,split_position
+RSU Position Verification,0.9806,0.9217,1.0,0.9592,0.9749,0.0,25,789,7.27,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,25,789,0.48,split_position
+Random Forest,1.0,1.0,1.0,1.0,1.0,0.0,25,789,1.6,split_position
+LSTM,0.8182,0.6,0.6,0.6,0.8824,0.0,25,789,8.79,split_position
+Dynamic k-Means,0.9978,0.9905,1.0,0.9952,0.9972,0.0,25,789,0.05,split_position
+IQR Speed Threshold,0.2834,0.2834,1.0,0.4416,0.0,0.0,30,789,0.04,split_position
+RSU Position Verification,0.8993,0.9365,0.6916,0.7956,0.9815,0.0,30,789,7.34,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,30,789,0.52,split_position
+Random Forest,0.9998,0.9994,1.0,0.9997,0.9997,0.0006,30,789,1.8,split_position
+LSTM,0.9565,1.0,0.8333,0.9091,1.0,0.0,30,789,8.33,split_position
+Dynamic k-Means,0.9991,0.9967,1.0,0.9984,0.9987,0.0,30,789,0.05,split_position
+IQR Speed Threshold,0.3332,0.3332,1.0,0.4999,0.0,0.0,35,789,0.04,split_position
+RSU Position Verification,0.8624,0.8218,0.7495,0.784,0.9188,0.0,35,789,7.47,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,35,789,0.58,split_position
+Random Forest,0.9996,0.9987,1.0,0.9994,0.9993,0.0004,35,789,1.81,split_position
+LSTM,0.92,0.875,0.875,0.875,0.9412,0.0,35,789,9.72,split_position
+Dynamic k-Means,0.9979,0.9938,1.0,0.9969,0.9969,0.0,35,789,0.05,split_position
+IQR Speed Threshold,1.0,1.0,1.0,1.0,1.0,0.0,40,789,0.03,split_position
+RSU Position Verification,0.8667,0.922,0.7233,0.8107,0.9601,0.0,40,789,7.94,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,40,789,0.58,split_position
+Random Forest,0.9997,0.9992,1.0,0.9996,0.9995,0.0004,40,789,1.69,split_position
+LSTM,0.963,0.9091,1.0,0.9524,0.9412,0.0,40,789,11.81,split_position
+Dynamic k-Means,0.9898,0.9748,1.0,0.9873,0.9832,0.0,40,789,0.07,split_position
+IQR Speed Threshold,0.0548,0.0548,1.0,0.1038,0.0,0.0,5,1000,0.03,split_position
+RSU Position Verification,0.9298,0.4256,0.8067,0.5572,0.9369,0.0,5,1000,6.88,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,5,1000,0.4,split_position
+Random Forest,0.9981,0.998,0.969,0.983,0.9998,0.0158,5,1000,1.61,split_position
+LSTM,0.9444,0.0,0.0,0.0,1.0,0.0,5,1000,9.16,split_position
+Dynamic k-Means,0.9988,0.9783,1.0,0.989,0.9987,0.0,5,1000,0.05,split_position
+IQR Speed Threshold,0.0552,0.0552,1.0,0.1046,0.0,0.0,10,1000,0.03,split_position
+RSU Position Verification,0.9896,1.0,0.8124,0.8965,1.0,0.0,10,1000,7.14,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,10,1000,0.44,split_position
+Random Forest,0.9976,0.9948,0.96,0.9755,0.9997,0.0462,10,1000,1.46,split_position
+LSTM,0.9444,0.0,0.0,0.0,1.0,0.0,10,1000,9.88,split_position
+Dynamic k-Means,0.9988,0.9784,1.0,0.9891,0.9987,0.0,10,1000,0.04,split_position
+IQR Speed Threshold,0.1067,0.1067,1.0,0.1928,0.0,0.0,15,1000,0.03,split_position
+RSU Position Verification,1.0,1.0,1.0,1.0,1.0,0.0,15,1000,7.01,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,15,1000,0.44,split_position
+Random Forest,0.9944,0.9973,0.9447,0.967,0.9998,0.0632,15,1000,1.55,split_position
+LSTM,0.5789,0.2,1.0,0.3333,0.5294,0.0,15,1000,8.95,split_position
+Dynamic k-Means,0.9731,0.8516,0.9059,0.8779,0.9811,0.0,15,1000,0.04,split_position
+IQR Speed Threshold,0.1988,0.1988,1.0,0.3317,0.0,0.0,20,1000,0.03,split_position
+RSU Position Verification,0.9443,0.7812,1.0,0.8772,0.9305,0.0,20,1000,7.18,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,20,1000,0.5,split_position
+Random Forest,0.9999,0.9995,1.0,0.9997,0.9999,0.0005,20,1000,1.63,split_position
+LSTM,0.9048,0.75,0.75,0.75,0.9412,0.0,20,1000,8.91,split_position
+Dynamic k-Means,0.957,0.9845,0.7963,0.8805,0.9969,0.0,20,1000,0.04,split_position
+IQR Speed Threshold,0.2282,0.2282,1.0,0.3716,0.0,0.0,25,1000,0.04,split_position
+RSU Position Verification,0.9806,0.9217,1.0,0.9592,0.9749,0.0,25,1000,7.33,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,25,1000,0.5,split_position
+Random Forest,1.0,1.0,1.0,1.0,1.0,0.0,25,1000,1.54,split_position
+LSTM,0.8182,0.6667,0.4,0.5,0.9412,0.0,25,1000,9.04,split_position
+Dynamic k-Means,0.9797,0.9184,1.0,0.9574,0.9737,0.0,25,1000,0.05,split_position
+IQR Speed Threshold,0.2834,0.2834,1.0,0.4416,0.0,0.0,30,1000,0.04,split_position
+RSU Position Verification,0.8993,0.9365,0.6916,0.7956,0.9815,0.0,30,1000,9.07,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,30,1000,0.51,split_position
+Random Forest,0.9998,0.9994,1.0,0.9997,0.9997,0.0006,30,1000,1.91,split_position
+LSTM,0.9565,1.0,0.8333,0.9091,1.0,0.0,30,1000,9.08,split_position
+Dynamic k-Means,1.0,1.0,1.0,1.0,1.0,0.0,30,1000,0.05,split_position
+IQR Speed Threshold,0.3332,0.3332,1.0,0.4999,0.0,0.0,35,1000,0.04,split_position
+RSU Position Verification,0.8624,0.8218,0.7495,0.784,0.9188,0.0,35,1000,7.36,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,35,1000,0.57,split_position
+Random Forest,0.9996,0.9987,1.0,0.9994,0.9993,0.0004,35,1000,1.71,split_position
+LSTM,1.0,1.0,1.0,1.0,1.0,0.0,35,1000,9.79,split_position
+Dynamic k-Means,0.9979,0.9938,1.0,0.9969,0.9969,0.0,35,1000,0.05,split_position
+IQR Speed Threshold,1.0,1.0,1.0,1.0,1.0,0.0,40,1000,0.03,split_position
+RSU Position Verification,0.8667,0.922,0.7233,0.8107,0.9601,0.0,40,1000,7.39,split_position
+TASER Bayesian Trust,1.0,1.0,1.0,1.0,1.0,0.0,40,1000,0.58,split_position
+Random Forest,0.9997,0.9992,1.0,0.9996,0.9995,0.0004,40,1000,1.9,split_position
+LSTM,0.8889,0.8889,0.8,0.8421,0.9412,0.0,40,1000,10.15,split_position
+Dynamic k-Means,0.9813,0.9547,1.0,0.9768,0.9691,0.0,40,1000,0.05,split_position
