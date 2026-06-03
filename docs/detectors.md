@@ -69,4 +69,4 @@ Aggregates 8 behavioral features per vehicle (mean/std of x, y, speed, accelerat
 
 Uses **median + MAD** instead of mean + std to resist contamination when many Sybil vehicles are present (robust to up to ≈40% positive fraction).
 
-Results: F1 = 0.9795 (co-location), F1 = 0.923 (split-position). Previous version (mean-speed z-score) gave F1 = 0.000.
+Results: F1 = 0.9795 (co-location), F1 = 0.944 (split-position, 5 seeds). Previous version (mean-speed z-score) gave F1 = 0.000.

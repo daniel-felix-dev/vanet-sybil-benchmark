@@ -83,8 +83,8 @@ Positive slope = improves under heavier attack. Negative = degrades.
 | Random Forest | +0.0070 | 0.7781 | 0.0037* | improves |
 | LSTM | +0.0293 | 0.8985 | 0.0003* | improves |
 | IQR Speed Threshold | +0.0227 | 0.8720 | 0.0007* | improves |
-| RSU Position Verification | +0.0004 | 0.0368 | 0.6490 | improves |
-| Dynamic k-Means | +0.0005 | 0.1986 | 0.2684 | improves |
+| RSU Position Verification | +0.0004 | 0.0368 | 0.6490 | flat |
+| Dynamic k-Means | +0.0005 | 0.1994 | 0.2674 | flat |
 
 (*) p < 0.05
 

@@ -272,7 +272,13 @@ for det in DETS:
     y = f1_agg(det)   # mean per rate over seeds, for regression
     slope, intercept, r, p, se = stats.linregress(x, y)
     r2 = r**2
-    trend = "improves" if slope > 0 else ("flat" if abs(slope) < 0.001 else "degrades")
+    # Only label as improves/degrades if the trend is statistically significant
+    if p >= 0.05:
+        trend = "flat"
+    elif slope > 0:
+        trend = "improves"
+    else:
+        trend = "degrades"
     sig = "*" if p < 0.05 else ""
     h(f"| {det} | {slope:+.4f} | {r2:.4f} | {p:.4f}{sig} | {trend} |")
     reg_results[det] = (slope, intercept, r2, p)
